@@ -7,12 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace Presentation
 {
-    public partial class Main : System.Web.UI.MasterPage
+    public partial class Dashboard : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-
     }
 }

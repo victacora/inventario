@@ -12,8 +12,6 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows;
-using Logic.Models;
-using System.Windows.Controls;
 
 namespace Presentation
 {
@@ -139,7 +137,7 @@ namespace Presentation
             {
                 productsList.Add(new
                 {
-                    ProductID = row["ProductID"],
+                    ProductID = row["prod_id"],
                     Codigo = row["Codigo"],
                     Nombre = row["Nombre"],
                     Descripcion = row["Descripcion"],
@@ -297,7 +295,6 @@ namespace Presentation
                 }
 
                 // Si todos los productos fueron guardados con éxito
-                MessageBox.Show("Todos los productos fueron guardados exitosamente!");
                 LblMsg.Text = "Todos los productos fueron guardados exitosamente!";
                 clear(); // Limpiar los campos
                 clearGV();

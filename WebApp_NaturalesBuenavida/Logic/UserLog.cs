@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace Logic
@@ -31,6 +33,37 @@ namespace Logic
         public bool deleteUser(int _user_Id)
         {
             return objUser.deleteUser(_user_Id);
+        }
+
+        /// <summary>
+        /// Por seguridad las contrasenas almacenas en bd no pueden ser legibles y deben estar cifradas
+        /// </summary>
+        /// <param name="password">Contrasena del usuario sin cifrar</param>
+        /// <returns>Contrasena cifrada</returns>
+        public string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (var b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Verifica si un usuario se encuentra registrado y tiene acceso a la aplicacion usando un login y password
+        /// </summary>
+        /// <param name="username">Usuario</param>
+        /// <param name="password">Contrasena</param>
+        /// <returns>Retorna los datos del usuario registrado si es existoso en caso contrario retorna nulo</returns>
+        public Usuario LoginUser(string username, string password)
+        {
+            string hashPassword = HashPassword(password);
+            return objUser.LoginUser(username, password);
         }
     }
 }

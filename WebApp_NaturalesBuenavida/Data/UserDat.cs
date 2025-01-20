@@ -121,5 +121,42 @@ namespace Data
             return executed;
 
         }
+
+        /// <summary>
+        /// Verifica si un usuario se encuentra registrado y tiene acceso a la aplicacion usando un login y password
+        /// </summary>
+        /// <param name="username">Usuario</param>
+        /// <param name="password">Contrasena</param>
+        /// <returns>Retorna los datos del usuario registrado si es existoso en caso contrario retorna nulo</returns>
+        public Usuario LoginUser(string username, string password)
+        {
+            MySqlDataAdapter objAdapter = new MySqlDataAdapter();
+            DataSet objData = new DataSet();
+
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "sp_login_user";
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_username", MySqlDbType.String).Value = username;
+            objSelectCmd.Parameters.Add("p_password", MySqlDbType.String).Value = password;
+            objAdapter.SelectCommand = objSelectCmd;
+            MySqlDataReader reader = objSelectCmd.ExecuteReader();
+            if (reader.Read())
+            {
+                Usuario usuario = new Usuario();
+                usuario.Usu_Id = int.Parse(reader["usu_id"].ToString());
+                usuario.Rol_Id = int.Parse(reader["tbl_rol_rol_id"].ToString());
+                usuario.Login = reader["usuario"].ToString();
+                usuario.Correo = reader["correo"].ToString();
+                usuario.Nombres = reader["nombres"].ToString();
+                usuario.Apellidos = reader["apellidos"].ToString();
+                usuario.Rol = reader["rol_nombre"].ToString();
+                return usuario;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

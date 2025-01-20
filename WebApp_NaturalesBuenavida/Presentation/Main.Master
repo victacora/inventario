@@ -6,6 +6,10 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>NaturalesBuenaVida app</title>
+     <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS (optional for interactive components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -14,7 +18,7 @@
         <div>
             <div>
                 <%--Aqui va lo que se repite en los otros WebForms--%>
-                <a href="WFInicio.aspx">Inicio</a>
+                <a href="Dashboard.aspx">Inicio</a>
                 <a href="WFProduct.aspx">Productos</a>
                 <a href="WFCategories.aspx">Categorias</a>
                 <a href="WFSuppliers.aspx">Proveedores</a>
@@ -26,7 +30,7 @@
                 <a href="WFPresentation.aspx">Presentacion</a>
                 <a href="WFUnitMeasure.aspx">Unidad de Medida</a>
                 <a href="WFInventory.aspx">Inventario</a>
-                <a href="#">Usuarios</a>
+                <a href="WFUsers.aspx">Usuarios</a>
                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                 </asp:ContentPlaceHolder>
             </div>

@@ -63,7 +63,7 @@ namespace Logic
         public Usuario LoginUser(string username, string password)
         {
             string hashPassword = HashPassword(password);
-            return objUser.LoginUser(username, password);
+            return objUser.LoginUser(username, hashPassword);
         }
     }
 }

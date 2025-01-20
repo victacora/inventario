@@ -15,26 +15,56 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <div>
-                <%--Aqui va lo que se repite en los otros WebForms--%>
-                <a href="Dashboard.aspx">Inicio</a>
-                <a href="WFProduct.aspx">Productos</a>
-                <a href="WFCategories.aspx">Categorias</a>
-                <a href="WFSuppliers.aspx">Proveedores</a>
-                <a href="WFEmployees.aspx">Empleados</a>
-                <a href="WFClient.aspx">Clientes</a>
-                <a href="WFReturns.aspx">Devoluciones</a>
-                <a href="WFSales.aspx">Ventas</a>
-                <a href="WFBuy.aspx">Compras</a>
-                <a href="WFPresentation.aspx">Presentacion</a>
-                <a href="WFUnitMeasure.aspx">Unidad de Medida</a>
-                <a href="WFInventory.aspx">Inventario</a>
-                <a href="WFUsers.aspx">Usuarios</a>
-                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                </asp:ContentPlaceHolder>
+        <asp:PlaceHolder ID="NavBarPlaceHolder" runat="server">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="Dashboard.aspx">Inicio</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="WFProduct.aspx">Productos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFCategories.aspx">Categorias</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFSuppliers.aspx">Proveedores</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFEmployees.aspx">Empleados</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFClient.aspx">Clientes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFReturns.aspx">Devoluciones</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFSales.aspx">Ventas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFBuy.aspx">Compras</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFPresentation.aspx">Presentacion</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFUnitMeasure.aspx">Unidad de Medida</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFInventory.aspx">Inventario</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFUsers.aspx">Usuarios</a></li>
+                            <li class="nav-item">
+                                <asp:Button ID="btnLogout" runat="server" Text="Cerrar sesión" CssClass="nav-link btn btn-link text-white" OnClick="btnLogout_Click" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </asp:PlaceHolder>
+
+        <!-- Main Content -->
+       <% if (HttpContext.Current.User.Identity.IsAuthenticated) { %>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-12 py-2">
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
             </div>
-        </div>
+            <!-- Footer -->
+            <footer class="bg-dark text-white text-center py-3 mt-4">
+                <p>&copy; Naturales buena vida - 2025.</p>
+            </footer>
+        <% } else { %>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolderLogin" runat="server">
+            </asp:ContentPlaceHolder>
+        <% } %>
+
+      
     </form>
 </body>
 </html>

@@ -4,10 +4,12 @@
 
 <html>
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>NaturalesBuenaVida app</title>
-     <!-- Bootstrap CSS -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Naturales BuenaVida</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" rel="stylesheet">
     <!-- Bootstrap JS (optional for interactive components) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -15,56 +17,146 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <asp:PlaceHolder ID="NavBarPlaceHolder" runat="server">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="Dashboard.aspx">Inicio</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="WFProduct.aspx">Productos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFCategories.aspx">Categorias</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFSuppliers.aspx">Proveedores</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFEmployees.aspx">Empleados</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFClient.aspx">Clientes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFReturns.aspx">Devoluciones</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFSales.aspx">Ventas</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFBuy.aspx">Compras</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFPresentation.aspx">Presentacion</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFUnitMeasure.aspx">Unidad de Medida</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFInventory.aspx">Inventario</a></li>
-                            <li class="nav-item"><a class="nav-link" href="WFUsers.aspx">Usuarios</a></li>
-                            <li class="nav-item">
-                                <asp:Button ID="btnLogout" runat="server" Text="Cerrar sesión" CssClass="nav-link btn btn-link text-white" OnClick="btnLogout_Click" />
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </asp:PlaceHolder>
-
         <!-- Main Content -->
-       <% if (HttpContext.Current.User.Identity.IsAuthenticated) { %>
-            <div class="container mt-4">
-                <div class="row">
-                    <div class="col-md-12 py-2">
+        <% if (HttpContext.Current.User.Identity.IsAuthenticated)
+            { %>
+        <style>
+            body {
+                background: url('resources/image/fondo.png') no-repeat center center fixed;
+                background-size: cover;
+                font-family: 'Arial', sans-serif;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 100;
+                padding: 48px 0 0;
+                box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            }
+
+            @media (max-width: 767.98px) {
+                .sidebar {
+                    top: 5rem;
+                }
+            }
+
+            .sidebar-sticky {
+                position: relative;
+                top: 0;
+                height: calc(100vh - 48px);
+                padding-top: .5rem;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            .sidebar .nav-link {
+                font-weight: 500;
+                color: #333;
+            }
+
+                .sidebar .nav-link .feather {
+                    margin-right: 4px;
+                    color: #727272;
+                }
+
+                .sidebar .nav-link.active {
+                    color: #2470dc;
+                }
+
+                    .sidebar .nav-link:hover .feather,
+                    .sidebar .nav-link.active .feather {
+                        color: inherit;
+                    }
+
+            .sidebar-heading {
+                font-size: .75rem;
+                text-transform: uppercase;
+            }
+
+            .navbar .navbar-toggler {
+                top: .25rem;
+                right: 1rem;
+            }
+
+            .navbar .form-control {
+                padding: .75rem 1rem;
+                border-width: 0;
+                border-radius: 0;
+            }
+
+            .form-control-dark {
+                color: #fff;
+                background-color: rgba(255, 255, 255, .1);
+                border-color: rgba(255, 255, 255, .1);
+            }
+
+                .form-control-dark:focus {
+                    border-color: transparent;
+                    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+                }
+
+            .logo {
+                max-width: 38px;
+                max-height: 38px;
+            }
+
+            .dt-container {
+                background: white;
+                padding: 1rem;
+            }
+        </style>
+        <header class="navbar navbar-dark sticky-top bg-white flex-md-nowrap p-0 shadow">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="Dashboard.aspx"> <img src="resources/image/logo-naturales-buena-vida.png" alt="Logo Naturales BuenaVida" class="logo"></a>
+            <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-nav">
+                <div class="nav-item text-nowrap">
+                    <asp:Button ID="btnLogout" runat="server" Text="Salir" CssClass="nav-link btn btn-link px-3 text-black" OnClick="btnLogout_Click" />
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid">
+            <div class="row">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    <div class="position-sticky pt-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="WFProduct.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Productos </a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFCategories.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Categorias</a> </li>
+                            <li class="nav-item"><a class="nav-link" href="WFSuppliers.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Proveedores </a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFEmployees.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Empleados</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFClient.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Clientes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFReturns.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Devoluciones</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFSales.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Ventas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFBuy.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Compras</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFPresentation.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Presentacion</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFUnitMeasure.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Unidad de Medida</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFInventory.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Inventario</a></li>
+                            <li class="nav-item"><a class="nav-link" href="WFUsers.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Usuarios</a></li>
+                        </ul>
+
+                    </div>
+                </nav>
+
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    <div class="container mt-4">
                         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                         </asp:ContentPlaceHolder>
                     </div>
-                </div>
+                </main>
             </div>
-            <!-- Footer -->
-            <footer class="bg-dark text-white text-center py-3 mt-4">
-                <p>&copy; Naturales buena vida - 2025.</p>
-            </footer>
-        <% } else { %>
-            <asp:ContentPlaceHolder ID="ContentPlaceHolderLogin" runat="server">
-            </asp:ContentPlaceHolder>
-        <% } %>
+        </div>
 
-      
+        <% }
+     else
+     { %>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolderLogin" runat="server">
+        </asp:ContentPlaceHolder>
+        <% } %>
     </form>
 </body>
 </html>

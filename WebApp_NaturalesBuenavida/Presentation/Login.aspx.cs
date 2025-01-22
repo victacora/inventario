@@ -1,4 +1,4 @@
-﻿using Data;
+﻿using Model;
 using Logic;
 using System;
 using System.Web.Security;

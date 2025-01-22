@@ -104,6 +104,10 @@
       <Project>{54ee28b9-15bb-46cb-85c8-1f9f45d89fb7}</Project>
       <Name>Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{db227a39-3f3c-4571-8797-9976e52657c4}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

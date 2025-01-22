@@ -11,7 +11,7 @@ namespace Presentation
 {
 
 
-    public partial class _Default
+    public partial class Dashboard
     {
     }
 }

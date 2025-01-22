@@ -23,7 +23,7 @@
     <%-- Lista de Unidades --%>
     <h2>Lista de Unidades de Medida</h2>
     <!-- Título para la tabla de unidades -->
-    <table id="unitsTable" class="display" style="width: 100%">
+    <table id="unitsTable" class="table table-striped table-bordered table-hover display" style="width: 100%">
         <!-- Tabla donde mostraré las unidades de medida -->
         <thead>
             <tr>

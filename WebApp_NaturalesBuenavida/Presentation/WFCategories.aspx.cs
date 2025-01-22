@@ -1,159 +1,131 @@
 ﻿using Logic;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Web.Services;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Presentation
 {
     public partial class WFCategories : System.Web.UI.Page
     {
-        // Instancio un objeto de la capa lógica para interactuar con los datos de las unidades de medida.
 
-        UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
-
+        CategoryLog objCat = new CategoryLog();
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Verifico si no es una recarga de la página (no es un postback).
-            if (!IsPostBack)
+            if (!Page.IsPostBack)
             {
-                // aqui Inicialización si es necesario (ejemplo: cargar listas, valores predeterminados, etc.)
+                ListCategory();
             }
         }
-
-        [WebMethod]
-        // Método estático que se invoca desde JavaScript para obtener las unidades de medida.
-
-        public static object ListUnits()
+        protected void ListCategory()
         {
-            // Creo una instancia de la clase lógica para acceder a la base de datos.
-            UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
-            // Llamo al método ShowUnits para obtener los datos de las unidades de medida.
-            var unitData = unitMeasureLog.ShowUnits(); // Retorna un DataSet
-
-            List<object> unitList = new List<object>(); // Creo una lista para almacenar las unidades de medida.
-
-
-            if (unitData.Tables.Count > 0) // Verifico si el DataSet tiene alguna tabla.
+            var dataset = new CategoryLog().ShowCategories();
+            if (dataset != null && dataset.Tables.Count > 0)
             {
-                // Itero sobre las filas de la primera tabla (las unidades de medida).
-                foreach (System.Data.DataRow row in unitData.Tables[0].Rows)
-                {  
-                    // Agrego cada unidad a la lista de objetos.
-                    unitList.Add(new
-                    {
-                        und_id = row["und_id"],
-                        und_descripcion = row["und_descripcion"]
-                    });
-                }
+                gvCategory.DataSource = dataset.Tables[0];
+                gvCategory.DataBind();
             }
-
-            return new // Retorno un objeto con los datos necesarios para mostrar en la tabla.
-            {
-                draw = 1,
-                recordsTotal = unitList.Count, // Total de registros.
-                recordsFiltered = unitList.Count, //Registros filtrados(en este caso, es el mismo número).
-
-                data = unitList // Datos 
-            };
         }
-
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            // Obtengo el nombre de la unidad desde el TextBox.
-            string unitName = TBUnitName.Text;
-
-            bool executed = unitMeasureLog.SaveUnit(unitName);// Llamo al método SaveUnit para guardar la unidad de medida.
-
-            if (executed)// Verifico si la operación fue exitosa y muestro un mensaje.
+            if (objCat.AddCategory(TBDescripcion.Text))
             {
-                LblMsg.Text = "Unidad de medida guardada exitosamente.";
-                ClearFields();
+                LblMsg.Text = "Categoria registrada con éxito.";
+                ListCategory();
+                div_Cat.Visible = true;
+                div_info.Visible = false;
+                div_botones.Visible = false;
+                BtnSave.Visible = false;
+                BtnUpdate.Visible = false;
+                BTNNuevoRegistro.Visible = true;
             }
             else
             {
-                LblMsg.Text = "Error al guardar la unidad de medida.";
+                LblMsg.Text = "Error al registrar.";
             }
         }
 
         protected void BtnUpdate_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(HFUnitID.Value))// Verifico que se haya seleccionado una unidad para actualizar.
+            if (objCat.EditCategory(int.Parse(HFCategoryId.Value), TBDescripcion.Text))
             {
-                LblMsg.Text = "No se ha seleccionado la unidad para actualizar.";
-                return;
-            }
-
-            int unitId = Convert.ToInt32(HFUnitID.Value);// Obtengo el ID de la unidad a actualizar desde el HiddenField.
-
-            string unitName = TBUnitName.Text;// Obtengo el nuevo nombre de la unidad desde el TextBox.
-
-            if (string.IsNullOrWhiteSpace(unitName)) // Verifico que el nombre no esté vacío.
-            {
-                LblMsg.Text = "El nombre de la unidad no puede estar vacío.";
-                return;
-            }
-
-            bool executed = unitMeasureLog.UpdateUnit(unitId, unitName);// Llamo al método Almacenado.
-
-            if (executed)// Verifico si la operación fue exitosa 
-            {
-                LblMsg.Text = "La unidad de medida se actualizó exitosamente!";
-                ClearFields();
+                LblMsg.Text = "Categoria actualizada.";
+                ListCategory();
+                div_Cat.Visible = true;
+                div_info.Visible = false;
+                div_botones.Visible = false;
+                BtnSave.Visible = false;
+                BtnUpdate.Visible = false;
+                BTNNuevoRegistro.Visible = true;
             }
             else
             {
-                LblMsg.Text = "Error al actualizar la unidad de medida.";
+                LblMsg.Text = "Error al actualizar.";
             }
         }
 
-        protected void BtnClear_Click(object sender, EventArgs e)
+        protected void LBRegresar_Click(object sender, EventArgs e)
         {
-            ClearFields();// Limpio los campos.
+            Response.Redirect("~/WFCategory.aspx");
         }
-        [WebMethod]
-        public static AjaxResponse DeleteUnit(int unitId)
+
+        protected void gvCategory_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            AjaxResponse response = new AjaxResponse();
-            try
+
+            switch (e.CommandName)
             {
-                // Creo un objeto de respuesta para devolver al cliente.
-                UnitMeasureLog unitMeasureLog = new UnitMeasureLog();// Llamo a la capa lógica para eliminar la unidad.
-                bool executed = unitMeasureLog.DeleteUnit(unitId); // Llama a tu método de eliminación
+                case "editCategory":
+                    try
+                    {
+                        int indice = Convert.ToInt32(e.CommandArgument);
+                        string id = gvCategory.DataKeys[indice].Value.ToString();
+                        HFCategoryId.Value = id;
+                        var dataset = new CategoryLog().ShowCategoriesId(int.Parse(id));
+                        if (dataset != null && dataset.Tables.Count > 0)
+                        {
+                            DataRow row = dataset.Tables[0].Rows[0];
+                            TBDescripcion.Text = row["Descripcion"].ToString();
+                        }
+                        div_Cat.Visible = false;
+                        div_info.Visible = true;
+                        div_botones.Visible = true;
+                        BtnSave.Visible = false;
+                        BtnUpdate.Visible = true;
+                        BTNNuevoRegistro.Visible = false;
+                    }
+                    catch (Exception)
+                    {
 
-                if (executed) // Verifico si la eliminación fue exitosa
-                {
-                    response.Success = true;
-                    response.Message = "Unidad eliminada correctamente.";
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "Error al eliminar la unidad.";
-                }
-            }
-            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
-            {
-                response.Success = false;
-                response.Message = "Ocurrió un error: " + ex.Message;
-            }
+                        throw;
+                    }
+                    break;
+                case "deleteCategory":
+                    try
+                    {
+                        int indice = Convert.ToInt32(e.CommandArgument);
+                        string id = gvCategory.DataKeys[indice].Value.ToString();
+                        CategoryLog depLog = new CategoryLog();
+                        bool executed = depLog.DeleteCategory(int.Parse(id));
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "Notify('Se ha eliminado el país con éxito.','Estado','success','false','true');", true);
+                        ListCategory();
+                    }
+                    catch (Exception)
+                    {
 
-            return response; 
+                        throw;
+                    }
+                    break;
+            }
         }
 
-        // Clase AjaxResponse para estructurar la respuesta de la llamada AJAX
-        public class AjaxResponse// Clase para estructurar la respuesta que se enviará al cliente.
+        protected void BTNNuevoRegistro_Click(object sender, EventArgs e)
         {
-            public bool Success { get; set; }// Indica si la operación fue exitosa.
-            public string Message { get; set; }// Mensaje con el resultado de la operación.
-
-        }
-
-        private void ClearFields()
-        {
-            HFUnitID.Value = string.Empty;  // Limpio el HiddenField con el ID de la unidad.
-            TBUnitName.Text = string.Empty; // Limpio el TextBox con el nombre de la unidad.
-            LblMsg.Text = string.Empty;  // Limpio el mensaje de la etiqueta.
+            div_Cat.Visible = false;
+            BTNNuevoRegistro.Visible = false;
+            div_info.Visible = true;
         }
     }
 }

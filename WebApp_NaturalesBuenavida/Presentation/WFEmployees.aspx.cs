@@ -1,159 +1,161 @@
 ﻿using Logic;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Web;
 using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Presentation
 {
-    public partial class WFEmployees : System.Web.UI.Page
+    public partial class WFEmployee : System.Web.UI.Page
     {
-        // Instancio un objeto de la capa lógica para interactuar con los datos de las unidades de medida.
+        EmployeeLog objEmployee = new EmployeeLog();
+        PersonLog objPerson = new PersonLog();
 
-        UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
+        private int _id;
+        private bool executed = false;
+        private int _fkPerson;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Verifico si no es una recarga de la página (no es un postback).
-            if (!IsPostBack)
+            if (!Page.IsPostBack)
             {
-                // aqui Inicialización si es necesario (ejemplo: cargar listas, valores predeterminados, etc.)
+                showPersonDDL();
             }
         }
 
+        // WebMethod para listar los empleados
         [WebMethod]
-        // Método estático que se invoca desde JavaScript para obtener las unidades de medida.
-
-        public static object ListUnits()
+        public static object ListEmployees()
         {
-            // Creo una instancia de la clase lógica para acceder a la base de datos.
-            UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
-            // Llamo al método ShowUnits para obtener los datos de las unidades de medida.
-            var unitData = unitMeasureLog.ShowUnits(); // Retorna un DataSet
+            EmployeeLog objEmployee = new EmployeeLog();
 
-            List<object> unitList = new List<object>(); // Creo una lista para almacenar las unidades de medida.
+            // Obtener el DataSet con los datos de los empleados desde la base de datos
+            var dataSet = objEmployee.ShowEmployees();
 
+            // Crear una lista de objetos para almacenar los empleados que se devolverán
+            var employeesList = new List<object>();
 
-            if (unitData.Tables.Count > 0) // Verifico si el DataSet tiene alguna tabla.
+            // Iterar sobre cada fila del DataSet
+            foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                // Itero sobre las filas de la primera tabla (las unidades de medida).
-                foreach (System.Data.DataRow row in unitData.Tables[0].Rows)
-                {  
-                    // Agrego cada unidad a la lista de objetos.
-                    unitList.Add(new
-                    {
-                        und_id = row["und_id"],
-                        und_descripcion = row["und_descripcion"]
-                    });
-                }
+                employeesList.Add(new
+                {
+                    EmployeeID = row["EmpleadoID"],
+                    Identification = row["Identificacion"],
+                    FirstName = row["Nombre"],
+                    LastName = row["Apellido"],
+                    Phone = row["Telefono"],
+                    Email = row["Correo"]
+                });
             }
 
-            return new // Retorno un objeto con los datos necesarios para mostrar en la tabla.
-            {
-                draw = 1,
-                recordsTotal = unitList.Count, // Total de registros.
-                recordsFiltered = unitList.Count, //Registros filtrados(en este caso, es el mismo número).
-
-                data = unitList // Datos 
-            };
+            // Devolver los datos en formato JSON
+            return new { data = employeesList };
         }
 
+        // WebMethod para eliminar un empleado
+        [WebMethod]
+        public static bool DeleteEmployee(int id)
+        {
+            EmployeeLog objEmployee = new EmployeeLog();
+
+            // Llamar al método para eliminar el empleado
+            return objEmployee.DeleteEmployee(id);
+        }
+
+        // Método para mostrar las personas en el DDL
+        private void showPersonDDL()
+        {
+            DDLPerson.DataSource = objPerson.ShowPersonasDDL(); // Obtener las personas
+            DDLPerson.DataValueField = "Id"; // Id de la persona
+            DDLPerson.DataTextField = "NombreCompleto"; // Nombre completo de la persona
+            DDLPerson.DataBind();
+            DDLPerson.Items.Insert(0, "---- Seleccione una persona ----");
+        }
+
+        // Método para limpiar los campos
+        private void clear()
+        {
+            HFEmployeeID.Value = ""; // Limpiar el campo oculto
+            DDLPerson.SelectedIndex = 0; // Limpiar el DDL
+            TBEmployeeId.Text = ""; // Limpiar los campos de texto
+            TBEmployeeName.Text = "";
+            TBEmployeeLastName.Text = "";
+            TBEmployeePhone.Text = "";
+            TBEmployeeEmail.Text = "";
+            LblMsg.Text = ""; // Limpiar el mensaje
+        }
+
+        // Método para guardar un nuevo empleado
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            // Obtengo el nombre de la unidad desde el TextBox.
-            string unitName = TBUnitName.Text;
+            _fkPerson = Convert.ToInt32(DDLPerson.SelectedValue); // Obtener el id de la persona seleccionada
 
-            bool executed = unitMeasureLog.SaveUnit(unitName);// Llamo al método SaveUnit para guardar la unidad de medida.
+            bool isSaved = objEmployee.AddEmployee(_fkPerson);
 
-            if (executed)// Verifico si la operación fue exitosa y muestro un mensaje.
+            if (isSaved)
             {
-                LblMsg.Text = "Unidad de medida guardada exitosamente.";
-                ClearFields();
+                LblMsg.Text = "Empleado guardado exitosamente.";
+                clear(); // Limpiar los campos
             }
             else
             {
-                LblMsg.Text = "Error al guardar la unidad de medida.";
+                LblMsg.Text = "Este empleado ya está registrado.";
             }
         }
 
+        // Método para actualizar un empleado
         protected void BtnUpdate_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(HFUnitID.Value))// Verifico que se haya seleccionado una unidad para actualizar.
+            // Verificar si se ha seleccionado un empleado para actualizar
+            if (string.IsNullOrEmpty(HFEmployeeID.Value))
             {
-                LblMsg.Text = "No se ha seleccionado la unidad para actualizar.";
+                LblMsg.Text = "No se ha seleccionado un empleado para actualizar.";
                 return;
             }
 
-            int unitId = Convert.ToInt32(HFUnitID.Value);// Obtengo el ID de la unidad a actualizar desde el HiddenField.
+            _id = Convert.ToInt32(HFEmployeeID.Value);
+            _fkPerson = Convert.ToInt32(DDLPerson.SelectedValue);
 
-            string unitName = TBUnitName.Text;// Obtengo el nuevo nombre de la unidad desde el TextBox.
+            bool isUpdated = objEmployee.EditEmployee(_id, _fkPerson);
 
-            if (string.IsNullOrWhiteSpace(unitName)) // Verifico que el nombre no esté vacío.
+            if (isUpdated)
             {
-                LblMsg.Text = "El nombre de la unidad no puede estar vacío.";
-                return;
-            }
-
-            bool executed = unitMeasureLog.UpdateUnit(unitId, unitName);// Llamo al método Almacenado.
-
-            if (executed)// Verifico si la operación fue exitosa 
-            {
-                LblMsg.Text = "La unidad de medida se actualizó exitosamente!";
-                ClearFields();
+                LblMsg.Text = "Empleado actualizado exitosamente!";
+                clear(); // Limpiar los campos
             }
             else
             {
-                LblMsg.Text = "Error al actualizar la unidad de medida.";
+                LblMsg.Text = "Error al actualizar el empleado.";
             }
         }
 
-        protected void BtnClear_Click(object sender, EventArgs e)
+        // Método para limpiar los campos
+        protected void BtbClear_Click(object sender, EventArgs e)
         {
-            ClearFields();// Limpio los campos.
+            clear();
         }
+
+        // WebMethod para obtener los datos de la persona seleccionada
         [WebMethod]
-        public static AjaxResponse DeleteUnit(int unitId)
+        public static object GetPersonData(int personId)
         {
-            AjaxResponse response = new AjaxResponse();
-            try
+            PersonLog objPerson = new PersonLog();
+            DataRow personData = objPerson.GetPersonById(personId).Tables[0].Rows[0];
+
+            var person = new
             {
-                // Creo un objeto de respuesta para devolver al cliente.
-                UnitMeasureLog unitMeasureLog = new UnitMeasureLog();// Llamo a la capa lógica para eliminar la unidad.
-                bool executed = unitMeasureLog.DeleteUnit(unitId); // Llama a tu método de eliminación
+                Identification = personData["Identification"].ToString(),
+                FirstName = personData["FirstName"].ToString(),
+                LastName = personData["LastName"].ToString(),
+                Phone = personData["Phone"].ToString(),
+                Email = personData["Email"].ToString()
+            };
 
-                if (executed) // Verifico si la eliminación fue exitosa
-                {
-                    response.Success = true;
-                    response.Message = "Unidad eliminada correctamente.";
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "Error al eliminar la unidad.";
-                }
-            }
-            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
-            {
-                response.Success = false;
-                response.Message = "Ocurrió un error: " + ex.Message;
-            }
-
-            return response; 
-        }
-
-        // Clase AjaxResponse para estructurar la respuesta de la llamada AJAX
-        public class AjaxResponse// Clase para estructurar la respuesta que se enviará al cliente.
-        {
-            public bool Success { get; set; }// Indica si la operación fue exitosa.
-            public string Message { get; set; }// Mensaje con el resultado de la operación.
-
-        }
-
-        private void ClearFields()
-        {
-            HFUnitID.Value = string.Empty;  // Limpio el HiddenField con el ID de la unidad.
-            TBUnitName.Text = string.Empty; // Limpio el TextBox con el nombre de la unidad.
-            LblMsg.Text = string.Empty;  // Limpio el mensaje de la etiqueta.
+            return person;
         }
     }
 }

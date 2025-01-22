@@ -1,35 +1,61 @@
-﻿<%@ Page Title="Gestión de Unidades de Medida" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFEmployees.aspx.cs" Inherits="Presentation.WFEmployees" %>
+﻿<%@ Page Title="Empleados" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFEmployee.aspx.cs" Inherits="Presentation.WFEmployee" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <%-- Estilos --%>
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:HiddenField ID="HFUnitID" runat="server" />
-    <br />
-    <%-- Nombre de la Unidad --%>
-    <asp:Label ID="LabelName" runat="server" Text="Nombre de la Unidad"></asp:Label><br />
-    <asp:TextBox ID="TBUnitName" runat="server"></asp:TextBox><br />
-    <br />
-    <%-- Botones Guardar, Actualizar y Limpiar --%>
-    <div>
-        <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-        <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" OnClick="BtnUpdate_Click" />
-        <asp:Button ID="BtnClear" runat="server" Text="Limpiar" OnClick="BtnClear_Click" />
-        <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
-    </div>
-    <br />
+    <%--Formulario para añadir o actualizar empleado--%>
+    <form>
+        <%-- Id Empleado --%>
+        <asp:HiddenField ID="HFEmployeeID" runat="server" />
+        <br />
 
-    <%-- Lista de Unidades --%>
-    <h2>Lista de Unidades de Medida</h2>
-    <!-- Título para la tabla de unidades -->
-    <table id="unitsTable" class="display" style="width: 100%">
-        <!-- Tabla donde mostraré las unidades de medida -->
+        <%-- Selección de Persona --%>
+        <asp:Label ID="Label6" runat="server" Text="Seleccione la Persona"></asp:Label>
+        <asp:DropDownList ID="DDLPerson" runat="server"></asp:DropDownList>
+        <br />
+        <br />
+
+        <%-- Datos del Empleado --%>
+        <asp:Label ID="Label1" runat="server" Text="Identificación del Empleado"></asp:Label><br />
+        <asp:TextBox ID="TBEmployeeId" runat="server"></asp:TextBox><br />
+
+        <asp:Label ID="Label2" runat="server" Text="Nombre del Empleado"></asp:Label><br />
+        <asp:TextBox ID="TBEmployeeName" runat="server"></asp:TextBox><br />
+
+        <asp:Label ID="Label3" runat="server" Text="Apellido del Empleado"></asp:Label><br />
+        <asp:TextBox ID="TBEmployeeLastName" runat="server"></asp:TextBox><br />
+
+        <asp:Label ID="Label4" runat="server" Text="Teléfono del Empleado"></asp:Label><br />
+        <asp:TextBox ID="TBEmployeePhone" runat="server"></asp:TextBox><br />
+
+        <asp:Label ID="Label5" runat="server" Text="Correo Electrónico del Empleado"></asp:Label><br />
+        <asp:TextBox ID="TBEmployeeEmail" runat="server"></asp:TextBox><br />
+        <br />
+
+
+        <%-- Botones Guardar y Actualizar --%>
+        <div>
+            <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
+            <asp:Button ID="BtbClear" runat="server" Text="Limpiar" OnClick="BtbClear_Click" /><br />
+            <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
+        </div>
+        <br />
+    </form>
+
+    <%-- Lista de Empleados --%>
+    <h2>Lista de Empleados</h2>
+    <table id="employeesTable" class="display" style="width: 100%">
         <thead>
             <tr>
-                <!-- Defino las cabeceras de la tabla -->
                 <th>ID</th>
-                <th>Descripcion</th>
+                <th>Identificación</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Email</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -37,29 +63,38 @@
         </tbody>
     </table>
 
-    <%-- Scripts --%>
+    <%-- Librerías de DataTables --%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
+
+    <%-- Scripts para manejar la tabla de empleados --%>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#unitsTable').DataTable({
+            $('#employeesTable').DataTable({
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "WFUnitMeasure.aspx/ListUnits",
+                    "url": "WFEmployee.aspx/ListEmployees", // WebMethod que lista los empleados
                     "type": "POST",
                     "contentType": "application/json",
+                    "data": function (d) {
+                        return JSON.stringify(d); // Convierte los datos a JSON
+                    },
                     "dataSrc": function (json) {
-                        return json.d.data; // Esto debe coincidir con el formato devuelto por el servidor
+                        return json.d.data; // Extrae la lista de empleados
                     }
                 },
                 "columns": [
-                    { "data": "und_id" },  // Asegúrate de que esta propiedad coincida con lo que devuelve el servidor
-                    { "data": "und_descripcion" }, // Asegúrate de que esta propiedad coincida con lo que devuelve el servidor
+                    { "data": "EmployeeID" },
+                    { "data": "Identification" },
+                    { "data": "FirstName" },
+                    { "data": "LastName" },
+                    { "data": "Phone" },
+                    { "data": "Email" },
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.und_id}">Editar</button>            
-                                    <button class="delete-btn" data-id="${row.und_id}">Eliminar</button>`;  // Defino los botones de acción con sus respectivos IDs
+                            return `<button class="edit-btn" data-id="${row.EmployeeID}">Informacion</button>
+                                    <button class="delete-btn" data-id="${row.EmployeeID}">Eliminar</button>`;
                         }
                     }
                 ],
@@ -79,40 +114,47 @@
                 }
             });
 
-            // Manejo de clic en botones de acción
-            $('#unitsTable').on('click', '.edit-btn', function () {
-                const rowData = $('#unitsTable').DataTable().row($(this).parents('tr')).data();
-                loadUnitData(rowData);
-            });
-              // Manejo del clic en el botón de "eliminar" de la tabla
-            $('#unitsTable').on('click', '.delete-btn', function () {
-                const unitId = $(this).data('id');       // Obtengo el ID de la unidad a eliminar
-                if (confirm("¿Estás seguro de que deseas eliminar esta unidad?")) {
-                    $.ajax({
-                        url: 'WFUnitMeasure.aspx/DeleteUnit', // invoca el método DeleteUnit en el servidor
-                        type: 'POST',
-                        data: JSON.stringify({ unitId: unitId }),  // Enviar el ID de la unidad a eliminar
-                        contentType: 'application/json',
-                        success: function (response) {
-                            if (response.success) {
-                                alert('Unidad eliminada correctamente.');
-                                $('#unitsTable').DataTable().ajax.reload(); // Recarga la tabla para reflejar la eliminación
-                            } else {
-                                alert('Error al eliminar la unidad: ' + response.Message);
-                            }
-                        },
-                        error: function () {
-                            alert("Hubo un error al eliminar la unidad.");
-                        }
-                    });
-                }
+            // Editar un empleado
+            $('#employeesTable').on('click', '.edit-btn', function () {
+                const rowData = $('#employeesTable').DataTable().row($(this).parents('tr')).data();
+                loadEmployeeData(rowData);
             });
 
+            // Eliminar un empleado
+            $('#employeesTable').on('click', '.delete-btn', function () {
+                const id = $(this).data('id');
+                if (confirm("¿Estás seguro de que deseas eliminar este empleado?")) {
+                    deleteEmployee(id);
+                }
+            });
         });
-        // Función para cargar los datos de la unidad seleccionada en los campos de edición
-        function loadUnitData(rowData) {
-            $('#<%= HFUnitID.ClientID %>').val(rowData.und_id);  // Coloco el ID de la unidad en el HiddenField
-            $('#<%= TBUnitName.ClientID %>').val(rowData.und_descripcion); // Coloco la descripción de la unidad en el TextBox
+
+        // Función para cargar los datos del empleado seleccionado
+        function loadEmployeeData(rowData) {
+            $('#<%= HFEmployeeID.ClientID %>').val(rowData.EmployeeID);
+            $('#<%= TBEmployeeId.ClientID %>').val(rowData.Identification);
+            $('#<%= TBEmployeeName.ClientID %>').val(rowData.FirstName);
+            $('#<%= TBEmployeeLastName.ClientID %>').val(rowData.LastName);
+            $('#<%= TBEmployeePhone.ClientID %>').val(rowData.Phone);
+            $('#<%= TBEmployeeEmail.ClientID %>').val(rowData.Email);
+        }
+
+        // Función para eliminar un empleado
+        function deleteEmployee(id) {
+            $.ajax({
+                type: "POST",
+                url: "WFEmployee.aspx/DeleteEmployee", // WebMethod para eliminar un empleado
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ id: id }),
+                success: function (response) {
+                    $('#employeesTable').DataTable().ajax.reload(); // Recargar la tabla después de eliminar
+                    alert("Empleado eliminado exitosamente.");
+                },
+                error: function () {
+                    alert("Error al eliminar el empleado.");
+                }
+            });
         }
     </script>
+
 </asp:Content>

@@ -18,5 +18,15 @@ namespace Presentation
             Session.Abandon();
             Response.Redirect("login.aspx", true);
         }
+
+        public string IsCurrentPage(string page)
+        {
+            return Request.RawUrl.Contains(page) ? "active" : string.Empty;
+        }
+
+        public string Is(string page)
+        {
+            return Request.RawUrl.Contains(page) ? "active" : string.Empty;
+        }
     }
 }

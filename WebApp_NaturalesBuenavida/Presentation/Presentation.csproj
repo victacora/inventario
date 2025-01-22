@@ -69,6 +69,7 @@
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="Idex.aspx" />
+    <Content Include="resources\css\dataTables.bootstrap5.css" />
     <Content Include="resources\css\datatables.css" />
     <Content Include="resources\css\datatables.min.css" />
     <Content Include="resources\image\fondo.png" />
@@ -87,10 +88,12 @@
     <Content Include="WFRole.aspx" />
     <Content Include="WFSales.aspx" />
     <Content Include="WFCategories.aspx" />
+    <Content Include="WFCountries.aspx" />
     <Content Include="WFUsers.aspx" />
     <Content Include="WFUnitMeasure.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AjaxResponse.cs" />
     <Compile Include="Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -207,6 +210,13 @@
     </Compile>
     <Compile Include="WFCategories.aspx.designer.cs">
       <DependentUpon>WFCategories.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFCountries.aspx.cs">
+      <DependentUpon>WFCountries.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFCountries.aspx.designer.cs">
+      <DependentUpon>WFCountries.aspx</DependentUpon>
     </Compile>
     <Compile Include="WFUsers.aspx.cs">
       <DependentUpon>WFUsers.aspx</DependentUpon>

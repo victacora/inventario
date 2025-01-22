@@ -22,6 +22,7 @@ namespace Presentation
 
             if (usuario != null && usuario.Rol_Id > 0)
             {
+                Session["Usuario"] = usuario;
                 FormsAuthenticationTicket tkt;
                 string cookiestr;
                 HttpCookie ck;

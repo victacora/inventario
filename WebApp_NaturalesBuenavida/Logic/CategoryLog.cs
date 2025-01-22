@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using Data;
 
@@ -35,6 +36,11 @@ namespace Logic
         public DataSet ShowCategoriesDDL()
         {
             return objCat.ShowCategoriesDDL();
+        }
+
+        public DataSet ShowCategoriesId(int id)
+        {
+            return objCat.ShowCategoriesId(id);
         }
     }
 }

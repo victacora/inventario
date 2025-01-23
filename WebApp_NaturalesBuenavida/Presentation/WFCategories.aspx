@@ -5,7 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h2 class="text-center main-title">Listado de Departamentos</h2>
+    <h2 class="text-center main-title">Listado de Categorias</h2>
     <div class="container mt-4 bg-white border rounded p-3">
 
         <asp:HiddenField ID="HFID" runat="server" />

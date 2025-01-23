@@ -60,13 +60,31 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.Label LabelName;
 
         /// <summary>
-        /// Control TBCountryName.
+        /// Control TBCityName.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBCountryName;
+        protected global::System.Web.UI.WebControls.TextBox TBCityName;
+
+        /// <summary>
+        /// Control LabelDepartamento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDepartamento;
+
+        /// <summary>
+        /// Control ddlStates.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlStates;
 
         /// <summary>
         /// Control BtnSave.

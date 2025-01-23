@@ -5,7 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h2 class="text-center main-title">Listado de Paises</h2>
+    <h2 class="text-center main-title">Listado de Ciudades</h2>
     <div class="container mt-4 bg-white border rounded p-3">
 
         <asp:HiddenField ID="HFID" runat="server" />
@@ -20,7 +20,12 @@
 
         <div class="mb-3">
             <asp:Label ID="LabelName" runat="server" Text="Nombre" CssClass="form-label fw-bold"></asp:Label>
-            <asp:TextBox ID="TBCountryName" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:TextBox ID="TBCityName" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+
+        <div class="mb-3">
+            <asp:Label ID="LabelDepartamento" runat="server" Text="Departamento" CssClass="form-label fw-bold"></asp:Label>
+            <asp:DropDownList ID="ddlStates" runat="server" CssClass="form-select"></asp:DropDownList>
         </div>
 
         <div class="d-flex gap-2 mt-3">
@@ -37,7 +42,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Codigo</th>
-                    <th>Pais</th>
+                    <th>Departamento id</th>
+                    <th>Departamento</th>
+                    <th>Ciudad</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -53,7 +60,7 @@
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "WFCountries.aspx/ListData",
+                    "url": "WFCities.aspx/ListData",
                     "type": "POST",
                     "contentType": "application/json",
                     "dataSrc": function (json) {
@@ -63,7 +70,9 @@
                 "columns": [
                     { "data": "id" },
                     { "data": "codigo" },
-                    { "data": "pais" },
+                    { "data": "dep_id", visible: false },
+                    { "data": "departamento" },
+                    { "data": "ciudad" },
                     {
                         "data": null,
                         "render": function (data, type, row) {
@@ -97,22 +106,22 @@
             // Manejo del clic en el botón de "eliminar" de la tabla
             $('#dataTable').on('click', '.delete-btn', function () {
                 const id = $(this).data('id');       // Obtengo el ID de la unidad a eliminar
-                if (confirm("¿Estás seguro de que deseas eliminar este pais?")) {
+                if (confirm("¿Estás seguro de que deseas eliminar esta ciudad?")) {
                     $.ajax({
-                        url: 'WFCountries.aspx/Delete',
+                        url: 'WFCities.aspx/Delete',
                         type: 'POST',
                         data: JSON.stringify({ id: id }),
                         contentType: 'application/json',
                         success: function (response) {
                             if (response.d.Success) {
-                                alert('Pais eliminado correctamente.');
+                                alert('Ciudad eliminada correctamente.');
                                 $('#dataTable').DataTable().ajax.reload();
                             } else {
-                                alert('Error al eliminar el pais: ' + response.d.Message);
+                                alert('Error al eliminar la ciudad: ' + response.d.Message);
                             }
                         },
                         error: function () {
-                            alert("Hubo un error al eliminar el pais.");
+                            alert("Hubo un error al eliminar la ciudad.");
                         }
                     });
                 }
@@ -124,7 +133,8 @@
         function loadData(rowData) {
             $('#<%= HFID.ClientID %>').val(rowData.id);
             $('#<%= TBCode.ClientID %>').val(rowData.codigo);
-            $('#<%= TBCountryName.ClientID %>').val(rowData.pais);
+            $('#<%= ddlStates.ClientID %>').val(rowData.dep_id);
+            $('#<%= TBCityName.ClientID %>').val(rowData.ciudad);
         }
     </script>
 </asp:Content>

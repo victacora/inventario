@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Web;
 using System.Web.Security;
 
@@ -8,6 +9,11 @@ namespace Presentation
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario != null)
+            {
+                lblUser.Text = usuario.Nombres+" "+ usuario.Apellidos;
+            }
 
         }
 

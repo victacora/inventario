@@ -82,6 +82,7 @@
     <Content Include="WFBuy.aspx" />
     <Content Include="WFCities.aspx" />
     <Content Include="WFDocumentTypes.aspx" />
+    <Content Include="WFCategories.aspx" />
     <Content Include="WFStates.aspx" />
     <Content Include="WFEmployees.aspx" />
     <Content Include="WFSuppliers.aspx" />
@@ -92,7 +93,6 @@
     <Content Include="WFReturns.aspx" />
     <Content Include="WFRole.aspx" />
     <Content Include="WFSales.aspx" />
-    <Content Include="WFCategories-2.aspx" />
     <Content Include="WFCountries.aspx" />
     <Content Include="WFUnitMeasure.aspx" />
   </ItemGroup>
@@ -158,6 +158,13 @@
     </Compile>
     <Compile Include="WFDocumentTypes.aspx.designer.cs">
       <DependentUpon>WFDocumentTypes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFCategories.aspx.cs">
+      <DependentUpon>WFCategories.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFCategories.aspx.designer.cs">
+      <DependentUpon>WFCategories.aspx</DependentUpon>
     </Compile>
     <Compile Include="WFStates.aspx.cs">
       <DependentUpon>WFStates.aspx</DependentUpon>
@@ -228,13 +235,6 @@
     </Compile>
     <Compile Include="WFSales.aspx.designer.cs">
       <DependentUpon>WFSales.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WFCategories-2.aspx.cs">
-      <DependentUpon>WFCategories-2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WFCategories-2.aspx.designer.cs">
-      <DependentUpon>WFCategories-2.aspx</DependentUpon>
     </Compile>
     <Compile Include="WFCountries.aspx.cs">
       <DependentUpon>WFCountries.aspx</DependentUpon>

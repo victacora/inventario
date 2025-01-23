@@ -1,56 +1,7 @@
 ﻿<%@ Page Title="Bienvenidos" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Presentation.Login" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolderLogin" runat="server">
-
-    <style>
-        body {
-            background: linear-gradient(0.46deg, rgba(206, 102, 0, 0.6) 0.4%, rgba(206, 102, 0, 0.741712) 15.28%, #CE6600 45.54%, #CE6600 83.23%);
-            font-family: 'Arial', sans-serif;
-        }
-
-        .background {
-            background: url(resources/image/fondo.png) no-repeat center center fixed;
-            background-size: cover;
-            opacity: 30%;
-            z-index: 1;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .login-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 2;
-        }
-
-        .login-logo {
-            max-width: 150px;
-            margin: 0 auto 20px;
-        }
-
-        .form-control {
-            border-radius: 30px 0 30px 0;
-            border-color: #275250;
-        }
-
-        .btn {
-            --bs-btn-bg: #275250;
-            --bs-btn-border-color: #275250;
-            --bs-btn-hover-bg: #275250;
-            --bs-btn-active-bg: #275250;
-            border-radius: 30px;
-            width: 10rem;
-        }
-
-        .content {
-            z-index: 2;
-        }
-    </style>
+    <link href="resources/css/login.css" rel="stylesheet" />
     <div class="d-flex flex-column min-vh-100">
         <div class="background"></div>
         <div class="content my-auto d-flex flex-column flex-md-row justify-content-center align-items-center">

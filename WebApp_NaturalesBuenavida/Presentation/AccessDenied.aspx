@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Bienvenidos" Language="C#" AutoEventWireup="true" CodeBehind="AccessDenied.aspx.cs" Inherits="Presentation.AccessDenied" %>
+﻿<%@ Page Title="Acceso denegado" Language="C#" AutoEventWireup="true" CodeBehind="AccessDenied.aspx.cs" Inherits="Presentation.AccessDenied" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso denegado</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/css/master.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="text-center">
+        <div class="background"></div>
+        <div class="content text-center">
             <div class="alert alert-danger" role="alert">
                 <h1 class="display-4">Acceso denegado</h1>
                 <p class="lead">Usted no tiene permiso para acceder a esta pagina.</p>

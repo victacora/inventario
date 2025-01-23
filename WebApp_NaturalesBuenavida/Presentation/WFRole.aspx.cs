@@ -97,6 +97,7 @@ namespace Presentation
         protected void BtnClear_Click(object sender, EventArgs e)
         {
             clear();// Limpio los campos.
+            LblMsg.Text = string.Empty;// Limpio el mensaje.
         }
 
         protected void BtnSave_Click(object sender, EventArgs e)

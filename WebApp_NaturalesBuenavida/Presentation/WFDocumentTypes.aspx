@@ -1,22 +1,22 @@
-﻿<%@ Page Title="Gestión de Unidades de Medida" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFUnitMeasure.aspx.cs" Inherits="Presentation.WFUnitMeasure" %>
+﻿<%@ Page Title="Gestión de tipo documentos" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFDocumentTypes.aspx.cs" Inherits="Presentation.WFDocumentTypes" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h2 class="text-center main-title">Listado de unidades de medida</h2>
+    <h2 class="text-center main-title">Listado de Tipo documentos</h2>
     <div class="container mt-4 bg-white border rounded p-3">
 
-        <asp:HiddenField ID="HFUnitID" runat="server" />
+        <asp:HiddenField ID="HFID" runat="server" />
 
         <div class="mt-3 text-center">
             <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
         </div>
 
         <div class="mb-3">
-            <asp:Label ID="Label2" runat="server" Text="Nombre" CssClass="form-label fw-bold"></asp:Label>
-            <asp:TextBox ID="TBUnitName" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:Label ID="LabelName" runat="server" Text="Tipo documento" CssClass="form-label fw-bold"></asp:Label>
+            <asp:TextBox ID="TBDocumentType" runat="server" CssClass="form-control"></asp:TextBox>
         </div>
 
         <div class="d-flex flex-column flex-md-row gap-2 mt-3">
@@ -28,11 +28,11 @@
 
 
     <div class="container table-responsive mt-4 bg-white border rounded">
-        <table id="unitsTable" class="table display" style="width: 100%">
+        <table id="dataTable" class="table display" style="width: 100%">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Descripcion</th>
+                    <th>Tipo Documento</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -41,30 +41,28 @@
         </table>
     </div>
 
-
-    <%-- Scripts --%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#unitsTable').DataTable({
+            $('#dataTable').DataTable({
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "WFUnitMeasure.aspx/ListUnits",
+                    "url": "WFDocumentTypes.aspx/ListData",
                     "type": "POST",
                     "contentType": "application/json",
                     "dataSrc": function (json) {
-                        return json.d.data; // Esto debe coincidir con el formato devuelto por el servidor
+                        return json.d.data;
                     }
                 },
                 "columns": [
-                    { "data": "und_id" },  // Asegúrate de que esta propiedad coincida con lo que devuelve el servidor
-                    { "data": "und_descripcion" }, // Asegúrate de que esta propiedad coincida con lo que devuelve el servidor
+                    { "data": "doc_id" },
+                    { "data": "doc_tipo_documento" },
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.und_id}">Editar</button>            
-                                    <button class="delete-btn" data-id="${row.und_id}">Eliminar</button>`;  // Defino los botones de acción con sus respectivos IDs
+                            return `<button class="edit-btn" data-id="${row.doc_id}">Editar</button>            
+                                    <button class="delete-btn" data-id="${row.doc_id}">Eliminar</button>`;
                         }
                     }
                 ],
@@ -85,39 +83,41 @@
             });
 
             // Manejo de clic en botones de acción
-            $('#unitsTable').on('click', '.edit-btn', function () {
-                const rowData = $('#unitsTable').DataTable().row($(this).parents('tr')).data();
-                loadUnitData(rowData);
+            $('#dataTable').on('click', '.edit-btn', function () {
+                const rowData = $('#dataTable').DataTable().row($(this).parents('tr')).data();
+                loadData(rowData);
             });
+
             // Manejo del clic en el botón de "eliminar" de la tabla
-            $('#unitsTable').on('click', '.delete-btn', function () {
-                const unitId = $(this).data('id');       // Obtengo el ID de la unidad a eliminar
-                if (confirm("¿Estás seguro de que deseas eliminar esta unidad?")) {
+            $('#dataTable').on('click', '.delete-btn', function () {
+                const id = $(this).data('id');       // Obtengo el ID del tipo documento a eliminar
+                if (confirm("¿Estás seguro de que deseas eliminar este tipo documento?")) {
                     $.ajax({
-                        url: 'WFUnitMeasure.aspx/DeleteUnit', // invoca el método DeleteUnit en el servidor
+                        url: 'WFDocumentTypes.aspx/Delete',
                         type: 'POST',
-                        data: JSON.stringify({ unitId: unitId }),  // Enviar el ID de la unidad a eliminar
+                        data: JSON.stringify({ id: id }),
                         contentType: 'application/json',
                         success: function (response) {
                             if (response.d.Success) {
-                                alert('Unidad eliminada correctamente.');
-                                $('#unitsTable').DataTable().ajax.reload(); // Recarga la tabla para reflejar la eliminación
+                                alert('Tipo documento eliminado correctamente.');
+                                $('#dataTable').DataTable().ajax.reload();
                             } else {
-                                alert('Error al eliminar la unidad: ' + response.d.Message);
+                                alert('Error al eliminar el tipo de documento: ' + response.d.Message);
                             }
                         },
                         error: function () {
-                            alert("Hubo un error al eliminar la unidad.");
+                            alert("Hubo un error al eliminar el tipo de documento.");
                         }
                     });
                 }
             });
 
         });
-        // Función para cargar los datos de la unidad seleccionada en los campos de edición
-        function loadUnitData(rowData) {
-            $('#<%= HFUnitID.ClientID %>').val(rowData.und_id);  // Coloco el ID de la unidad en el HiddenField
-            $('#<%= TBUnitName.ClientID %>').val(rowData.und_descripcion); // Coloco la descripción de la unidad en el TextBox
+
+        // Función para cargar los datos de la fila seleccionada en los campos de edición
+        function loadData(rowData) {
+            $('#<%= HFID.ClientID %>').val(rowData.doc_id);
+            $('#<%= TBDocumentType.ClientID %>').val(rowData.doc_tipo_documento);
         }
     </script>
 </asp:Content>

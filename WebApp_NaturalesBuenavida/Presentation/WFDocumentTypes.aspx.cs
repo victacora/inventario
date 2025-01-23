@@ -4,22 +4,15 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Web.Services;
-using System.Web.UI.WebControls;
 
 namespace Presentation
 {
-    public partial class WFStates : System.Web.UI.Page
+    public partial class WFDocumentTypes : System.Web.UI.Page
     {
-        private static DepartamentoLog departamentoLog = new DepartamentoLog();
-        private static PaisLog paisLog = new PaisLog();
+        private static TypeDocumentLog typeDocumentLog = new TypeDocumentLog();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                PopulateDDLCountries();
-            }
-
             Usuario usuario = Session["Usuario"] as Usuario;
             if (usuario == null || !usuario.Rol.Equals("Administrador"))
             {
@@ -27,31 +20,10 @@ namespace Presentation
             }
         }
 
-        private void PopulateDDLCountries()
-        {
-            var countries = paisLog.ShowPaisDDL();
-
-            var dataList = new List<KeyValuePair<string, string>>();
-
-            if (countries.Tables.Count > 0) 
-            {
-                foreach (System.Data.DataRow row in countries.Tables[0].Rows)
-                {
-                    dataList.Add(new KeyValuePair<string, string>(row["id"].ToString(), row["pais"].ToString()));
-                }
-            }
-
-            ddlCountries.DataSource = dataList;
-            ddlCountries.DataTextField = "Value"; 
-            ddlCountries.DataValueField = "Key";
-            ddlCountries.DataBind();
-            ddlCountries.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Seleccione un pais --", ""));
-        }
-
         [WebMethod]
         public static object ListData()
         {
-            var data = departamentoLog.ShowDepartamentos(); // Retorna un DataSet
+            var data = typeDocumentLog.showTypesDocument(); // Retorna un DataSet
 
             List<object> dataList = new List<object>(); // Creo una lista para almacenar los registros.
 
@@ -64,11 +36,8 @@ namespace Presentation
                     // Agrego cada registro a la lista de objetos.
                     dataList.Add(new
                     {
-                        id = row["id"],
-                        codigo = row["codigo"],
-                        pais_id = row["pais_id"],
-                        pais = row["pais"],
-                        departamento = row["departamento"],
+                        doc_id = row["doc_id"],
+                        doc_tipo_documento = row["doc_tipo_documento"]
                     });
                 }
             }
@@ -84,21 +53,19 @@ namespace Presentation
 
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            checkFileds();
+            checkFields();
 
-            int idPais = int.Parse(ddlCountries.SelectedValue);
-
-            bool executed = departamentoLog.InsertDepartamento(TBCode.Text,TBStateName.Text, idPais);
+            bool executed = typeDocumentLog.saveTypeDocument(TBDocumentType.Text);
             if (executed)
             {
-                LblMsg.Text = "Departamento almacenado exitosamente.";
+                LblMsg.Text = "Tipo documento almacenado exitosamente.";
                 LblMsg.CssClass = "text-success fw-bold";
                 ClearFields();
             }
             else
             {
                 LblMsg.CssClass = "text-danger fw-bold";
-                LblMsg.Text = "Error al guardar el departamento.";
+                LblMsg.Text = "Error al guardar el tipo documento.";
             }
         }
 
@@ -113,44 +80,28 @@ namespace Presentation
 
             int id = int.Parse(HFID.Value);
 
-            checkFileds();
+            checkFields();
 
-            int idPais = int.Parse(ddlCountries.SelectedValue);
-
-            bool executed = departamentoLog.UpdateDepartamento(id, TBCode.Text, TBStateName.Text, idPais);// Llamo al método Almacenado.
+            bool executed = typeDocumentLog.updateTypeDocument(id, TBDocumentType.Text);// Llamo al método Almacenado.
 
             if (executed)// Verifico si la operación fue exitosa 
             {
-                LblMsg.Text = "El departamento se actualizó exitosamente!";
+                LblMsg.Text = "El tipo documento se actualizó exitosamente!";
                 LblMsg.CssClass = "text-success fw-bold";
                 ClearFields();
             }
             else
             {
-                LblMsg.Text = "Error al actualizar el departamento.";
+                LblMsg.Text = "Error al actualizar el tipo documento.";
                 LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
-        private void checkFileds()
+        private void checkFields()
         {
-            if (string.IsNullOrWhiteSpace(TBCode.Text)) // Verifico que el nombre no esté vacío.
+            if (string.IsNullOrWhiteSpace(TBDocumentType.Text)) // Verifico que el nombre no esté vacío.
             {
-                LblMsg.Text = "El codigo del departamento no puede estar vacío.";
-                LblMsg.CssClass = "text-danger fw-bold";
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(TBStateName.Text)) // Verifico que el nombre no esté vacío.
-            {
-                LblMsg.Text = "El nombre del departamento no puede estar vacío.";
-                LblMsg.CssClass = "text-danger fw-bold";
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(ddlCountries.SelectedValue)) // Verifico que el nombre no esté vacío.
-            {
-                LblMsg.Text = "El departamento debe estar asociado a un pais.";
+                LblMsg.Text = "El tipod de documento no puede estar vacío.";
                 LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
@@ -159,7 +110,7 @@ namespace Presentation
         protected void BtnClear_Click(object sender, EventArgs e)
         {
             ClearFields();// Limpio los campos.
-            LblMsg.Text = string.Empty;// Limpio el mensaje.
+            LblMsg.Text = string.Empty;
         }
 
         [WebMethod]
@@ -169,17 +120,17 @@ namespace Presentation
             try
             {
                 // Creo un objeto de respuesta para devolver al cliente.
-                bool executed = departamentoLog.DeleteDepartamento(id); // Llama a tu método de eliminación
+                bool executed = typeDocumentLog.deleteTypeDocument(id); // Llama a tu método de eliminación
 
                 if (executed) // Verifico si la eliminación fue exitosa
                 {
                     response.Success = true;
-                    response.Message = "Departamento eliminado correctamente.";
+                    response.Message = "Tipo documento eliminado correctamente.";
                 }
                 else
                 {
                     response.Success = false;
-                    response.Message = "Error al eliminar el departamento.";
+                    response.Message = "Error al eliminar el tipo documento.";
                 }
             }
             catch (Exception ex)
@@ -195,9 +146,7 @@ namespace Presentation
         private void ClearFields()
         {
             HFID.Value = string.Empty;  
-            TBStateName.Text = string.Empty;
-            ddlCountries.SelectedValue = string.Empty;
-            TBCode.Text = string.Empty; 
+            TBDocumentType.Text = string.Empty;
         }
     }
 }

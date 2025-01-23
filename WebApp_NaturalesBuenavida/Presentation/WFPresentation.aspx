@@ -1,40 +1,45 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFPresentation.aspx.cs" Inherits="Presentation.WFPresentation" %>
+﻿<%@ Page Title="Gestión de presentaciones" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFPresentation.aspx.cs" Inherits="Presentation.WFPresentation" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <h2 class="text-center main-title">Lista de Presentaciones</h2>
+    <div class="container mt-4 bg-white border rounded p-3">
 
-    <%-- HiddenField para manejar ID de presentación --%>
-    <asp:HiddenField ID="HFPresentationID" runat="server" />
-    <br />
+        <asp:HiddenField ID="HFPresentationID" runat="server" />
 
-    <%-- Campo para ingresar la descripción de la presentación --%>
-    <asp:Label ID="Label1" runat="server" Text="Descripción de la Presentación"></asp:Label><br />
-    <asp:TextBox ID="TBDescription" runat="server"></asp:TextBox><br />
-    <br />
+        <div class="mt-3 text-center">
+            <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
+        </div>
 
-    <%-- Botones para Guardar, Actualizar y Limpiar --%>
-    <div>
-        <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-        <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" OnClick="BtnUpdate_Click" />
-        <asp:Button ID="BtnClear" runat="server" Text="Limpiar" OnClick="BtnClear_Click" /><br />
-        <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
+        <div class="mb-3">
+            <asp:Label ID="Label3" runat="server" Text="Presentación" CssClass="form-label fw-bold"></asp:Label>
+            <asp:TextBox ID="TBDescription"  CssClass="form-control" runat="server"></asp:TextBox><br />
+        </div>
+
+        <div class="d-flex flex-column flex-md-row gap-2 mt-3">
+            <asp:Button ID="BtnSave" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
+            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+            <asp:Button ID="BtnClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtnClear_Click" />
+        </div>
     </div>
-    <br />
 
-    <%-- Tabla para listar las presentaciones --%>
-    <h2>Lista de Presentaciones</h2>
-    <table id="presentationTable" class="display" style="width: 100%">
-        <thead>
-            <tr>
-                <th>Presentacion ID</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+
+    <div class="container table-responsive mt-4 bg-white border rounded">
+        <table id="presentationTable" class="table display" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Presentacion ID</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+   
 
     <%-- Script de DataTables --%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
@@ -111,11 +116,15 @@
                 data: JSON.stringify({ presId: id }),
                 contentType: "application/json",
                 success: function (response) {
-                    alert(response.d.message);
-                    $('#presentationTable').DataTable().ajax.reload();
+                    if (response.d.Success) {
+                        alert('Presentación eliminada correctamente.');
+                        $('#presentationTable').DataTable().ajax.reload(); // Recarga la tabla para reflejar la eliminación
+                    } else {
+                        alert('Error al eliminar la presentacion: ' + response.d.Message);
+                    }
                 },
-                error: function (error) {
-                    console.error(error);
+                error: function () {
+                    alert("Hubo un error al eliminar la presentacion.");
                 }
             });
         }

@@ -1,5 +1,6 @@
 ﻿using Logic;
 using Microsoft.Win32;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Web.Services;
@@ -10,7 +11,7 @@ namespace Presentation
     {
         // Instancio un objeto de la capa lógica para interactuar con los datos de las unidades de medida.
 
-        UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
+        private static UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,6 +20,11 @@ namespace Presentation
             {
                 // aqui Inicialización si es necesario (ejemplo: cargar listas, valores predeterminados, etc.)
             }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || !usuario.Rol.Equals("Administrador"))
+            {
+                Response.Redirect("AccessDenied.aspx");
+            }
         }
 
         [WebMethod]
@@ -26,8 +32,6 @@ namespace Presentation
 
         public static object ListUnits()
         {
-            // Creo una instancia de la clase lógica para acceder a la base de datos.
-            UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
             // Llamo al método ShowUnits para obtener los datos de las unidades de medida.
             var unitData = unitMeasureLog.ShowUnits(); // Retorna un DataSet
 
@@ -68,11 +72,13 @@ namespace Presentation
             if (executed)// Verifico si la operación fue exitosa y muestro un mensaje.
             {
                 LblMsg.Text = "Unidad de medida guardada exitosamente.";
+                LblMsg.CssClass = "text-success fw-bold";
                 ClearFields();
             }
             else
             {
                 LblMsg.Text = "Error al guardar la unidad de medida.";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
@@ -81,6 +87,7 @@ namespace Presentation
             if (string.IsNullOrEmpty(HFUnitID.Value))// Verifico que se haya seleccionado una unidad para actualizar.
             {
                 LblMsg.Text = "No se ha seleccionado la unidad para actualizar.";
+                LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
 
@@ -91,6 +98,7 @@ namespace Presentation
             if (string.IsNullOrWhiteSpace(unitName)) // Verifico que el nombre no esté vacío.
             {
                 LblMsg.Text = "El nombre de la unidad no puede estar vacío.";
+                LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
 
@@ -99,18 +107,22 @@ namespace Presentation
             if (executed)// Verifico si la operación fue exitosa 
             {
                 LblMsg.Text = "La unidad de medida se actualizó exitosamente!";
+                LblMsg.CssClass = "text-success fw-bold";
                 ClearFields();
             }
             else
             {
                 LblMsg.Text = "Error al actualizar la unidad de medida.";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
         protected void BtnClear_Click(object sender, EventArgs e)
         {
+            LblMsg.Text=string.Empty;// Limpio el mensaje.
             ClearFields();// Limpio los campos.
         }
+
         [WebMethod]
         public static AjaxResponse DeleteUnit(int unitId)
         {
@@ -118,7 +130,6 @@ namespace Presentation
             try
             {
                 // Creo un objeto de respuesta para devolver al cliente.
-                UnitMeasureLog unitMeasureLog = new UnitMeasureLog();// Llamo a la capa lógica para eliminar la unidad.
                 bool executed = unitMeasureLog.DeleteUnit(unitId); // Llama a tu método de eliminación
 
                 if (executed) // Verifico si la eliminación fue exitosa
@@ -141,19 +152,10 @@ namespace Presentation
             return response; 
         }
 
-        // Clase AjaxResponse para estructurar la respuesta de la llamada AJAX
-        public class AjaxResponse// Clase para estructurar la respuesta que se enviará al cliente.
-        {
-            public bool Success { get; set; }// Indica si la operación fue exitosa.
-            public string Message { get; set; }// Mensaje con el resultado de la operación.
-
-        }
-
         private void ClearFields()
         {
             HFUnitID.Value = string.Empty;  // Limpio el HiddenField con el ID de la unidad.
             TBUnitName.Text = string.Empty; // Limpio el TextBox con el nombre de la unidad.
-            LblMsg.Text = string.Empty;  // Limpio el mensaje de la etiqueta.
         }
     }
 }

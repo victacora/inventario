@@ -11,17 +11,26 @@ namespace Presentation
 {
 
 
-    public partial class WFUsers
+    public partial class WFDocumentTypes
     {
 
         /// <summary>
-        /// Control HFUnitID.
+        /// Control HFID.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HFUnitID;
+        protected global::System.Web.UI.WebControls.HiddenField HFID;
+
+        /// <summary>
+        /// Control LblMsg.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblMsg;
 
         /// <summary>
         /// Control LabelName.
@@ -33,13 +42,13 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.Label LabelName;
 
         /// <summary>
-        /// Control TBUnitName.
+        /// Control TBDocumentType.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBUnitName;
+        protected global::System.Web.UI.WebControls.TextBox TBDocumentType;
 
         /// <summary>
         /// Control BtnSave.
@@ -67,14 +76,5 @@ namespace Presentation
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnClear;
-
-        /// <summary>
-        /// Control LblMsg.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LblMsg;
     }
 }

@@ -118,6 +118,7 @@ namespace Presentation
         protected void BtnClear_Click(object sender, EventArgs e)
         {
             ClearFields();// Limpio los campos.
+            LblMsg.Text = string.Empty;// Limpio el mensaje.
         }
 
         [WebMethod]

@@ -26,8 +26,8 @@
         </div>
 
         <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
-            <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
-            <asp:Button ID="Button2" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+            <asp:Button ID="BtnSave" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
+            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
             <asp:Button ID="BtnClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtnClear_Click" />
         </div>
     </div>

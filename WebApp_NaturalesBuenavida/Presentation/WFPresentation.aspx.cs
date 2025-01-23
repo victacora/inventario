@@ -10,7 +10,7 @@ namespace Presentation
 {
     public partial class WFPresentation : System.Web.UI.Page
     {
-        PresentationLog objPresentationLog = new PresentationLog();
+        private static PresentationLog objPresentationLog = new PresentationLog();
 
         // Variables privadas
         private int _presId;
@@ -28,7 +28,6 @@ namespace Presentation
         [WebMethod]
         public static object ListPresentations()
         {
-            PresentationLog objPresentationLog = new PresentationLog();
             var dataSet = objPresentationLog.ShowPresentations();
 
             var presentationsList = new List<object>();
@@ -44,14 +43,35 @@ namespace Presentation
             return new { data = presentationsList };
         }
 
-       
+
         [WebMethod]
         public static object DeletePresentation(int presId)
         {
-            PresentationLog objPresentationLog = new PresentationLog();
-            bool result = objPresentationLog.DeletePresentation(presId);
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = objPresentationLog.DeletePresentation(presId); // Llama a tu método de eliminación
 
-            return new { message = result ? "Presentación eliminada con éxito." : "Error al eliminar la presentación." };
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Presentción eliminada correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar la presentación.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, configuro la respuesta con el mensaje de error.
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response;
         }
 
         protected void BtnSave_Click(object sender, EventArgs e)
@@ -65,19 +85,19 @@ namespace Presentation
                 if (_executed)
                 {
                     LblMsg.Text = "Presentación guardada con éxito.";
-                    LblMsg.CssClass = "text-success";
+                    LblMsg.CssClass = "text-success fw-bold";
                     ClearFields();
                 }
                 else
                 {
                     LblMsg.Text = "Error al guardar la presentación.";
-                    LblMsg.CssClass = "text-danger";
+                    LblMsg.CssClass = "text-danger fw-bold";
                 }
             }
             else
             {
                 LblMsg.Text = "La descripción no puede estar vacía.";
-                LblMsg.CssClass = "text-warning";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
@@ -97,13 +117,13 @@ namespace Presentation
                 else
                 {
                     LblMsg.Text = "Error al actualizar la presentación.";
-                    LblMsg.CssClass = "text-danger";
+                    LblMsg.CssClass = "text-danger fw-bold";
                 }
             }
             else
             {
                 LblMsg.Text = "Por favor, seleccione una presentación válida y complete la descripción.";
-                LblMsg.CssClass = "text-warning";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 

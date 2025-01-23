@@ -196,8 +196,7 @@ namespace Presentation
             HFID.Value = string.Empty;  
             TBStateName.Text = string.Empty;
             ddlCountries.SelectedValue = string.Empty;
-            TBCode.Text = string.Empty;
-            LblMsg.Text = string.Empty;  
+            TBCode.Text = string.Empty; 
         }
     }
 }

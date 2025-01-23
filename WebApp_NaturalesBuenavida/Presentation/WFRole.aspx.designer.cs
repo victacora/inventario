@@ -24,13 +24,22 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.HiddenField HFRoleID;
 
         /// <summary>
-        /// Control Label1.
+        /// Control LblMsg.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label LblMsg;
+
+        /// <summary>
+        /// Control LabelRol.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelRol;
 
         /// <summary>
         /// Control TBRoleName.
@@ -42,13 +51,13 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.TextBox TBRoleName;
 
         /// <summary>
-        /// Control Label2.
+        /// Control LabelName.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.Label LabelName;
 
         /// <summary>
         /// Control TBRoleDescription.
@@ -60,30 +69,30 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.TextBox TBRoleDescription;
 
         /// <summary>
-        /// Control BtnSave.
+        /// Control Button1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnSave;
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// Control BtnUpdate.
+        /// Control Button2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnUpdate;
+        protected global::System.Web.UI.WebControls.Button Button2;
 
         /// <summary>
-        /// Control LblMsg.
+        /// Control BtnClear.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LblMsg;
+        protected global::System.Web.UI.WebControls.Button BtnClear;
     }
 }

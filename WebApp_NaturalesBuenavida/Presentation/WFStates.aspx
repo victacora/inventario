@@ -28,7 +28,7 @@
             <asp:DropDownList ID="ddlCountries" runat="server" CssClass="form-select"></asp:DropDownList>
         </div>
 
-        <div class="d-flex gap-2 mt-3">
+        <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
             <asp:Button ID="BtnSave" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
             <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
             <asp:Button ID="BtnClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtnClear_Click" />
@@ -36,7 +36,7 @@
     </div>
 
 
-    <div class="container mt-4 bg-white border rounded">
+    <div class="container mt-4 table-responsive bg-white border rounded">
         <table id="dataTable" class="table display" style="width: 100%">
             <thead>
                 <tr>

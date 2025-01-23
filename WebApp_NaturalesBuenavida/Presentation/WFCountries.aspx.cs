@@ -155,7 +155,6 @@ namespace Presentation
             HFID.Value = string.Empty;  
             TBCountryName.Text = string.Empty;
             TBCode.Text = string.Empty;
-            LblMsg.Text = string.Empty;  
         }
     }
 }

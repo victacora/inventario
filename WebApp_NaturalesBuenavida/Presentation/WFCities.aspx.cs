@@ -196,7 +196,6 @@ namespace Presentation
             TBCityName.Text = string.Empty;
             ddlStates.SelectedValue = string.Empty;
             TBCode.Text = string.Empty;
-            LblMsg.Text = string.Empty;
         }
     }
 }

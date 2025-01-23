@@ -5,39 +5,48 @@
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <%--Formulario--%>
-    <%--Rol Id--%>
-    <asp:HiddenField ID="HFRoleID" runat="server" />
-    <br />
-    <%--Nombre del Role--%>
-    <asp:Label ID="Label1" runat="server" Text="Ingrese el rol"></asp:Label>
-    <asp:TextBox ID="TBRoleName" runat="server"></asp:TextBox>
-    <br />
-    <%--Descripción de rol--%>
-    <asp:Label ID="Label2" runat="server" Text="Descripción del rol"></asp:Label><br />
-    <asp:TextBox ID="TBRoleDescription" runat="server"></asp:TextBox><br />
-    <%--Botones Guardar y Actualizar--%>
-    <div>
-        <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-        <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" OnClick="BtnUpdate_Click" />
-        <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
+    <h2 class="text-center main-title">Listado de Roles</h2>
+    <div class="container mt-4 bg-white border rounded p-3">
+
+        <%--Formulario--%>
+        <%--Rol Id--%>
+        <asp:HiddenField ID="HFRoleID" runat="server" />
+
+        <div class="mt-3 text-center">
+            <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
+        </div>
+        <div class="mb-3">
+            <asp:Label ID="LabelRol" runat="server" Text="Rol" CssClass="form-label fw-bold"></asp:Label>
+            <asp:TextBox ID="TBRoleName" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+
+        <div class="mb-3">
+            <asp:Label ID="LabelName" runat="server" Text="Descripción" CssClass="form-label fw-bold"></asp:Label>
+            <asp:TextBox ID="TBRoleDescription" TextMode="MultiLine" Rows="5" Columns="40" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
+            <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
+            <asp:Button ID="Button2" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+            <asp:Button ID="BtnClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtnClear_Click" />
+        </div>
     </div>
-    <br />
 
-    <%--Lista de roles--%>
-    <h2>Lista de roles</h2>
-    <table id="rolesTable" class="display" style="width: 100%">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>RoleName</th>
-                <th>RoleDescription</th>
 
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="container mt-4 table-responsive bg-white border rounded">
+        <table id="rolesTable" class="table display" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Rol</th>
+                    <th>Description</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
     <%--Datatables--%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
@@ -114,19 +123,23 @@
 
         }
 
-        // Función para eliminar un permiso
+        // Función para eliminar un rol
         function deleteRole(id) {
             $.ajax({
-                type: "POST",
-                url: "WFRole.aspx/deleteRole",// Se invoca el WebMethod Eliminar un rol
-                contentType: "application/json; charset=utf-8",
+                url: 'WFRole.aspx/deleteRole',
+                type: 'POST',
                 data: JSON.stringify({ id: id }),
+                contentType: 'application/json',
                 success: function (response) {
-                    $('#rolesTable').DataTable().ajax.reload();// Recargar la tabla después de eliminar
-                    alert("Rol eliminado exitosamente.");
+                    if (response.d.Success) {
+                        alert('Rol eliminado correctamente.');
+                        $('#dataTable').DataTable().ajax.reload();
+                    } else {
+                        alert('Error al eliminar el rol: ' + response.d.Message);
+                    }
                 },
                 error: function () {
-                    alert("Error al eliminar el rol.");
+                    alert("Hubo un error al eliminar el rol.");
                 }
             });
         }

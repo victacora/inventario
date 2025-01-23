@@ -1,11 +1,11 @@
-﻿<%@ Page Title="Gestión de Paises" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFCountries.aspx.cs" Inherits="Presentation.WFCountries" %>
+﻿<%@ Page Title="Gestión de Departamentos" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFStates.aspx.cs" Inherits="Presentation.WFStates" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h2 class="text-center main-title">Listado de Paises</h2>
+    <h2 class="text-center main-title">Listado de Departamentos</h2>
     <div class="container mt-4 bg-white border rounded p-3">
 
         <asp:HiddenField ID="HFID" runat="server" />
@@ -20,7 +20,12 @@
 
         <div class="mb-3">
             <asp:Label ID="LabelName" runat="server" Text="Nombre" CssClass="form-label fw-bold"></asp:Label>
-            <asp:TextBox ID="TBCountryName" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:TextBox ID="TBStateName" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+
+        <div class="mb-3">
+            <asp:Label ID="LabelPais" runat="server" Text="Pais" CssClass="form-label fw-bold"></asp:Label>
+            <asp:DropDownList ID="ddlCountries" runat="server" CssClass="form-select"></asp:DropDownList>
         </div>
 
         <div class="d-flex gap-2 mt-3">
@@ -37,7 +42,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Codigo</th>
+                    <th>Pais id</th>
                     <th>Pais</th>
+                    <th>Departamento</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -53,7 +60,7 @@
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "WFCountries.aspx/ListData",
+                    "url": "WFStates.aspx/ListData",
                     "type": "POST",
                     "contentType": "application/json",
                     "dataSrc": function (json) {
@@ -63,7 +70,9 @@
                 "columns": [
                     { "data": "id" },
                     { "data": "codigo" },
+                    { "data": "pais_id", visible: false },
                     { "data": "pais" },
+                    { "data": "departamento" },
                     {
                         "data": null,
                         "render": function (data, type, row) {
@@ -97,22 +106,22 @@
             // Manejo del clic en el botón de "eliminar" de la tabla
             $('#dataTable').on('click', '.delete-btn', function () {
                 const id = $(this).data('id');       // Obtengo el ID de la unidad a eliminar
-                if (confirm("¿Estás seguro de que deseas eliminar este pais?")) {
+                if (confirm("¿Estás seguro de que deseas eliminar este departameto?")) {
                     $.ajax({
-                        url: 'WFCountries.aspx/Delete',
+                        url: 'WFStates.aspx/Delete',
                         type: 'POST',
                         data: JSON.stringify({ id: id }),
                         contentType: 'application/json',
                         success: function (response) {
                             if (response.d.Success) {
-                                alert('Pais eliminado correctamente.');
+                                alert('Departamento eliminado correctamente.');
                                 $('#dataTable').DataTable().ajax.reload();
                             } else {
-                                alert('Error al eliminar el pais: ' + response.d.Message);
+                                alert('Error al eliminar el departamento: ' + response.d.Message);
                             }
                         },
                         error: function () {
-                            alert("Hubo un error al eliminar el pais.");
+                            alert("Hubo un error al eliminar el departamento.");
                         }
                     });
                 }
@@ -124,7 +133,8 @@
         function loadData(rowData) {
             $('#<%= HFID.ClientID %>').val(rowData.id);
             $('#<%= TBCode.ClientID %>').val(rowData.codigo);
-            $('#<%= TBCountryName.ClientID %>').val(rowData.pais);
+            $('#<%= ddlCountries.ClientID %>').val(rowData.pais_id);
+            $('#<%= TBStateName.ClientID %>').val(rowData.departamento);
         }
     </script>
 </asp:Content>

@@ -7,7 +7,7 @@ using System.Web.Services;
 
 namespace Presentation
 {
-    public partial class WFCountries : System.Web.UI.Page
+    public partial class WFCities : System.Web.UI.Page
     {
         private static PaisLog paisLog = new PaisLog();
 
@@ -54,8 +54,6 @@ namespace Presentation
 
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            checkFields();
-
             bool executed = paisLog.InsertPais(TBCode.Text,TBCountryName.Text);
             if (executed)
             {
@@ -81,25 +79,6 @@ namespace Presentation
 
             int id = int.Parse(HFID.Value);
 
-            checkFields();
-
-            bool executed = paisLog.UpdatePais(id, TBCode.Text, TBCountryName.Text);// Llamo al método Almacenado.
-
-            if (executed)// Verifico si la operación fue exitosa 
-            {
-                LblMsg.Text = "El pais se actualizó exitosamente!";
-                LblMsg.CssClass = "text-success fw-bold";
-                ClearFields();
-            }
-            else
-            {
-                LblMsg.Text = "Error al actualizar el pais.";
-                LblMsg.CssClass = "text-danger fw-bold";
-            }
-        }
-
-        private void checkFields()
-        {
             if (string.IsNullOrWhiteSpace(TBCode.Text)) // Verifico que el nombre no esté vacío.
             {
                 LblMsg.Text = "El codigo del pais no puede estar vacío.";
@@ -112,6 +91,20 @@ namespace Presentation
                 LblMsg.Text = "El nombre del pais no puede estar vacío.";
                 LblMsg.CssClass = "text-danger fw-bold";
                 return;
+            }
+
+            bool executed = paisLog.UpdatePais(id, TBCode.Text, TBCountryName.Text );// Llamo al método Almacenado.
+
+            if (executed)// Verifico si la operación fue exitosa 
+            {
+                LblMsg.Text = "El pais se actualizó exitosamente!";
+                LblMsg.CssClass = "text-success fw-bold";
+                ClearFields();
+            }
+            else
+            {
+                LblMsg.Text = "Error al actualizarel pais.";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 

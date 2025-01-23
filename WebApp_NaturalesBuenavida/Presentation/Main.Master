@@ -70,19 +70,19 @@
                 color: #333;
             }
 
-                .sidebar .nav-link .feather {
-                    margin-right: 4px;
-                    color: #727272;
-                }
+            .sidebar .nav-link .feather {
+                margin-right: 4px;
+                color: #727272;
+            }
 
-                .sidebar .nav-link.active {
-                    color: #CE6600;
-                }
+            .sidebar .nav-link.active {
+                color: #CE6600;
+            }
 
-                    .sidebar .nav-link:hover .feather,
-                    .sidebar .nav-link.active .feather {
-                        color: inherit;
-                    }
+            .sidebar .nav-link:hover .feather,
+            .sidebar .nav-link.active .feather {
+                color: inherit;
+            }
 
             .sidebar-heading {
                 font-size: .75rem;
@@ -206,6 +206,7 @@
                             <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFUnitMeasure")  %>" href="WFUnitMeasure.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Unidad de Medida</a></li>
                             <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFInventory")  %>" href="WFInventory.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Inventario</a></li>
                             <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFUsers")  %>" href="WFUsers.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Usuarios</a></li>
+                            <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFRole")  %>" href="WFRole.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Roles</a></li>                            
                             <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFCountries")  %>" href="WFCountries.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Paises</a></li>
                             <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFStates")  %>" href="WFStates.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Departamentos</a></li>
                             <li class="nav-item"><a class="nav-link <%= IsCurrentPage("WFCities")  %>" href="WFCities.aspx"><i class="bi bi-arrow-right-circle-fill me-2"></i>Ciudades</a></li>

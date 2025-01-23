@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Gestión de Paises" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFCountries.aspx.cs" Inherits="Presentation.WFCountries" %>
+﻿<%@ Page Title="Gestión de Ciudades" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFCities.aspx.cs" Inherits="Presentation.WFCities" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />

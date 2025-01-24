@@ -78,6 +78,15 @@
     <Content Include="resources\image\logo-naturales-buena-vida.png" />
     <Content Include="resources\js\datatables.js" />
     <Content Include="resources\js\datatables.min.js" />
+    <Content Include="resources\css\daterangepicker.css" />
+    <Content Include="resources\js\daterangepicker.js" />
+    <Content Include="resources\js\highcharts-more.js" />
+    <Content Include="resources\js\highcharts.js" />
+    <Content Include="resources\js\jquery.min.js" />
+    <Content Include="resources\js\modules\accessibility.js" />
+    <Content Include="resources\js\modules\export-data.js" />
+    <Content Include="resources\js\modules\exporting.js" />
+    <Content Include="resources\js\moment.min.js" />
     <Content Include="Web.config" />
     <Content Include="WFBuy.aspx" />
     <Content Include="WFCities.aspx" />

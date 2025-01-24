@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Empleados" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFEmployee.aspx.cs" Inherits="Presentation.WFEmployee" %>
+﻿<%@ Page Title="Empleados" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFEmployees.aspx.cs" Inherits="Presentation.WFEmployees" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%-- Estilos --%>
@@ -6,63 +6,102 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <%--Formulario para añadir o actualizar empleado--%>
-    <form>
+    <h2 class="text-center main-title">Lista de Empleados</h2>
+    <div class="container mt-4 bg-white border rounded p-3">
+        <%--Formulario para añadir o actualizar empleado--%>
         <%-- Id Empleado --%>
         <asp:HiddenField ID="HFEmployeeID" runat="server" />
-        <br />
+
+        <div class="mt-3 text-center">
+            <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
+        </div>
 
         <%-- Selección de Persona --%>
-        <asp:Label ID="Label6" runat="server" Text="Seleccione la Persona"></asp:Label>
-        <asp:DropDownList ID="DDLPerson" runat="server"></asp:DropDownList>
-        <br />
-        <br />
 
-        <%-- Datos del Empleado --%>
-        <asp:Label ID="Label1" runat="server" Text="Identificación del Empleado"></asp:Label><br />
-        <asp:TextBox ID="TBEmployeeId" runat="server"></asp:TextBox><br />
+        <div class="mb-3">
+            <asp:Label ID="Label6" runat="server" CssClass="form-label fw-bold" Text="Seleccione la Persona"></asp:Label>
+            <asp:DropDownList ID="DDLPerson" CssClass="form-select" runat="server"></asp:DropDownList>
+        </div>
 
-        <asp:Label ID="Label2" runat="server" Text="Nombre del Empleado"></asp:Label><br />
-        <asp:TextBox ID="TBEmployeeName" runat="server"></asp:TextBox><br />
+        <%-- Datos --%>
+        <div class="mb-3">
+            <asp:Label ID="Label1" runat="server" CssClass="form-label fw-bold" Text="Identificación"></asp:Label>
+            <asp:TextBox ID="TBEmployeeId" CssClass="form-control" runat="server"></asp:TextBox>
+        </div>
 
-        <asp:Label ID="Label3" runat="server" Text="Apellido del Empleado"></asp:Label><br />
-        <asp:TextBox ID="TBEmployeeLastName" runat="server"></asp:TextBox><br />
+        <div class="mb-3">
+            <asp:Label ID="Label2" runat="server" CssClass="form-label fw-bold" Text="Nombres"></asp:Label>
+            <asp:TextBox ID="TBEmployeeName" CssClass="form-control" runat="server"></asp:TextBox>
+        </div>
 
-        <asp:Label ID="Label4" runat="server" Text="Teléfono del Empleado"></asp:Label><br />
-        <asp:TextBox ID="TBEmployeePhone" runat="server"></asp:TextBox><br />
+        <div class="mb-3">
+            <asp:Label ID="Label3" runat="server" CssClass="form-label fw-bold" Text="Apellidos"></asp:Label>
+            <asp:TextBox ID="TBEmployeeLastName" CssClass="form-control" runat="server"></asp:TextBox>
+        </div>
 
-        <asp:Label ID="Label5" runat="server" Text="Correo Electrónico del Empleado"></asp:Label><br />
-        <asp:TextBox ID="TBEmployeeEmail" runat="server"></asp:TextBox><br />
-        <br />
+        <div class="mb-3">
+            <asp:Label ID="Label4" runat="server" CssClass="form-label fw-bold" Text="Teléfono"></asp:Label>
+            <asp:TextBox ID="TBEmployeePhone" CssClass="form-control" runat="server"></asp:TextBox>
+        </div>
+
+        <div class="mb-3">
+            <asp:Label ID="Label5" runat="server" CssClass="form-label fw-bold" Text="Correo Electrónico"></asp:Label>
+            <asp:TextBox ID="TBEmployeeEmail" CssClass="form-control" runat="server"></asp:TextBox>
+        </div>
+
+       <div class="mb-3">
+           <label for="txtPassword" class="form-label">Contraseña</label>
+           <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+           <!--<a href="#" class="small d-block mt-1">¿Olvidaste tu contraseña?</a> -->
+       </div>
+
+        <div class="mb-3">
+            <asp:Label ID="Label8" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
+            <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
+            </asp:DropDownList>
+        </div>
+
+        <div class="mb-3">
+            <asp:Label ID="Label7" runat="server" CssClass="form-label fw-bold" Text="Estado"></asp:Label>
+            <asp:DropDownList ID="ddlStatus" CssClass="form-select" runat="server">
+                <asp:ListItem Text="Activo" Value="Activo"></asp:ListItem>
+                <asp:ListItem Text="Inactivo" Value="Inactivo"></asp:ListItem>
+            </asp:DropDownList>
+        </div>
 
 
         <%-- Botones Guardar y Actualizar --%>
-        <div>
-            <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-            <asp:Button ID="BtbClear" runat="server" Text="Limpiar" OnClick="BtbClear_Click" /><br />
-            <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
+        <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
+            <asp:Button ID="BtnSave" CssClass="btn" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
+            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+            <asp:Button ID="BtbClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtbClear_Click" /><br />
         </div>
-        <br />
-    </form>
+    </div>
 
-    <%-- Lista de Empleados --%>
-    <h2>Lista de Empleados</h2>
-    <table id="employeesTable" class="display" style="width: 100%">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Identificación</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
 
+    <div class="container mt-4 table-responsive bg-white border rounded">
+        <table id="employeesTable" class="table display" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Identificación</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Usuario id</th>
+                    <th>Usuario</th>
+                    <th>Fecha registro</th>
+                    <th>Rol id</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
     <%-- Librerías de DataTables --%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
 
@@ -73,7 +112,7 @@
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "WFEmployee.aspx/ListEmployees", // WebMethod que lista los empleados
+                    "url": "WFEmployees.aspx/ListEmployees", // WebMethod que lista los empleados
                     "type": "POST",
                     "contentType": "application/json",
                     "data": function (d) {
@@ -90,10 +129,16 @@
                     { "data": "LastName" },
                     { "data": "Phone" },
                     { "data": "Email" },
+                    { "data": "UsuId", visible: false },
+                    { "data": "Usuario" },
+                    { "data": "Registro" },
+                    { "data": "RolId", visible: false },
+                    { "data": "Rol" },
+                    { "data": "Estado" },
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.EmployeeID}">Informacion</button>
+                            return `<button class="edit-btn" data-id="${row.EmployeeID}">Editar</button>
                                     <button class="delete-btn" data-id="${row.EmployeeID}">Eliminar</button>`;
                         }
                     }
@@ -129,7 +174,7 @@
             });
         });
 
-        // Función para cargar los datos del empleado seleccionado
+        // Función para cargar los datos seleccionado
         function loadEmployeeData(rowData) {
             $('#<%= HFEmployeeID.ClientID %>').val(rowData.EmployeeID);
             $('#<%= TBEmployeeId.ClientID %>').val(rowData.Identification);
@@ -143,12 +188,16 @@
         function deleteEmployee(id) {
             $.ajax({
                 type: "POST",
-                url: "WFEmployee.aspx/DeleteEmployee", // WebMethod para eliminar un empleado
+                url: "WFEmployees.aspx/DeleteEmployee", // WebMethod para eliminar un empleado
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({ id: id }),
                 success: function (response) {
-                    $('#employeesTable').DataTable().ajax.reload(); // Recargar la tabla después de eliminar
-                    alert("Empleado eliminado exitosamente.");
+                    if (response.d.Success) {
+                        alert("Empleado eliminado exitosamente.");
+                        $('#employeesTable').DataTable().ajax.reload(); // Recargar la tabla después de eliminar
+                    } else {
+                        alert('Error al eliminar el empleado: ' + response.d.Message);
+                    }
                 },
                 error: function () {
                     alert("Error al eliminar el empleado.");

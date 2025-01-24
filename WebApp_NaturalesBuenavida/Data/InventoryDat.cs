@@ -24,6 +24,40 @@ namespace Data
             return objData;
         }
 
+        public DataSet ShowInventorySummary()
+        {
+            MySqlDataAdapter objAdapter = new MySqlDataAdapter();
+            DataSet objData = new DataSet();
+
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "spSelectInventariosResumen"; // Procedimiento almacenado para resumen de inventarios
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+
+            objAdapter.SelectCommand = objSelectCmd;
+            objAdapter.Fill(objData);
+            objPer.closeConnection();
+            return objData;
+        }
+
+        // Método para obtener los detalles de un inventario
+        public DataSet ShowInventoryDetails(int inventoryId)
+        {
+            MySqlDataAdapter objAdapter = new MySqlDataAdapter();
+            DataSet objData = new DataSet();
+
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "spSelectInventarioDetalle"; // Procedimiento almacenado para detalles de inventario
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_id_inventario", MySqlDbType.Int32).Value = inventoryId;
+
+            objAdapter.SelectCommand = objSelectCmd;
+            objAdapter.Fill(objData);
+            objPer.closeConnection();
+            return objData;
+        }
+
         // Método para insertar un nuevo registro de inventario
         public bool InsertInventory(int cantidad, DateTime fecha, string observacion, int fkProductoId, int fkEmpleadoId)
         {

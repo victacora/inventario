@@ -1,4 +1,4 @@
-﻿using Logic;
+using Logic;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -8,10 +8,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Services;
-using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Windows;
 
 namespace Presentation
 {
@@ -34,7 +32,7 @@ namespace Presentation
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
-            {                
+            {
                 //showProduct();
                 showCategoryDDL();
                 showSupplierDDL();
@@ -82,7 +80,7 @@ namespace Presentation
                     NumeroLote = TBNumberLote.Text, // Número de lote
                                                     // Fecha de vencimiento, si existe en el formulario (puedes agregar un campo en el formulario para esto)
                     FechaVencimiento = DateTime.Parse(TBDate.Text), // Suponiendo que tienes un campo para la fecha de vencimiento
-                                                                              // Asignar información del proveedor, si la tienes en el formulario
+                                                                    // Asignar información del proveedor, si la tienes en el formulario
                     NombreProveedor = DDLSupplier.SelectedItem.Text, // Asumiendo que tienes el nombre del proveedor en el DDL
                     UnidadMedida = DDLUnitMeasure.SelectedItem.Text,
                     Presentacion = DDLPresentation.SelectedItem.Text,
@@ -115,7 +113,7 @@ namespace Presentation
 
         private void clearGV()
         {
-            
+
             GVProduct.DataSource = null;
             GVProduct.DataBind();
 
@@ -137,14 +135,14 @@ namespace Presentation
             {
                 productsList.Add(new
                 {
-                    ProductID = row["prod_id"],
+                    ProductID = row["ProductID"],
                     Codigo = row["Codigo"],
                     Nombre = row["Nombre"],
                     Descripcion = row["Descripcion"],
                     Medida = row["Medida"],
                     fkunidadmedida = row["fkunidadmedida"],
                     UnidadMedida = row["UnidadMedida"],
-                    fkpresentacion = row["fkpresentacion"],                  
+                    fkpresentacion = row["fkpresentacion"],
                     Presentacion = row["Presentacion"],
                     fkcategory = row["fkcategory"],
                     Categoria = row["Categoria"],
@@ -295,11 +293,19 @@ namespace Presentation
                 }
 
                 // Si todos los productos fueron guardados con éxito
+                //MessageBox.Show("Todos los productos fueron guardados exitosamente!");
                 LblMsg.Text = "Todos los productos fueron guardados exitosamente!";
                 clear(); // Limpiar los campos
                 clearGV();
-                
 
+
+                if (executed)
+                {
+                    //MessageBox.Show("La compra se guardo exitosamente!");
+                    LblMsg.Text = "La compra se guardo exitosamente!";
+                    clear();//Se invoca el metodo para limpiar los campos 
+
+                }
             }
             catch (Exception ex)
             {
@@ -352,7 +358,7 @@ namespace Presentation
             _fkunidadmedida = Convert.ToInt32(DDLUnitMeasure.SelectedValue);
             _fkpresentacion = Convert.ToInt32(DDLPresentation.SelectedValue);
 
-            executed = objPro.updateProducts(_id,_codigoProducto, _nombreProducto, _descripcionProducto,
+            executed = objPro.updateProducts(_id, _codigoProducto, _nombreProducto, _descripcionProducto,
                 _cantidadInventario, _numeroLote, _date, _precioVenta, _precioCompra, _medida,
                 _fkcategoria, _fkproveedor, _fkunidadmedida, _fkpresentacion);
 
@@ -360,7 +366,7 @@ namespace Presentation
             {
                 LblMsg.Text = "La compra se actualizo exitosamente!";
                 clear();//Se invoca el metodo para limpiar los campos 
-                
+
             }
             else
             {

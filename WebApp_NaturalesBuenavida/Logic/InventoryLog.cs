@@ -14,6 +14,15 @@ namespace Logic
             return objInv.ShowInventory();
         }
 
+        public DataSet ShowInventorySummary() { 
+            return objInv.ShowInventorySummary(); 
+        }
+
+        public DataSet ShowInventoryDetails(int inventory)
+        {
+            return objInv.ShowInventoryDetails(inventory);
+        }
+
         // Lógica para insertar un nuevo registro de inventario
         public bool AddInventory(int cantidad, DateTime fecha, string observacion, int fkProductoId, int fkEmpleadoId)
         {

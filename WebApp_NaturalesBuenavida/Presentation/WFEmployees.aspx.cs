@@ -1,4 +1,6 @@
 ﻿using Logic;
+using Microsoft.Win32;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,10 +11,11 @@ using System.Web.UI.WebControls;
 
 namespace Presentation
 {
-    public partial class WFEmployee : System.Web.UI.Page
+    public partial class WFEmployees : System.Web.UI.Page
     {
         EmployeeLog objEmployee = new EmployeeLog();
         PersonLog objPerson = new PersonLog();
+        UserLog objUsuario = new UserLog();
 
         private int _id;
         private bool executed = false;
@@ -48,7 +51,13 @@ namespace Presentation
                     FirstName = row["Nombre"],
                     LastName = row["Apellido"],
                     Phone = row["Telefono"],
-                    Email = row["Correo"]
+                    Email = row["Correo"],
+                    UsuId = row["usu_id"].ToString(),
+                    Usuario = row["usuario"].ToString(),
+                    RolId = row["rol_id"].ToString(),
+                    Rol = row["rol"].ToString(),
+                    Estado = row["estado"].ToString(),
+                    Registro = row["registro"].ToString()
                 });
             }
 

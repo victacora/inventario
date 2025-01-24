@@ -83,6 +83,7 @@
     <Content Include="WFCities.aspx" />
     <Content Include="WFDocumentTypes.aspx" />
     <Content Include="WFCategories.aspx" />
+    <Content Include="WFInventoryDetails.aspx" />
     <Content Include="WFStates.aspx" />
     <Content Include="WFEmployees.aspx" />
     <Content Include="WFSuppliers.aspx" />
@@ -165,6 +166,13 @@
     </Compile>
     <Compile Include="WFCategories.aspx.designer.cs">
       <DependentUpon>WFCategories.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFInventoryDetails.aspx.cs">
+      <DependentUpon>WFInventoryDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFInventoryDetails.aspx.designer.cs">
+      <DependentUpon>WFInventoryDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="WFStates.aspx.cs">
       <DependentUpon>WFStates.aspx</DependentUpon>

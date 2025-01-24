@@ -137,7 +137,7 @@
                 loadClientData(rowData);
             });
 
-            //Eliminar un producto
+             //Eliminar un producto
             $('#clientsTable').on('click', '.delete-btn', function () {
                 const id = $(this).data('id');// Obtener el ID del cliente
                 if (confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
@@ -163,7 +163,7 @@
                         success: function (response) {
                             var person = response.d;
                             // Llena los campos con los datos de la persona
-
+                            
                             $('#<%= TBIdPersona.ClientID %>').val(person.Identificacion);
                             $('#<%= TBNamePerson.ClientID %>').val(person.Nombre);
                             $('#<%= TBLastNamePerson.ClientID %>').val(person.Apellido);
@@ -176,7 +176,7 @@
                     });
                 } else {
                     // Limpia los campos si no se selecciona ninguna persona
-
+                    
                     $('#<%= TBIdPersona.ClientID %>').val('');
                     $('#<%= TBNamePerson.ClientID %>').val('');
                     $('#<%= TBLastNamePerson.ClientID %>').val('');
@@ -197,7 +197,7 @@
             $('#<%= TBEmailPerson.ClientID %>').val(rowData.Email);
         }
 
-        //Función para eliminar un cliente
+         //Función para eliminar un cliente
         function deleteClient(id) {
             $.ajax({
                 type: "POST",

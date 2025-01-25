@@ -63,12 +63,15 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.und_id}">Editar</button>            
-                                    <button class="delete-btn" data-id="${row.und_id}">Eliminar</button>`;  // Defino los botones de acción con sus respectivos IDs
+                            return `<button class="edit-btn" type="button" data-id="${row.und_id}">Editar</button>            
+                                    <button class="delete-btn" type="button" data-id="${row.und_id}">Eliminar</button>`;  // Defino los botones de acción con sus respectivos IDs
                         }
                     }
                 ],
                 "language": {
+                    "emptyTable": "No hay datos disponibles en la tabla",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros por página",
                     "zeroRecords": "No se encontraron resultados",
                     "info": "Mostrando página _PAGE_ de _PAGES_",

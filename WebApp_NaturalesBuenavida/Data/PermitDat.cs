@@ -26,6 +26,23 @@ namespace Data
             objPer.closeConnection();
             return objData;
         }
+
+        public DataSet showPermitsByRolId(int rolId)
+        {
+            MySqlDataAdapter objAdapter = new MySqlDataAdapter();
+            DataSet objData = new DataSet();
+
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "spGetAllPermitsByRolId";
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_rolId", MySqlDbType.Int32).Value = rolId;
+            objAdapter.SelectCommand = objSelectCmd;
+            objAdapter.Fill(objData);
+            objPer.closeConnection();
+            return objData;
+        }
+              
         //Metodo para mostrar unicamente el id y la descripcion
         public DataSet showPermitDDL()
         {
@@ -113,6 +130,63 @@ namespace Data
             objSelectCmd.CommandType = CommandType.StoredProcedure;
             objSelectCmd.Parameters.Add("p_permId", MySqlDbType.Int32).Value = _permId;
 
+            try
+            {
+                row = objSelectCmd.ExecuteNonQuery();
+                if (row == 1)
+                {
+                    executed = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.ToString());
+            }
+            objPer.closeConnection();
+            return executed;
+
+        }
+
+        public bool savePermitByRolId(int _permId, int rolId)
+        {
+            bool executed = false;
+            int row;
+
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "spInsertPermitByRolId"; //nombre del procedimiento almacenado
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_permId", MySqlDbType.Int32).Value = _permId;
+            objSelectCmd.Parameters.Add("p_rolId", MySqlDbType.Int32).Value = rolId;
+
+            try
+            {
+                row = objSelectCmd.ExecuteNonQuery();
+                if (row == 1)
+                {
+                    executed = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.ToString());
+            }
+            objPer.closeConnection();
+            return executed;
+
+        }
+
+        public bool deletePermitByRolId(int _permId, int rolId)
+        {
+            bool executed = false;
+            int row;
+
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "spDeletePermitByRolId"; //nombre del procedimiento almacenado
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_permId", MySqlDbType.Int32).Value = _permId;
+            objSelectCmd.Parameters.Add("p_rolId", MySqlDbType.Int32).Value = rolId;
             try
             {
                 row = objSelectCmd.ExecuteNonQuery();

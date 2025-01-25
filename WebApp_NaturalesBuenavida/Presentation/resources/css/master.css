@@ -125,7 +125,7 @@ body {
     border-radius: 5px;
 }
 
-.edit-btn, .delete-btn {
+.add-btn, .edit-btn, .delete-btn {
     border-radius: 30px;
     background: #CE6600;
     color: white;

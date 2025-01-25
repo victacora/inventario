@@ -91,6 +91,9 @@
                     }
                 ],
                 "language": {
+                    "emptyTable": "No hay datos disponibles en la tabla",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros por página",
                     "zeroRecords": "No se encontraron resultados",
                     "info": "Mostrando página _PAGE_ de _PAGES_",

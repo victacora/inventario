@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -14,7 +15,8 @@ namespace Presentation
     public partial class WFRole : System.Web.UI.Page
     {
         //Crear los objetos
-       private static RoleLog objRole = new RoleLog();
+        private static RoleLog objRole = new RoleLog();
+        private static PermitLog permitLog = new PermitLog();
 
         private int _role_id;
         private string _role_name, _role_description;
@@ -32,6 +34,7 @@ namespace Presentation
                 Response.Redirect("AccessDenied.aspx");
             }
         }
+
         [WebMethod]
         public static object RolesList()
         {
@@ -49,11 +52,46 @@ namespace Presentation
                     roleID = row["rol_id"],
                     roleName = row["rol_nombre"],
                     roleDescription = row["rol_descripcion"],
+                    privilegios = permitLog.showPermitsByRolId(int.Parse(row["rol_id"].ToString())).Tables[0].AsEnumerable().Select(x => new
+                    {
+                        permisoID = x["perm_id"],
+                        permisoName = x["perm_nombre"],
+                        permisoDescription = x["perm_descripcion"]
+                    }).ToList()
                 });
             }
 
             // Devuelve un objeto en formato JSON que contiene la lista de productos.
             return new { data = rolesList };
+        }
+
+        [WebMethod]
+        public static object PermisosByRolList(int rolId)
+        {
+            // Se obtiene un DataSet que contiene la lista de roles desde la base de datos.
+            var dataSet = permitLog.showPermits();
+            var permiByRol = permitLog.showPermitsByRolId(rolId).Tables[0].AsEnumerable().Select(x => new
+            {
+                permisoID = x["perm_id"]
+            }).ToList();
+
+            // Se crea una lista para almacenar los roles que se van a devolver.
+            var list = new List<object>();
+
+            // Se itera sobre cada fila del DataSet (que representa un producto).
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                list.Add(new
+                {
+                    permisoID = row["perm_id"],
+                    rolId = rolId,
+                    permisoName = row["perm_nombre"],
+                    agregar = !permiByRol.Any(p => p.permisoID.ToString().Equals(row["perm_id"].ToString()))
+                });
+            }
+
+            // Devuelve un objeto en formato JSON que contiene la lista de productos.
+            return new { data = list };
         }
 
         [WebMethod]
@@ -68,12 +106,73 @@ namespace Presentation
                 if (executed) // Verifico si la eliminación fue exitosa
                 {
                     response.Success = true;
-                    response.Message = "Departamento eliminado correctamente.";
+                    response.Message = "Rol eliminado correctamente.";
                 }
                 else
                 {
                     response.Success = false;
-                    response.Message = "Error al eliminar el departamento.";
+                    response.Message = "Error al eliminar el rol.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, configuro la respuesta con el mensaje de error.
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response;
+        }
+
+
+        [WebMethod]
+        public static AjaxResponse DeletePermitByRole(int rolId, int permId)
+        {
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = permitLog.deletePermitByRolId(permId, rolId); // Llama a tu método de eliminación
+
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Permiso eliminado correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar el permiso.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, configuro la respuesta con el mensaje de error.
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response;
+        }
+
+        [WebMethod]
+        public static AjaxResponse savePermitByRole(int rolId, int permId)
+        {
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = permitLog.savePermitByRolId(permId, rolId); // Llama a tu método de eliminación
+
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Permiso almacenado correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al asociar el permiso.";
                 }
             }
             catch (Exception ex)

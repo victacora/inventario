@@ -75,13 +75,16 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.permisoID}">Editar</button>
-                             <button class="delete-btn" data-id="${row.permisoID}">Eliminar</button>`;
+                            return `<button class="edit-btn" type="button" data-id="${row.permisoID}">Editar</button>
+                             <button class="delete-btn" type="button" data-id="${row.permisoID}">Eliminar</button>`;
                         }
                     }
 
                 ],
                 "language": {
+                    "emptyTable": "No hay datos disponibles en la tabla",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros por página",
                     "zeroRecords": "No se encontraron resultados",
                     "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -133,7 +136,7 @@
                 success: function (response) {
                     if (response.d.Success) {
                         alert('Permiso eliminado correctamente.');
-                        $('#dataTable').DataTable().ajax.reload();
+                        $('#permisosTable').DataTable().ajax.reload();
                     } else {
                         alert('Error al eliminar el permiso: ' + response.d.Message);
                     }

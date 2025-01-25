@@ -17,6 +17,11 @@ namespace Logic
             return objPer.showPermits();
         }
 
+        public DataSet showPermitsByRolId(int rolId)
+        {
+            return objPer.showPermitsByRolId(rolId);
+        }
+
         //Metodo para mostrar unicamente el id y la descripcion
         public DataSet showPermitDDL()
         {
@@ -36,6 +41,16 @@ namespace Logic
         public bool deletePermit(int _permId)
         {
             return objPer.deletePermit(_permId);
+        }
+
+        public bool deletePermitByRolId(int _permId, int rolID)
+        {
+            return objPer.deletePermitByRolId(_permId, rolID);
+        }
+
+        public bool savePermitByRolId(int _permId, int rolID)
+        {
+            return objPer.savePermitByRolId(_permId, rolID);
         }
     }
 }

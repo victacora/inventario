@@ -69,12 +69,12 @@ namespace Presentation
                 if (executed) // Verifico si la eliminación fue exitosa
                 {
                     response.Success = true;
-                    response.Message = "Departamento eliminado correctamente.";
+                    response.Message = "Permiso eliminado correctamente.";
                 }
                 else
                 {
                     response.Success = false;
-                    response.Message = "Error al eliminar el departamento.";
+                    response.Message = "Error al eliminar el permiso.";
                 }
             }
             catch (Exception ex)

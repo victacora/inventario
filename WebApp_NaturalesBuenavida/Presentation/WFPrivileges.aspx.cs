@@ -14,10 +14,10 @@ namespace Presentation
     public partial class WFPrivileges : System.Web.UI.Page
     {
         //Crear los objetos
-       private static PermitLog objRole = new PermitLog();
+       private static PermitLog objPermiso = new PermitLog();
 
-        private int _role_id;
-        private string _role_name, _role_description;
+        private int _permiso_id;
+        private string _permiso_name, _permiso_description;
         private bool executed = false;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -32,38 +32,39 @@ namespace Presentation
                 Response.Redirect("AccessDenied.aspx");
             }
         }
-        [WebMethod]
-        public static object RolesList()
-        {
-            // Se obtiene un DataSet que contiene la lista de roles desde la base de datos.
-            var dataSet = objRole.showPermits();
 
-            // Se crea una lista para almacenar los roles que se van a devolver.
-            var rolesList = new List<object>();
+        [WebMethod]
+        public static object permisosList()
+        {
+            // Se obtiene un DataSet que contiene la lista de permisos desde la base de datos.
+            var dataSet = objPermiso.showPermits();
+
+            // Se crea una lista para almacenar los permisos que se van a devolver.
+            var permisosList = new List<object>();
 
             // Se itera sobre cada fila del DataSet (que representa un producto).
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                rolesList.Add(new
+                permisosList.Add(new
                 {
-                    roleID = row["rol_id"],
-                    roleName = row["rol_nombre"],
-                    roleDescription = row["rol_descripcion"],
+                    permisoID = row["perm_id"],
+                    permisoName = row["perm_nombre"],
+                    permisoDescription = row["perm_descripcion"],
                 });
             }
 
             // Devuelve un objeto en formato JSON que contiene la lista de productos.
-            return new { data = rolesList };
+            return new { data = permisosList };
         }
 
         [WebMethod]
-        public static AjaxResponse DeleteRole(int id)
+        public static AjaxResponse DeletePermiso(int id)
         {
             AjaxResponse response = new AjaxResponse();
             try
             {
                 // Creo un objeto de respuesta para devolver al cliente.
-                bool executed = objRole.deletePermit(id); // Llama a tu método de eliminación
+                bool executed = objPermiso.deletePermit(id); // Llama a tu método de eliminación
 
                 if (executed) // Verifico si la eliminación fue exitosa
                 {
@@ -89,9 +90,9 @@ namespace Presentation
         //Metodo para limpiar los TextBox y los DDL
         private void clear()
         {
-            HFRoleID.Value = "";
-            TBRoleName.Text = "";
-            TBRoleDescription.Text = "";
+            HFPermisoID.Value = "";
+            TBPermisoName.Text = "";
+            TBPermisoDescription.Text = "";
         }
 
         protected void BtnClear_Click(object sender, EventArgs e)
@@ -102,14 +103,14 @@ namespace Presentation
 
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            _role_name = TBRoleName.Text;
-            _role_description = TBRoleDescription.Text;
+            _permiso_name = TBPermisoName.Text;
+            _permiso_description = TBPermisoDescription.Text;
 
-            executed = objRole.savePermit(_role_name, _role_description);
+            executed = objPermiso.savePermit(_permiso_name, _permiso_description);
 
             if (executed)
             {
-                LblMsg.Text = "El rol se guardo exitosamente!";
+                LblMsg.Text = "El permiso se guardo exitosamente!";
                 LblMsg.CssClass = "text-success fw-bold";
                 clear();//Se invoca el metodo para limpiar los campos 
             }
@@ -123,21 +124,21 @@ namespace Presentation
         protected void BtnUpdate_Click(object sender, EventArgs e)
         {
             // Verifica si se ha seleccionado un producto para actualizar
-            if (string.IsNullOrEmpty(HFRoleID.Value))
+            if (string.IsNullOrEmpty(HFPermisoID.Value))
             {
-                LblMsg.Text = "No se ha seleccionado un role para actualizar.";
+                LblMsg.Text = "No se ha seleccionado un permiso para actualizar.";
                 LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
-            _role_id = Convert.ToInt32(HFRoleID.Value);
-            _role_name = TBRoleName.Text;
-            _role_description = TBRoleDescription.Text;
+            _permiso_id = Convert.ToInt32(HFPermisoID.Value);
+            _permiso_name = TBPermisoName.Text;
+            _permiso_description = TBPermisoDescription.Text;
 
-            executed = objRole.updatePermit(_role_id, _role_name, _role_description);
+            executed = objPermiso.updatePermit(_permiso_id, _permiso_name, _permiso_description);
 
             if (executed)
             {
-                LblMsg.Text = "El rol se actualizo exitosamente!";
+                LblMsg.Text = "El permiso se actualizo exitosamente!";
                 LblMsg.CssClass = "text-success fw-bold";
                 clear(); //Se invoca el metodo para limpiar los campos 
             }

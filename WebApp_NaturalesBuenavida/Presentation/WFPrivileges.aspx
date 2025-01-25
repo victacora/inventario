@@ -5,24 +5,24 @@
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h2 class="text-center main-title">Listado de Roles</h2>
+    <h2 class="text-center main-title">Listado de Permisos</h2>
     <div class="container mt-4 bg-white border rounded p-3">
 
         <%--Formulario--%>
         <%--Rol Id--%>
-        <asp:HiddenField ID="HFRoleID" runat="server" />
+        <asp:HiddenField ID="HFPermisoID" runat="server" />
 
         <div class="mt-3 text-center">
             <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
         </div>
         <div class="mb-3">
-            <asp:Label ID="LabelRol" runat="server" Text="Rol" CssClass="form-label fw-bold"></asp:Label>
-            <asp:TextBox ID="TBRoleName" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:Label ID="LabelPermiso" runat="server" Text="Permiso" CssClass="form-label fw-bold"></asp:Label>
+            <asp:TextBox ID="TBPermisoName" runat="server" CssClass="form-control"></asp:TextBox>
         </div>
 
         <div class="mb-3">
             <asp:Label ID="LabelName" runat="server" Text="Descripción" CssClass="form-label fw-bold"></asp:Label>
-            <asp:TextBox ID="TBRoleDescription" TextMode="MultiLine" Rows="5" Columns="40" runat="server" CssClass="form-control"></asp:TextBox>
+            <asp:TextBox ID="TBPermisoDescription" TextMode="MultiLine" Rows="5" Columns="40" runat="server" CssClass="form-control"></asp:TextBox>
         </div>
 
         <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
@@ -34,12 +34,12 @@
 
 
     <div class="container mt-4 table-responsive bg-white border rounded">
-        <table id="rolesTable" class="table display" style="width: 100%">
+        <table id="permisosTable" class="table display" style="width: 100%">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Rol</th>
-                    <th>Description</th>
+                    <th>Permiso</th>
+                    <th>Descripcion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -51,14 +51,14 @@
     <%--Datatables--%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
 
-    <%--Tipos de roles--%>
+    <%--Tipos de permisos--%>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#rolesTable').DataTable({
+            $('#permisosTable').DataTable({
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "WFRole.aspx/RolesList",// Se invoca el WebMethod Listar roles
+                    "url": "WFPrivileges.aspx/permisosList",// Se invoca el WebMethod Listar permisos
                     "type": "POST",
                     "contentType": "application/json",
                     "data": function (d) {
@@ -69,14 +69,14 @@
                     }
                 },
                 "columns": [
-                    { "data": "roleID" },
-                    { "data": "roleName" },
-                    { "data": "roleDescription" },
+                    { "data": "permisoID" },
+                    { "data": "permisoName" },
+                    { "data": "permisoDescription" },
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.roleID}">Editar</button>
-                             <button class="delete-btn" data-id="${row.roleID}">Eliminar</button>`;
+                            return `<button class="edit-btn" data-id="${row.permisoID}">Editar</button>
+                             <button class="delete-btn" data-id="${row.permisoID}">Eliminar</button>`;
                         }
                     }
 
@@ -98,48 +98,48 @@
 
 
             });
-            // Editar un role
-            $('#rolesTable').on('click', '.edit-btn', function () {
+            // Editar un permiso
+            $('#permisosTable').on('click', '.edit-btn', function () {
                 //const id = $(this).data('id');
-                const rowData = $('#rolesTable').DataTable().row($(this).parents('tr')).data();
+                const rowData = $('#permisosTable').DataTable().row($(this).parents('tr')).data();
                 //alert(JSON.stringify(rowData, null, 2));
-                loadRoleDat(rowData);
+                loadPermisoDat(rowData);
             });
 
             // Eliminar un permiso
-            $('#rolesTable').on('click', '.delete-btn', function () {
+            $('#permisosTable').on('click', '.delete-btn', function () {
                 const id = $(this).data('id');// Obtener el ID del permiso
-                if (confirm("¿Estás seguro de que deseas eliminar el rol?")) {
-                    deleteRole(id);// Invoca a la función para eliminar el rol
+                if (confirm("¿Estás seguro de que deseas eliminar el permiso?")) {
+                    deletePermiso(id);// Invoca a la función para eliminar el rol
                 }
             });
         });
 
         // Cargar los datos en los TextBox para actualizar
-        function loadRoleDat(rowData) {
-            $('#<%= HFRoleID.ClientID %>').val(rowData.roleID);
-            $('#<%= TBRoleName.ClientID %>').val(rowData.roleName);
-            $('#<%= TBRoleDescription.ClientID %>').val(rowData.roleDescription);
+        function loadPermisoDat(rowData) {
+            $('#<%= HFPermisoID.ClientID %>').val(rowData.permisoID);
+            $('#<%= TBPermisoName.ClientID %>').val(rowData.permisoName);
+            $('#<%= TBPermisoDescription.ClientID %>').val(rowData.permisoDescription);
 
         }
 
         // Función para eliminar un rol
-        function deleteRole(id) {
+        function deletePermiso(id) {
             $.ajax({
-                url: 'WFRole.aspx/deleteRole',
+                url: 'WFPrivileges.aspx/deletePermiso',
                 type: 'POST',
                 data: JSON.stringify({ id: id }),
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.d.Success) {
-                        alert('Rol eliminado correctamente.');
+                        alert('Permiso eliminado correctamente.');
                         $('#dataTable').DataTable().ajax.reload();
                     } else {
-                        alert('Error al eliminar el rol: ' + response.d.Message);
+                        alert('Error al eliminar el permiso: ' + response.d.Message);
                     }
                 },
                 error: function () {
-                    alert("Hubo un error al eliminar el rol.");
+                    alert("Hubo un error al eliminar el permiso.");
                 }
             });
         }

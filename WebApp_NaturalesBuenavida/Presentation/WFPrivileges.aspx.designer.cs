@@ -15,13 +15,13 @@ namespace Presentation
     {
 
         /// <summary>
-        /// Control HFRoleID.
+        /// Control HFPermisoID.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HFRoleID;
+        protected global::System.Web.UI.WebControls.HiddenField HFPermisoID;
 
         /// <summary>
         /// Control LblMsg.
@@ -33,22 +33,22 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.Label LblMsg;
 
         /// <summary>
-        /// Control LabelRol.
+        /// Control LabelPermiso.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelRol;
+        protected global::System.Web.UI.WebControls.Label LabelPermiso;
 
         /// <summary>
-        /// Control TBRoleName.
+        /// Control TBPermisoName.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBRoleName;
+        protected global::System.Web.UI.WebControls.TextBox TBPermisoName;
 
         /// <summary>
         /// Control LabelName.
@@ -60,13 +60,13 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.Label LabelName;
 
         /// <summary>
-        /// Control TBRoleDescription.
+        /// Control TBPermisoDescription.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBRoleDescription;
+        protected global::System.Web.UI.WebControls.TextBox TBPermisoDescription;
 
         /// <summary>
         /// Control BtnSave.

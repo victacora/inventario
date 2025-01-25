@@ -39,7 +39,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Rol</th>
-                    <th>Description</th>
+                    <th>Descripcion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

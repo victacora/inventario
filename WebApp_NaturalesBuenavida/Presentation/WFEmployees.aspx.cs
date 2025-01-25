@@ -25,7 +25,6 @@ namespace Presentation
         {
             if (!Page.IsPostBack)
             {
-                showPersonDDL();
             }
         }
 
@@ -46,17 +45,23 @@ namespace Presentation
             {
                 employeesList.Add(new
                 {
+                    PersonaID = row["PersonaID"],
                     EmployeeID = row["EmpleadoID"],
+                    TipoDocumentoID= row["TipoDocumentoID"],                    
                     Identification = row["Identificacion"],
+                    Pais = row["Pais"],
+                    Departamento = row["Departamento"],
+                    Ciudad = row["Ciudad"],
+                    Direccion = row["Direccion"],
                     FirstName = row["Nombre"],
                     LastName = row["Apellido"],
                     Phone = row["Telefono"],
                     Email = row["Correo"],
-                    UsuId = row["usu_id"].ToString(),
-                    Usuario = row["usuario"].ToString(),
-                    RolId = row["rol_id"].ToString(),
-                    Rol = row["rol"].ToString(),
-                    Estado = row["estado"].ToString(),
+                    UsuId = row["usu_id"],
+                    Usuario = row["usuario"],
+                    RolId = row["rol_id"],
+                    Rol = row["rol"],
+                    Estado = row["estado"],
                     Registro = row["registro"].ToString()
                 });
             }
@@ -75,21 +80,11 @@ namespace Presentation
             return objEmployee.DeleteEmployee(id);
         }
 
-        // Método para mostrar las personas en el DDL
-        private void showPersonDDL()
-        {
-            DDLPerson.DataSource = objPerson.ShowPersonasDDL(); // Obtener las personas
-            DDLPerson.DataValueField = "Id"; // Id de la persona
-            DDLPerson.DataTextField = "NombreCompleto"; // Nombre completo de la persona
-            DDLPerson.DataBind();
-            DDLPerson.Items.Insert(0, "---- Seleccione una persona ----");
-        }
 
         // Método para limpiar los campos
         private void clear()
         {
             HFEmployeeID.Value = ""; // Limpiar el campo oculto
-            DDLPerson.SelectedIndex = 0; // Limpiar el DDL
             TBEmployeeId.Text = ""; // Limpiar los campos de texto
             TBEmployeeName.Text = "";
             TBEmployeeLastName.Text = "";
@@ -101,7 +96,7 @@ namespace Presentation
         // Método para guardar un nuevo empleado
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            _fkPerson = Convert.ToInt32(DDLPerson.SelectedValue); // Obtener el id de la persona seleccionada
+            _fkPerson = Convert.ToInt32(HFEmployeeID.Value); // Obtener el id de la persona seleccionada
 
             bool isSaved = objEmployee.AddEmployee(_fkPerson);
 
@@ -127,9 +122,8 @@ namespace Presentation
             }
 
             _id = Convert.ToInt32(HFEmployeeID.Value);
-            _fkPerson = Convert.ToInt32(DDLPerson.SelectedValue);
 
-            bool isUpdated = objEmployee.EditEmployee(_id, _fkPerson);
+            bool isUpdated = objEmployee.EditEmployee(_id, -1);
 
             if (isUpdated)
             {

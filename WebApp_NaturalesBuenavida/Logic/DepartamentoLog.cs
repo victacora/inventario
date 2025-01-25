@@ -32,9 +32,9 @@ namespace Logic
         }
 		
 		// Lógica para obtener los departamentos para DDL
-        public DataSet ShowDepartamentosDDL()
+        public DataSet ShowDepartamentosDDL(int paiId)
         {
-            return objDep.ShowDepartamentosDDL();
+            return objDep.ShowDepartamentosDDL(paiId);
         }
     }
 }

@@ -15,80 +15,112 @@
         <div class="mt-3 text-center">
             <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
         </div>
+        <div class="d-flex flex-column">
+            <div class="d-flex flex-column flex-md-row gap-1 p-1">
+                <div class="col-md-6 border rounded p-1">
+                    <div class="mb-3">
+                        <asp:Label ID="lblTipoDocumento" runat="server" CssClass="form-label fw-bold" Text="Tipo documento"></asp:Label>
+                        <asp:DropDownList ID="ddlTipoDocumento" CssClass="form-select" runat="server">
+                        </asp:DropDownList>
+                    </div>
 
-        <%-- Selección de Persona --%>
+                    <%-- Datos --%>
+                    <div class="mb-3">
+                        <asp:Label ID="lblIdentificacion" runat="server" CssClass="form-label fw-bold" Text="Identificación"></asp:Label>
+                        <asp:TextBox ID="TBEmployeeId" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
 
-        <div class="mb-3">
-            <asp:Label ID="Label6" runat="server" CssClass="form-label fw-bold" Text="Seleccione la Persona"></asp:Label>
-            <asp:DropDownList ID="DDLPerson" CssClass="form-select" runat="server"></asp:DropDownList>
-        </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblNombres" runat="server" CssClass="form-label fw-bold" Text="Nombres"></asp:Label>
+                        <asp:TextBox ID="TBEmployeeName" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
 
-        <%-- Datos --%>
-        <div class="mb-3">
-            <asp:Label ID="Label1" runat="server" CssClass="form-label fw-bold" Text="Identificación"></asp:Label>
-            <asp:TextBox ID="TBEmployeeId" CssClass="form-control" runat="server"></asp:TextBox>
-        </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblApellidos" runat="server" CssClass="form-label fw-bold" Text="Apellidos"></asp:Label>
+                        <asp:TextBox ID="TBEmployeeLastName" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
 
-        <div class="mb-3">
-            <asp:Label ID="Label2" runat="server" CssClass="form-label fw-bold" Text="Nombres"></asp:Label>
-            <asp:TextBox ID="TBEmployeeName" CssClass="form-control" runat="server"></asp:TextBox>
-        </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblTelefono" runat="server" CssClass="form-label fw-bold" Text="Teléfono"></asp:Label>
+                        <asp:TextBox ID="TBEmployeePhone" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
 
-        <div class="mb-3">
-            <asp:Label ID="Label3" runat="server" CssClass="form-label fw-bold" Text="Apellidos"></asp:Label>
-            <asp:TextBox ID="TBEmployeeLastName" CssClass="form-control" runat="server"></asp:TextBox>
-        </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblEmail" runat="server" CssClass="form-label fw-bold" Text="Correo Electrónico"></asp:Label>
+                        <asp:TextBox ID="TBEmployeeEmail" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
 
-        <div class="mb-3">
-            <asp:Label ID="Label4" runat="server" CssClass="form-label fw-bold" Text="Teléfono"></asp:Label>
-            <asp:TextBox ID="TBEmployeePhone" CssClass="form-control" runat="server"></asp:TextBox>
-        </div>
+                    <div class="mb-3">
+                        <asp:Label ID="Label7" runat="server" CssClass="form-label fw-bold" Text="Estado"></asp:Label>
+                        <asp:DropDownList ID="ddlStatus" CssClass="form-select" runat="server">
+                            <asp:ListItem Text="Activo" Value="Activo"></asp:ListItem>
+                            <asp:ListItem Text="Inactivo" Value="Inactivo"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </div>
+                <div class="col-md-6 border rounded p-1">
+                    <div class="mb-3">
+                        <asp:Label ID="lblPais" runat="server" CssClass="form-label fw-bold" Text="Pais"></asp:Label>
+                        <asp:DropDownList ID="ddlPais" CssClass="form-select" runat="server">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblDep" runat="server" CssClass="form-label fw-bold" Text="Departamento"></asp:Label>
+                        <asp:DropDownList ID="ddlDepartamento" CssClass="form-select" runat="server">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblCiudad" runat="server" CssClass="form-label fw-bold" Text="Ciudad"></asp:Label>
+                        <asp:DropDownList ID="ddlCiudad" CssClass="form-select" runat="server">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblDireccion" runat="server" CssClass="form-label fw-bold" Text="Direccion"></asp:Label>
+                        <asp:TextBox ID="TBDireccion" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="mb-3">
+                        <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">usuario</asp:Label>
+                        <asp:TextBox ID="TBUsuario" runat="server" CssClass="form-control"></asp:TextBox>
+                        <!--<a href="#" class="small d-block mt-1">¿Olvidaste tu contraseña?</a> -->
+                    </div>
 
-        <div class="mb-3">
-            <asp:Label ID="Label5" runat="server" CssClass="form-label fw-bold" Text="Correo Electrónico"></asp:Label>
-            <asp:TextBox ID="TBEmployeeEmail" CssClass="form-control" runat="server"></asp:TextBox>
-        </div>
+                    <div class="mb-3">
+                        <asp:Label runat="server" for="txtPassword" class="form-label fw-bold">Contraseña</asp:Label>
+                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                        <!--<a href="#" class="small d-block mt-1">¿Olvidaste tu contraseña?</a> -->
+                    </div>
 
-       <div class="mb-3">
-           <label for="txtPassword" class="form-label">Contraseña</label>
-           <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
-           <!--<a href="#" class="small d-block mt-1">¿Olvidaste tu contraseña?</a> -->
-       </div>
-
-        <div class="mb-3">
-            <asp:Label ID="Label8" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
-            <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
-            </asp:DropDownList>
-        </div>
-
-        <div class="mb-3">
-            <asp:Label ID="Label7" runat="server" CssClass="form-label fw-bold" Text="Estado"></asp:Label>
-            <asp:DropDownList ID="ddlStatus" CssClass="form-select" runat="server">
-                <asp:ListItem Text="Activo" Value="Activo"></asp:ListItem>
-                <asp:ListItem Text="Inactivo" Value="Inactivo"></asp:ListItem>
-            </asp:DropDownList>
-        </div>
-
-
-        <%-- Botones Guardar y Actualizar --%>
-        <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
-            <asp:Button ID="BtnSave" CssClass="btn" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
-            <asp:Button ID="BtbClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtbClear_Click" /><br />
+                    <div class="mb-3">
+                        <asp:Label ID="Label8" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
+                        <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
+                        </asp:DropDownList>
+                    </div>
+                </div>
+            </div>
+            <%-- Botones Guardar y Actualizar --%>
+            <div class="d-flex flex-column flex-md-row  gap-2 mt-3">
+                <asp:Button ID="BtnSave" CssClass="btn" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
+                <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+                <asp:Button ID="BtbClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtbClear_Click" /><br />
+            </div>
         </div>
     </div>
-
 
     <div class="container mt-4 table-responsive bg-white border rounded">
         <table id="employeesTable" class="table display" style="width: 100%">
             <thead>
                 <tr>
+                    <th>Person ID</th>
                     <th>ID</th>
+                    <th>Tipo documento</th>
                     <th>Identificación</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Teléfono</th>
                     <th>Email</th>
+                    <th>Pais</th>
+                    <th>Departamento</th>
+                    <th>Ciudad</th>
                     <th>Usuario id</th>
                     <th>Usuario</th>
                     <th>Fecha registro</th>
@@ -123,12 +155,17 @@
                     }
                 },
                 "columns": [
+                    { "data": "PersonaID", visible: false },
                     { "data": "EmployeeID" },
+                    { "data": "TipoDocumentoID" },
                     { "data": "Identification" },
                     { "data": "FirstName" },
                     { "data": "LastName" },
                     { "data": "Phone" },
                     { "data": "Email" },
+                    { "data": "Pais" },
+                    { "data": "Departamento" },
+                    { "data": "Ciudad" },
                     { "data": "UsuId", visible: false },
                     { "data": "Usuario" },
                     { "data": "Registro" },
@@ -205,5 +242,4 @@
             });
         }
     </script>
-
 </asp:Content>

@@ -105,7 +105,7 @@ namespace Data
         }
 		
 		// Método para obtener todos los departamentos (DDL)
-        public DataSet ShowDepartamentosDDL()
+        public DataSet ShowDepartamentosDDL(int paiId)
         {
             MySqlDataAdapter objAdapter = new MySqlDataAdapter();
             DataSet objData = new DataSet();
@@ -113,6 +113,7 @@ namespace Data
             MySqlCommand objSelectCmd = new MySqlCommand();
             objSelectCmd.Connection = objPer.openConnection();
             objSelectCmd.CommandText = "spSelectDepartamentoDDL"; // Procedimiento almacenado para el DDL de departamentos
+            objSelectCmd.Parameters.Add("p_paisId", MySqlDbType.Int32).Value = paiId;
             objSelectCmd.CommandType = CommandType.StoredProcedure;
             objAdapter.SelectCommand = objSelectCmd;
             objAdapter.Fill(objData);

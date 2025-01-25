@@ -106,7 +106,7 @@ namespace Data
         }
 
         // Método para obtener todas las ciudades (DDL)
-        public DataSet ShowCiudadesDDL()
+        public DataSet ShowCiudadesDDL(int idDep)
         {
             MySqlDataAdapter objAdapter = new MySqlDataAdapter();
             DataSet objData = new DataSet();
@@ -115,6 +115,7 @@ namespace Data
             objSelectCmd.Connection = objPer.openConnection();
             objSelectCmd.CommandText = "spSelectCiudadDDL"; // Procedimiento almacenado para el DDL de ciudades
             objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_depId", MySqlDbType.Int32).Value = idDep;
             objAdapter.SelectCommand = objSelectCmd;
             objAdapter.Fill(objData);
             objPer.closeConnection();

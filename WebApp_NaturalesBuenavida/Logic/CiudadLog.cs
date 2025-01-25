@@ -32,9 +32,9 @@ namespace Logic
         }
 
         // Lógica para obtener las ciudades para DDL
-        public DataSet ShowCiudadesDDL()
+        public DataSet ShowCiudadesDDL(int idDep)
         {
-            return objCiu.ShowCiudadesDDL();
+            return objCiu.ShowCiudadesDDL(idDep);
         }
     }
 }

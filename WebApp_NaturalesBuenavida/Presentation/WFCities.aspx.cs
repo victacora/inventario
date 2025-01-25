@@ -28,7 +28,7 @@ namespace Presentation
 
         private void PopulateDDLStates()
         {
-            var states = departamentoLog.ShowDepartamentosDDL();
+            var states = departamentoLog.ShowDepartamentosDDL(0);
 
             var dataList = new List<KeyValuePair<string, string>>();
 

@@ -20,7 +20,7 @@ namespace Presentation
             }
 
             Usuario usuario = Session["Usuario"] as Usuario;
-            if (usuario == null || !usuario.Rol.Equals("Administrador"))
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(Privilegios.Categorias.ToString()))
             {
                 Response.Redirect("AccessDenied.aspx");
             }

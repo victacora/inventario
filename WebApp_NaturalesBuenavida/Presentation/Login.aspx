@@ -40,7 +40,6 @@
         <!-- Footer -->
         <footer class="content bg-dark text-white text-center py-3 mt-5 text-break">
             Contacto: 300 111 22 33 | Email: naturalesbuenavidasas@gmail.com
-        
         </footer>
     </div>
 </asp:Content>

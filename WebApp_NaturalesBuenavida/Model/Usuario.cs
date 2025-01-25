@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System.Collections.Generic;
+
+namespace Model
 {
     public class Usuario
     {
@@ -9,5 +11,7 @@
         public string Correo { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
+
+        public List<string> Privilegios { get; set; }  
     }
 }

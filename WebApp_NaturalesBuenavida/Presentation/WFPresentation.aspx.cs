@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,6 +23,11 @@ namespace Presentation
             if (!Page.IsPostBack)
             {
                
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(Privilegios.Presentacion.ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 

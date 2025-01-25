@@ -4,7 +4,7 @@ using System;
 using System.Web.Security;
 using System.Web;
 using System.Web.UI;
-using System.Data;
+using System.Text.Json;
 
 namespace Presentation
 {
@@ -27,7 +27,7 @@ namespace Presentation
                 string cookiestr;
                 HttpCookie ck;
                 tkt = new FormsAuthenticationTicket(1, txtUsername.Text, DateTime.Now,
-                DateTime.Now.AddMinutes(30), chkPersistCookie.Checked, usuario.Rol);
+                DateTime.Now.AddMinutes(30), chkPersistCookie.Checked, JsonSerializer.Serialize(usuario));
                 cookiestr = FormsAuthentication.Encrypt(tkt);
                 ck = new HttpCookie(FormsAuthentication.FormsCookieName, cookiestr);
                 if (chkPersistCookie.Checked)

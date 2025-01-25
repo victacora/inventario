@@ -15,7 +15,7 @@
         <div class="content text-center">
             <div class="alert alert-danger" role="alert">
                 <h1 class="display-4">Acceso denegado</h1>
-                <p class="lead">Usted no tiene permiso para acceder a esta pagina.</p>
+                <p class="lead">Usted no tiene los permisos necesarios o su sesión no esta activa para acceder a esta pagina.</p>
             </div>
             <p class="text-muted">Por favor contacte al administrador si usted cree que es un error.</p>
             <a href="Login.aspx" class="btn btn-primary btn-lg mt-3">

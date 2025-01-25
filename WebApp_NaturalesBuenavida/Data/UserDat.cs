@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using System.Linq;
 
 namespace Data
 {
@@ -25,7 +26,7 @@ namespace Data
             return objData;
         }
         //Metodo para guardar un nuevo Usuario
-        public bool saveUser(string _user_Name, string _user_Password,string _user_State, DateTime _user_DateCreation, int _user_fkempId, int _user_fkrolId)
+        public bool saveUser(string _user_Name, string _user_Password, string _user_State, DateTime _user_DateCreation, int _user_fkempId, int _user_fkrolId)
         {
             bool executed = false;
             int row;
@@ -58,7 +59,7 @@ namespace Data
 
         }
         //Metodo para actualizar un Usuario
-        public bool updateUser(int _user_Id,string _user_Name, string _user_Password, string _user_State, DateTime _user_DateCreation, int _user_fkempId, int _user_fkrolId)
+        public bool updateUser(int _user_Id, string _user_Name, string _user_Password, string _user_State, DateTime _user_DateCreation, int _user_fkempId, int _user_fkrolId)
         {
             bool executed = false;
             int row;
@@ -149,6 +150,7 @@ namespace Data
                 usuario.Nombres = reader["nombres"].ToString();
                 usuario.Apellidos = reader["apellidos"].ToString();
                 usuario.Rol = reader["rol_nombre"].ToString();
+                usuario.Privilegios = reader["privilegios"].ToString().Split(',').ToList();
                 return usuario;
             }
             else

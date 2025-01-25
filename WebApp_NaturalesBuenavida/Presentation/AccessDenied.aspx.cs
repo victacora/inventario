@@ -12,10 +12,12 @@ namespace Presentation
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            FormsAuthentication.SignOut();
-            Session.Clear();
-            Session.Abandon();
-
+            if (Session["Usuario"] == null)
+            {
+                FormsAuthentication.SignOut();
+                Session.Clear();
+                Session.Abandon();
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Presentation
         protected void Page_Load(object sender, EventArgs e)
         {
             Usuario usuario = Session["Usuario"] as Usuario;
-            if (usuario == null || !usuario.Rol.Equals("Administrador"))
+            if (usuario == null || !usuario.Privilegios.Contains(Privilegios.TiposDocumentos.ToString()))
             {
                 Response.Redirect("AccessDenied.aspx");
             }

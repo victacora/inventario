@@ -11,10 +11,10 @@ using System.Web.UI.WebControls;
 
 namespace Presentation
 {
-    public partial class WFRole : System.Web.UI.Page
+    public partial class WFPrivileges : System.Web.UI.Page
     {
         //Crear los objetos
-       private static RoleLog objRole = new RoleLog();
+       private static PermitLog objRole = new PermitLog();
 
         private int _role_id;
         private string _role_name, _role_description;
@@ -27,7 +27,7 @@ namespace Presentation
 
             }
             Usuario usuario = Session["Usuario"] as Usuario;
-            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(Privilegios.Roles.ToString()))
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(Privilegios.Privilegios.ToString()))
             {
                 Response.Redirect("AccessDenied.aspx");
             }
@@ -36,7 +36,7 @@ namespace Presentation
         public static object RolesList()
         {
             // Se obtiene un DataSet que contiene la lista de roles desde la base de datos.
-            var dataSet = objRole.showRoles();
+            var dataSet = objRole.showPermits();
 
             // Se crea una lista para almacenar los roles que se van a devolver.
             var rolesList = new List<object>();
@@ -63,7 +63,7 @@ namespace Presentation
             try
             {
                 // Creo un objeto de respuesta para devolver al cliente.
-                bool executed = objRole.deleteRole(id); // Llama a tu método de eliminación
+                bool executed = objRole.deletePermit(id); // Llama a tu método de eliminación
 
                 if (executed) // Verifico si la eliminación fue exitosa
                 {
@@ -105,7 +105,7 @@ namespace Presentation
             _role_name = TBRoleName.Text;
             _role_description = TBRoleDescription.Text;
 
-            executed = objRole.saveRole(_role_name, _role_description);
+            executed = objRole.savePermit(_role_name, _role_description);
 
             if (executed)
             {
@@ -133,7 +133,7 @@ namespace Presentation
             _role_name = TBRoleName.Text;
             _role_description = TBRoleDescription.Text;
 
-            executed = objRole.updateRole(_role_id, _role_name, _role_description);
+            executed = objRole.updatePermit(_role_id, _role_name, _role_description);
 
             if (executed)
             {

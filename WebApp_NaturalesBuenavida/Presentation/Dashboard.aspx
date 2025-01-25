@@ -21,7 +21,7 @@
                 <i class="bi bi-calendar-fill me-2"></i><span></span>
             </div>
         </div>
-        
+
         <div class="row p-2">
             <div class="col-md-3">
                 <figure class="border rounded p-2 highcharts-figure">
@@ -48,14 +48,17 @@
             <div class="col-md-6">
                 <figure class="border rounded p-2 highcharts-figure">
                     <div id="container-categorias"></div>
-                    <p class="highcharts-description">
-                        <strong>Total iventario: </strong>1.050.000
+                    <p class="highcharts-description text-center">
+                        <strong>Total inventario: </strong>1.050.000
                     </p>
                 </figure>
             </div>
             <div class="col-md-6">
                 <figure class="border rounded p-2 highcharts-figure">
                     <div id="container-ventas-compras"></div>
+                    <p class="highcharts-description text-center">
+                        <strong>Total ventas: </strong>1.050.000/ <strong>Total compras: </strong>1.050.000
+                    </p>
                 </figure>
             </div>
         </div>
@@ -66,55 +69,55 @@
                 </figure>
             </div>
             <div class="col-md-6 border rounded p-2 ">
-                 <h2 class="text-center mb-4">Product Table</h2>
-        <table class="table table-striped table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Product</th>
-                    <th>Stock</th>
-                    <th>Average Order (Last 30 Days)</th>
-                    <th>Unit Price</th>
-                    <th>Stock Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Product 1</td>
-                    <td>82</td>
-                    <td>8</td>
-                    <td>30.45</td>
-                    <td>2496.90</td>
-                </tr>
-                <tr>
-                    <td>Product 2</td>
-                    <td>70</td>
-                    <td>11</td>
-                    <td>31.70</td>
-                    <td>2219.00</td>
-                </tr>
-                <tr>
-                    <td>Product 3</td>
-                    <td>93</td>
-                    <td>17</td>
-                    <td>48.44</td>
-                    <td>4504.92</td>
-                </tr>
-                <tr>
-                    <td>Product 4</td>
-                    <td>95</td>
-                    <td>11</td>
-                    <td>12.44</td>
-                    <td>1181.80</td>
-                </tr>
-                <tr>
-                    <td>Product 5</td>
-                    <td>40</td>
-                    <td>14</td>
-                    <td>29.52</td>
-                    <td>1180.80</td>
-                </tr>
-            </tbody>
-        </table>
+                <h5 class="fw-bold text-center mb-4">Existencias por producto</h5>
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Existencia</th>
+                            <th>Promedio de ordenes (Últimos 30 días)</th>
+                            <th>Precio unitario</th>
+                            <th>Valor existencias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Producto 1</td>
+                            <td>82</td>
+                            <td>8</td>
+                            <td>30.45</td>
+                            <td>2496.90</td>
+                        </tr>
+                        <tr>
+                            <td>Product 2</td>
+                            <td>70</td>
+                            <td>11</td>
+                            <td>31.70</td>
+                            <td>2219.00</td>
+                        </tr>
+                        <tr>
+                            <td>Product 3</td>
+                            <td>93</td>
+                            <td>17</td>
+                            <td>48.44</td>
+                            <td>4504.92</td>
+                        </tr>
+                        <tr>
+                            <td>Product 4</td>
+                            <td>95</td>
+                            <td>11</td>
+                            <td>12.44</td>
+                            <td>1181.80</td>
+                        </tr>
+                        <tr>
+                            <td>Product 5</td>
+                            <td>40</td>
+                            <td>14</td>
+                            <td>29.52</td>
+                            <td>1180.80</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -180,34 +183,13 @@
 
             cb(start, end);
 
-            Highcharts.setOptions({
-                lang: {
-                    locale: 'es',
-                    printChart: 'Imprimir',
-                    exitFullscreen: 'Salir de pantalla completa',
-                    loading: 'Cargando...',
-                    noData: 'No existen datos para mostrar',
-                    resetZoom: 'Reestablecer zoom',
-                    resetZoomTitle: 'Restablecer zomm 1:1',
-                    viewData: 'Ver datos en tabla',
-                    viewFullscreen: 'Ver en pantalla completa',
-                    contextButtonTitle: 'Menú de exportación'
-                }
-            });
 
             Highcharts.chart('container-categorias', {
                 chart: {
                     type: 'pie'
                 },
                 exporting: {
-                    buttons: {
-                        contextButton: {
-                            menuItems: [
-                                'printChart',
-                                'viewFullscreen'
-                            ]
-                        }
-                    }
+                    enabled: false
                 },
                 title: {
                     text: 'Las categorias mas vendidas'
@@ -279,14 +261,7 @@
                 }
             },
             exporting: {
-                buttons: {
-                    contextButton: {
-                        menuItems: [
-                            'printChart',
-                            'viewFullscreen'
-                        ]
-                    }
-                }
+                enabled: false
             },
             title: {
                 text: 'Ventas vs Compras por mes',
@@ -371,14 +346,7 @@
                 text: 'Los 10 clientes mas representativos'
             },
             exporting: {
-                buttons: {
-                    contextButton: {
-                        menuItems: [
-                            'printChart',
-                            'viewFullscreen'
-                        ]
-                    }
-                }
+                enabled: false
             },
             xAxis: {
                 categories: ['Andres peres', 'Jaime Hurtado', 'Rodolfo quinallas'],

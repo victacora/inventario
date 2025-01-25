@@ -21,7 +21,7 @@ namespace Presentation
                 // aqui Inicialización si es necesario (ejemplo: cargar listas, valores predeterminados, etc.)
             }
             Usuario usuario = Session["Usuario"] as Usuario;
-            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(Privilegios.UnidadDeMedidad.ToString()))
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.UnidadDeMedidad).ToString()))
             {
                 Response.Redirect("AccessDenied.aspx");
             }

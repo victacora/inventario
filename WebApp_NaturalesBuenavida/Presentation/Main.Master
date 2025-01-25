@@ -41,7 +41,7 @@
                 <div class="background"></div>
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                     <div class="position-sticky pt-3">
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center ps-3 my-1 text-muted">
+                        <h6 class="<%= checkMenu(Model.Menu.Principal)  %> debar-heading d-flex justify-content-between align-items-center ps-3 my-1 text-muted">
                             <span>Inicio <i class="bi bi-house-door ms-2"></i></span>
                         </h6>
                         <ul class="nav flex-column ps-2">
@@ -52,12 +52,12 @@
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Compras)  %>"><a class="nav-link <%= IsCurrentPage("WFBuy")  %>" href="WFBuy.aspx"><i class="bi bi-cart me-2"></i>Compras</a></li>
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Inventario)  %>"><a class="nav-link <%= IsCurrentPage("WFInventory")  %>" href="WFInventory.aspx"><i class="bi bi-boxes me-2"></i>Inventario</a></li>
                         </ul>
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center ps-3 my-1 text-muted">
+                        <h6 class="<%= checkMenu(Model.Menu.Configuracion)  %> sidebar-heading d-flex justify-content-between align-items-center ps-3 my-1 text-muted">
                             <span>Configuración <i class="bi bi-gear ms-2"></i></span>
                         </h6>
                         <ul class="nav flex-column ps-2">
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Roles)  %>"><a class="nav-link <%= IsCurrentPage("WFRole")  %>" href="WFRole.aspx"><i class="bi bi-person-gear me-2"></i>Roles</a></li>
-                            <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Privilegios)  %>"><a class="nav-link <%= IsCurrentPage("WFPrivileges")  %>" href="WFPrivileges.aspx"><i class="bi bi-person-gear me-2"></i>Privilegios</a></li>                            
+                            <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Privilegios)  %>"><a class="nav-link <%= IsCurrentPage("WFPrivileges")  %>" href="WFPrivileges.aspx"><i class="bi bi-lock me-2"></i>Privilegios</a></li>                            
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.TiposDocumentos)  %>"><a class="nav-link <%= IsCurrentPage("WFDocumentTypes")  %>" href="WFDocumentTypes.aspx"><i class="bi bi-person-bounding-box me-2"></i>Tipo documentos</a></li>
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Categorias)  %>"><a class="nav-link <%= IsCurrentPage("WFCategories")  %>" href="WFCategories.aspx"><i class="bi bi-diagram-3 me-2"></i>Categorias</a> </li>
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Presentacion)  %>"><a class="nav-link <%= IsCurrentPage("WFPresentation")  %>" href="WFPresentation.aspx"><i class="bi bi-box me-2"></i>Presentacion</a></li>
@@ -66,7 +66,7 @@
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Departamentos)  %>"><a class="nav-link <%= IsCurrentPage("WFStates")  %>" href="WFStates.aspx"><i class="bi bi-compass me-2"></i>Departamentos</a></li>
                             <li class="nav-item <%= checkPrivilegios(Model.Privilegios.Ciudades)  %>"><a class="nav-link <%= IsCurrentPage("WFCities")  %>" href="WFCities.aspx"><i class="bi bi-crosshair me-2"></i>Ciudades</a></li>
                         </ul>
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center ps-3 my-1 text-muted">
+                        <h6 class="<%= checkMenu(Model.Menu.Usuarios)  %> sidebar-heading d-flex justify-content-between align-items-center ps-3 my-1 text-muted">
                             <span>Usuarios <i class="bi bi-people-fill ms-2"></i></span>
                         </h6>
                         <ul class="nav flex-column ps-2">

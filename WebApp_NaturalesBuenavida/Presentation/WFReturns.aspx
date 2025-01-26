@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFReturns.aspx.cs" Inherits="Presentation.WFReturns" %>
+﻿<%@ Page Title="Gestión de devoluciones" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFReturns.aspx.cs" Inherits="Presentation.WFReturns" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
@@ -6,54 +6,61 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:HiddenField ID="HFReturnID" runat="server" />
-    <br />
-    
-   <!-- Fecha de devolución -->
-<asp:Label ID="LabelFecha" runat="server" Text="Fecha de Devolución"></asp:Label><br />
-<asp:TextBox ID="TBReturnDate" runat="server" TextMode="Date"></asp:TextBox><br />
+    <h2 class="text-center main-title">Lista de Devoluciones</h2>
+    <div class="container mt-4 bg-white border rounded p-3">
 
-<!-- Motivo de la devolución -->
-<asp:Label ID="LabelMotivo" runat="server" Text="Motivo"></asp:Label><br />
-<asp:TextBox ID="TBMotivo" runat="server"></asp:TextBox><br />
+        <asp:HiddenField ID="HFID" runat="server" />
 
-<!-- Ventas disponibles (DropDownList) -->
-<asp:Label ID="LabelVenta" runat="server" Text="Venta Asociada"></asp:Label><br />
-<asp:DropDownList ID="DDLVentas" runat="server"></asp:DropDownList><br />
+        <div class="mt-3 text-center">
+            <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
+        </div>
+        <div class="mb-3">
+            <!-- Fecha de devolución -->
+            <asp:Label ID="LabelFecha" runat="server" CssClass="form-label fw-bold" Text="Fecha de Devolución"></asp:Label>
+            <asp:TextBox ID="TBReturnDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+        </div>
+        <div class="mb-3">
+            <!-- Motivo de la devolución -->
+            <asp:Label ID="LabelMotivo" runat="server" CssClass="form-label fw-bold" Text="Motivo"></asp:Label>
+            <asp:TextBox ID="TBMotivo" TextMode="MultiLine" Rows="5" Columns="40" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+        <div class="mb-3">
+            <!-- Ventas disponibles (DropDownList) -->
+            <asp:Label ID="LabelVenta" runat="server" CssClass="form-label fw-bold" Text="Venta Asociada"></asp:Label>
+            <asp:DropDownList ID="DDLVentas" runat="server" CssClass="form-select"></asp:DropDownList>
+        </div>
+
+        <!-- Botones Guardar, Actualizar, Limpiar -->
+
+        <div class="d-flex flex-column flex-md-row gap-2 mt-3">
+            <asp:Button ID="BtnSave" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
+            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+            <asp:Button ID="BtnClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtnClear_Click" />
+        </div>
+    </div>
 
 
-<br />
-<!-- Botones Guardar, Actualizar, Limpiar -->
-<div>
-    <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-    <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" OnClick="BtnUpdate_Click" />
-    <asp:Button ID="BtnClear" runat="server" Text="Limpiar" OnClick="BtnClear_Click" />
-    <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
-</div>
-<br />
-
-    <br />
-
-    <!-- Lista de devoluciones -->
-    <h2>Lista de Devoluciones</h2>
-    <table id="returnsTable" class="display" style="width: 100%">
-        <thead>
-            <tr>
-                <th>DevolucionID</th>
-                <th>FechaDevolucion</th>
-                <th>Motivo</th>
-                <th>VentaID</th>
-                <th>FechaVenta</th>
-                <th>DescripcionVenta</th>
-                <th>EmpleadoID</th>
-                <th>EmpleadoNombre</th>
-                <th>ClienteID</th>
-                <th>ClienteNombre</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="container table-responsive mt-4 bg-white border rounded">
+        <table id="returnsTable" class="table display" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha devolucion</th>
+                    <th>Motivo</th>
+                    <th>VentaID</th>
+                    <th>Fecha venta</th>
+                    <th>Descripcion venta</th>
+                    <th>Documento empleado</th>
+                    <th>Empleado</th>
+                    <th>Documento cliente</th>
+                    <th>Cliente</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Scripts -->
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
@@ -75,7 +82,7 @@
                     { "data": "DevolucionID" },
                     { "data": "FechaDevolucion" },
                     { "data": "Motivo" },
-                    { "data": "VentaID" },
+                    { "data": "VentaID", visible: false },
                     { "data": "FechaVenta" },
                     { "data": "DescripcionVenta" },
                     { "data": "IdentificacionEmpleado" },
@@ -85,8 +92,8 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.DevolucionID}">Editar</button>
-                                    <button class="delete-btn" data-id="${row.DevolucionID}">Eliminar</button>`;
+                            return `<button class="edit-btn" type="button" data-id="${row.DevolucionID}">Editar</button>
+                                    <button class="delete-btn" type="button" data-id="${row.DevolucionID}">Eliminar</button>`;
                         }
                     }
                 ],
@@ -125,11 +132,15 @@
                         data: JSON.stringify({ returnId: returnId }),
                         contentType: 'application/json',
                         success: function (response) {
-                            alert(response.success ? 'Devolución eliminada.' : 'Error al eliminar.');
-                            $('#returnsTable').DataTable().ajax.reload();
+                            if (response.d.Success) {
+                                alert('Devolución eliminada correctamente.');
+                                $('#returnsTable').DataTable().ajax.reload(); // Recarga la tabla para reflejar la eliminación
+                            } else {
+                                alert('Error al eliminar la devolución: ' + response.d.Message);
+                            }
                         },
                         error: function () {
-                            alert("Error al eliminar la devolución.");
+                            alert("Hubo un error al eliminar la devolución.");
                         }
                     });
                 }

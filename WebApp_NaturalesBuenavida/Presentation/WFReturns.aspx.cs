@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -40,6 +41,11 @@ namespace Presentation
                     // Los valores de cliente y empleado no deben ser sobrescritos si ya están establecidos.
                     // Aquí podrías establecer valores adicionales si es necesario.
                 }
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Devoluciones).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 
@@ -95,11 +101,12 @@ namespace Presentation
             // Asigna valores a las variables privadas
             _returnDate = parsedDate;
             _reason = TBMotivo.Text;
-            _fkSale = Convert.ToInt32(DDLVentas.SelectedValue);
+            _fkSale = !DDLVentas.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(DDLVentas.SelectedValue) : 0;
 
             // Guarda la devolución y muestra un mensaje adecuado
             executed = objReturn.SaveReturn(_returnDate, _reason, _fkSale);
             LblMsg.Text = executed ? "Devolución registrada correctamente." : "Error al registrar la devolución.";
+            LblMsg.CssClass = executed ? "text-success fw-bold" : "text-danger fw-bold";
             if (executed) ClearFields();
         }
 
@@ -116,11 +123,12 @@ namespace Presentation
             _id = Convert.ToInt32(HFReturnID.Value);
             _returnDate = DateTime.Parse(TBReturnDate.Text);
             _reason = TBMotivo.Text;
-            _fkSale = Convert.ToInt32(DDLVentas.SelectedValue);
+            _fkSale = !DDLVentas.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(DDLVentas.SelectedValue) : 0;
 
             // Actualiza la devolución y muestra un mensaje adecuado
             executed = objReturn.UpdateReturn(_id, _returnDate, _reason, _fkSale);
             LblMsg.Text = executed ? "Devolución actualizada correctamente." : "Error al actualizar la devolución.";
+            LblMsg.CssClass = executed ? "text-success fw-bold" : "text-danger fw-bold";
             if (executed) ClearFields();
         }
 
@@ -137,7 +145,7 @@ namespace Presentation
             DDLVentas.DataValueField = "id"; // Establece el valor de cada opción (ID de la venta)
             DDLVentas.DataTextField = "descripcion"; // Establece el texto de cada opción (Descripción de la venta)
             DDLVentas.DataBind();
-            DDLVentas.Items.Insert(0, new ListItem("---- Seleccione una venta ----", "0")); // Añade la opción por defecto
+            DDLVentas.Items.Insert(0, new ListItem("---- Seleccione una venta ----", "")); // Añade la opción por defecto
         }
 
         // Método para limpiar los campos del formulario
@@ -147,7 +155,6 @@ namespace Presentation
             TBReturnDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             TBMotivo.Text = string.Empty;
             DDLVentas.SelectedIndex = 0;
-            LblMsg.Text = string.Empty;
         }
     }
 }

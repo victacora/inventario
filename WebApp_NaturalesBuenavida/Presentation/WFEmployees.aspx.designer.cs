@@ -15,6 +15,15 @@ namespace Presentation
     {
 
         /// <summary>
+        /// Control ScriptManager.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager;
+
+        /// <summary>
         /// Control HFEmployeeID.
         /// </summary>
         /// <remarks>
@@ -22,6 +31,24 @@ namespace Presentation
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField HFEmployeeID;
+
+        /// <summary>
+        /// Control HFPersonID.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HFPersonID;
+
+        /// <summary>
+        /// Control HFUsuID.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HFUsuID;
 
         /// <summary>
         /// Control LblMsg.
@@ -159,6 +186,15 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
 
         /// <summary>
+        /// Control UpdatePanel.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel;
+
+        /// <summary>
         /// Control lblPais.
         /// </summary>
         /// <remarks>
@@ -231,6 +267,24 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.TextBox TBDireccion;
 
         /// <summary>
+        /// Control lblRol.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblRol;
+
+        /// <summary>
+        /// Control ddlRol.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRol;
+
+        /// <summary>
         /// Control lblUsuario.
         /// </summary>
         /// <remarks>
@@ -249,31 +303,13 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.TextBox TBUsuario;
 
         /// <summary>
-        /// Control txtPassword.
+        /// Control TBContrasena.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
-
-        /// <summary>
-        /// Control Label8.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label8;
-
-        /// <summary>
-        /// Control ddlRol.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRol;
+        protected global::System.Web.UI.WebControls.TextBox TBContrasena;
 
         /// <summary>
         /// Control BtnSave.

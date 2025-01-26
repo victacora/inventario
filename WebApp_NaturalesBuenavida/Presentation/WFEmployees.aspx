@@ -6,12 +6,14 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:ScriptManager ID="ScriptManager" runat="server" />
     <h2 class="text-center main-title">Lista de Empleados</h2>
     <div class="container mt-4 bg-white border rounded p-3">
         <%--Formulario para añadir o actualizar empleado--%>
         <%-- Id Empleado --%>
         <asp:HiddenField ID="HFEmployeeID" runat="server" />
-
+        <asp:HiddenField ID="HFPersonID" runat="server" />
+        <asp:HiddenField ID="HFUsuID" runat="server" />
         <div class="mt-3 text-center">
             <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
         </div>
@@ -23,8 +25,6 @@
                         <asp:DropDownList ID="ddlTipoDocumento" CssClass="form-select" runat="server">
                         </asp:DropDownList>
                     </div>
-
-                    <%-- Datos --%>
                     <div class="mb-3">
                         <asp:Label ID="lblIdentificacion" runat="server" CssClass="form-label fw-bold" Text="Identificación"></asp:Label>
                         <asp:TextBox ID="TBEmployeeId" CssClass="form-control" runat="server"></asp:TextBox>
@@ -53,48 +53,49 @@
                     <div class="mb-3">
                         <asp:Label ID="Label7" runat="server" CssClass="form-label fw-bold" Text="Estado"></asp:Label>
                         <asp:DropDownList ID="ddlStatus" CssClass="form-select" runat="server">
-                            <asp:ListItem Text="Activo" Value="Activo"></asp:ListItem>
+                            <asp:ListItem Text="Activo" Value="Activo" Selected="True"></asp:ListItem>
                             <asp:ListItem Text="Inactivo" Value="Inactivo"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                 </div>
                 <div class="col-md-6 border rounded p-1">
-                    <div class="mb-3">
-                        <asp:Label ID="lblPais" runat="server" CssClass="form-label fw-bold" Text="Pais"></asp:Label>
-                        <asp:DropDownList ID="ddlPais" CssClass="form-select" runat="server">
-                        </asp:DropDownList>
-                    </div>
-                    <div class="mb-3">
-                        <asp:Label ID="lblDep" runat="server" CssClass="form-label fw-bold" Text="Departamento"></asp:Label>
-                        <asp:DropDownList ID="ddlDepartamento" CssClass="form-select" runat="server">
-                        </asp:DropDownList>
-                    </div>
-                    <div class="mb-3">
-                        <asp:Label ID="lblCiudad" runat="server" CssClass="form-label fw-bold" Text="Ciudad"></asp:Label>
-                        <asp:DropDownList ID="ddlCiudad" CssClass="form-select" runat="server">
-                        </asp:DropDownList>
-                    </div>
-                    <div class="mb-3">
-                        <asp:Label ID="lblDireccion" runat="server" CssClass="form-label fw-bold" Text="Direccion"></asp:Label>
-                        <asp:TextBox ID="TBDireccion" CssClass="form-control" runat="server"></asp:TextBox>
-                    </div>
-                    <div class="mb-3">
-                        <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">usuario</asp:Label>
-                        <asp:TextBox ID="TBUsuario" runat="server" CssClass="form-control"></asp:TextBox>
-                        <!--<a href="#" class="small d-block mt-1">¿Olvidaste tu contraseña?</a> -->
-                    </div>
+                    <asp:UpdatePanel ID="UpdatePanel" runat="server">
+                        <ContentTemplate>
+                            <div class="mb-3">
+                                <asp:Label ID="lblPais" runat="server" CssClass="form-label fw-bold" Text="Pais"></asp:Label>
+                                <asp:DropDownList ID="ddlPais" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlPais_SelectedIndexChanged" runat="server">
+                                </asp:DropDownList>
+                            </div>
+                            <div class="mb-3">
+                                <asp:Label ID="lblDep" runat="server" CssClass="form-label fw-bold" Text="Departamento"></asp:Label>
+                                <asp:DropDownList ID="ddlDepartamento" CssClass="form-select" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlDepartamento_SelectedIndexChanged">
+                                </asp:DropDownList>
+                            </div>
+                            <div class="mb-3">
+                                <asp:Label ID="lblCiudad" runat="server" CssClass="form-label fw-bold" Text="Ciudad"></asp:Label>
+                                <asp:DropDownList ID="ddlCiudad" CssClass="form-select" runat="server">
+                                </asp:DropDownList>
+                            </div>
+                            <div class="mb-3">
+                                <asp:Label ID="lblDireccion" runat="server" CssClass="form-label fw-bold" Text="Direccion"></asp:Label>
+                                <asp:TextBox ID="TBDireccion" CssClass="form-control" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="mb-3">
+                                <asp:Label ID="lblRol" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
+                                <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
+                                </asp:DropDownList>
+                            </div>
+                            <div class="mb-3">
+                                <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">usuario</asp:Label>
+                                <asp:TextBox ID="TBUsuario" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
 
-                    <div class="mb-3">
-                        <asp:Label runat="server" for="txtPassword" class="form-label fw-bold">Contraseña</asp:Label>
-                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
-                        <!--<a href="#" class="small d-block mt-1">¿Olvidaste tu contraseña?</a> -->
-                    </div>
-
-                    <div class="mb-3">
-                        <asp:Label ID="Label8" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
-                        <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
-                        </asp:DropDownList>
-                    </div>
+                            <div class="mb-3">
+                                <asp:Label runat="server" for="txtPassword" class="form-label fw-bold">Contraseña</asp:Label>
+                                <asp:TextBox ID="TBContrasena" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                            </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
                 </div>
             </div>
             <%-- Botones Guardar y Actualizar --%>
@@ -112,17 +113,23 @@
                 <tr>
                     <th>Person ID</th>
                     <th>ID</th>
+                    <th>Tipo documento ID</th>
                     <th>Tipo documento</th>
                     <th>Identificación</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Teléfono</th>
                     <th>Email</th>
+                    <th>Pais Id</th>
                     <th>Pais</th>
+                    <th>Departamento Id</th>
                     <th>Departamento</th>
+                    <th>Ciudad Id</th>
                     <th>Ciudad</th>
+                    <th>Direccion</th>
                     <th>Usuario id</th>
                     <th>Usuario</th>
+                    <th>Contraseña</th>
                     <th>Fecha registro</th>
                     <th>Rol id</th>
                     <th>Rol</th>
@@ -157,17 +164,23 @@
                 "columns": [
                     { "data": "PersonaID", visible: false },
                     { "data": "EmployeeID" },
-                    { "data": "TipoDocumentoID" },
+                    { "data": "TipoDocumentoID", visible: false },
+                    { "data": "TipoDocumento" },
                     { "data": "Identification" },
                     { "data": "FirstName" },
                     { "data": "LastName" },
                     { "data": "Phone" },
                     { "data": "Email" },
+                    { "data": "PaisId", visible: false },
                     { "data": "Pais" },
+                    { "data": "DepartamentoId", visible: false },
                     { "data": "Departamento" },
+                    { "data": "CiudadId", visible: false },
                     { "data": "Ciudad" },
+                    { "data": "Direccion", visible: false },
                     { "data": "UsuId", visible: false },
                     { "data": "Usuario" },
+                    { "data": "Contrasena", visible: false },
                     { "data": "Registro" },
                     { "data": "RolId", visible: false },
                     { "data": "Rol" },
@@ -175,8 +188,8 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.EmployeeID}">Editar</button>
-                                    <button class="delete-btn" data-id="${row.EmployeeID}">Eliminar</button>`;
+                            return `<button class="edit-btn" type="button" data-id="${row.EmployeeID}">Editar</button>
+                                    <button class="delete-btn" type="button"  data-id="${row.EmployeeID}">Eliminar</button>`;
                         }
                     }
                 ],
@@ -213,12 +226,23 @@
 
         // Función para cargar los datos seleccionado
         function loadEmployeeData(rowData) {
+            $('#<%= HFPersonID.ClientID %>').val(rowData.PersonaID);
             $('#<%= HFEmployeeID.ClientID %>').val(rowData.EmployeeID);
+            $('#<%= ddlTipoDocumento.ClientID %>').val(rowData.TipoDocumentoID);
             $('#<%= TBEmployeeId.ClientID %>').val(rowData.Identification);
             $('#<%= TBEmployeeName.ClientID %>').val(rowData.FirstName);
             $('#<%= TBEmployeeLastName.ClientID %>').val(rowData.LastName);
             $('#<%= TBEmployeePhone.ClientID %>').val(rowData.Phone);
             $('#<%= TBEmployeeEmail.ClientID %>').val(rowData.Email);
+            $('#<%= ddlPais.ClientID %>').val(rowData.PaisId).change();
+            $('#<%= ddlDepartamento.ClientID %>').val(rowData.DepartamentoId).change();
+            $('#<%= ddlCiudad.ClientID %>').val(rowData.CiudadId);
+            $('#<%= HFUsuID.ClientID %>').val(rowData.UsuId);
+            $('#<%= TBUsuario.ClientID %>').val(rowData.Usuario);
+            $('#<%= TBContrasena.ClientID %>').val(rowData.Contrasena);
+            $('#<%= TBDireccion.ClientID %>').val(rowData.Direccion);
+            $('#<%= ddlRol.ClientID %>').val(rowData.RolId);
+            $('#<%= ddlStatus.ClientID %>').val(rowData.Estado);
         }
 
         // Función para eliminar un empleado

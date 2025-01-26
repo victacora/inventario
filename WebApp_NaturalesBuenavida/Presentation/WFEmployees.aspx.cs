@@ -67,7 +67,7 @@ namespace Presentation
             ddlPais.DataBind();
             ddlPais.Items.Insert(0, new ListItem("-- Seleccione el pais --", "0"));
         }
-        
+
         protected void ddlPais_SelectedIndexChanged(object sender, EventArgs e)
         {
             int paisId = int.Parse(ddlPais.SelectedValue);
@@ -84,7 +84,7 @@ namespace Presentation
 
         private void LoadDepartamentos(int paisId)
         {
-            DataTable departments =objDepartamento.ShowDepartamentosDDL(paisId).Tables[0];
+            DataTable departments = objDepartamento.ShowDepartamentosDDL(paisId).Tables[0];
             ddlDepartamento.DataSource = departments;
             ddlDepartamento.DataTextField = "departamento";
             ddlDepartamento.DataValueField = "id";
@@ -135,7 +135,7 @@ namespace Presentation
                 {
                     PersonaID = row["PersonaID"],
                     EmployeeID = row["EmpleadoID"],
-                    TipoDocumentoID= row["TipoDocumentoID"],
+                    TipoDocumentoID = row["TipoDocumentoID"],
                     TipoDocumento = row["TipoDocumento"],
                     Identification = row["Identificacion"],
                     PaisId = row["PaisId"],
@@ -185,6 +185,14 @@ namespace Presentation
             TBEmployeeLastName.Text = "";
             TBEmployeePhone.Text = "";
             TBEmployeeEmail.Text = "";
+            TBDireccion.Text = "";
+            TBUsuario.Text = "";
+            TBContrasena.Text = "";
+            ddlTipoDocumento.SelectedValue = "";
+            ddlRol.SelectedValue = "";
+            ddlPais.SelectedValue = "";
+            ddlDepartamento.SelectedValue = "";
+            ddlCiudad.SelectedValue = "";
         }
 
         // Método para guardar un nuevo empleado

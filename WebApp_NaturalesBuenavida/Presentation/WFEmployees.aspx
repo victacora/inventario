@@ -76,26 +76,26 @@
                                 <asp:DropDownList ID="ddlCiudad" CssClass="form-select" runat="server">
                                 </asp:DropDownList>
                             </div>
-                            <div class="mb-3">
-                                <asp:Label ID="lblDireccion" runat="server" CssClass="form-label fw-bold" Text="Direccion"></asp:Label>
-                                <asp:TextBox ID="TBDireccion" CssClass="form-control" runat="server"></asp:TextBox>
-                            </div>
-                            <div class="mb-3">
-                                <asp:Label ID="lblRol" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
-                                <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
-                                </asp:DropDownList>
-                            </div>
-                            <div class="mb-3">
-                                <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">usuario</asp:Label>
-                                <asp:TextBox ID="TBUsuario" runat="server" CssClass="form-control"></asp:TextBox>
-                            </div>
-
-                            <div class="mb-3">
-                                <asp:Label runat="server" for="txtPassword" class="form-label fw-bold">Contraseña</asp:Label>
-                                <asp:TextBox ID="TBContrasena" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
-                            </div>
                         </ContentTemplate>
                     </asp:UpdatePanel>
+                    <div class="mb-3">
+                        <asp:Label ID="lblDireccion" runat="server" CssClass="form-label fw-bold" Text="Direccion"></asp:Label>
+                        <asp:TextBox ID="TBDireccion" CssClass="form-control" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="mb-3">
+                        <asp:Label ID="lblRol" runat="server" CssClass="form-label fw-bold" Text="Rol"></asp:Label>
+                        <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="mb-3">
+                        <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">usuario</asp:Label>
+                        <asp:TextBox ID="TBUsuario" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
+
+                    <div class="mb-3">
+                        <asp:Label runat="server" for="txtPassword" class="form-label fw-bold">Contraseña</asp:Label>
+                        <asp:TextBox ID="TBContrasena" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                    </div>
                 </div>
             </div>
             <%-- Botones Guardar y Actualizar --%>
@@ -226,6 +226,7 @@
 
         // Función para cargar los datos seleccionado
         function loadEmployeeData(rowData) {
+            console.log('', rowData)
             $('#<%= HFPersonID.ClientID %>').val(rowData.PersonaID);
             $('#<%= HFEmployeeID.ClientID %>').val(rowData.EmployeeID);
             $('#<%= ddlTipoDocumento.ClientID %>').val(rowData.TipoDocumentoID);
@@ -235,8 +236,12 @@
             $('#<%= TBEmployeePhone.ClientID %>').val(rowData.Phone);
             $('#<%= TBEmployeeEmail.ClientID %>').val(rowData.Email);
             $('#<%= ddlPais.ClientID %>').val(rowData.PaisId).change();
-            $('#<%= ddlDepartamento.ClientID %>').val(rowData.DepartamentoId).change();
-            $('#<%= ddlCiudad.ClientID %>').val(rowData.CiudadId);
+            setTimeout(function () {
+                $('#<%= ddlDepartamento.ClientID %>').val(rowData.DepartamentoId).change();
+            }, 500);
+            setTimeout(function () {
+                $('#<%= ddlCiudad.ClientID %>').val(rowData.CiudadId);
+            }, 1000);
             $('#<%= HFUsuID.ClientID %>').val(rowData.UsuId);
             $('#<%= TBUsuario.ClientID %>').val(rowData.Usuario);
             $('#<%= TBContrasena.ClientID %>').val(rowData.Contrasena);

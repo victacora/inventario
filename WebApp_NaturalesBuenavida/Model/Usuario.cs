@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Model
 {
@@ -12,6 +13,16 @@ namespace Model
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
 
-        public List<string> Privilegios { get; set; }  
+        public List<string> Privilegios { get; set; }
+    }
+
+    public enum TipoUsuario
+    {
+        [Description("Empleado")]
+        Empleado = 1,
+        [Description("Cliente")]
+        Cliente = 2,
+        [Description("Proveedor")]
+        Proveedor = 3,
     }
 }

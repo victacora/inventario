@@ -1,135 +1,167 @@
 ﻿using Logic;
 using Microsoft.Win32;
+using Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Web;
 using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Presentation
 {
     public partial class WFSuppliers : System.Web.UI.Page
     {
-        // Instancio un objeto de la capa lógica para interactuar con los datos de las unidades de medida.
+        private static SupplierLog objSupplier = new SupplierLog();
+        private static PersonLog objPerson = new PersonLog();
+        private static TypeDocumentLog objTypeDocument = new TypeDocumentLog();
+        private static PaisLog objCountry = new PaisLog();
+        private static DepartamentoLog objDepartamento = new DepartamentoLog();
+        private static CiudadLog objCiudad = new CiudadLog();
 
-        UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Verifico si no es una recarga de la página (no es un postback).
-            if (!IsPostBack)
+            if (!Page.IsPostBack)
             {
-                // aqui Inicialización si es necesario (ejemplo: cargar listas, valores predeterminados, etc.)
+                LoadTipoDocumentos();
+                LoadPaises();
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Proveedores).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 
-        [WebMethod]
-        // Método estático que se invoca desde JavaScript para obtener las unidades de medida.
-
-        public static object ListUnits()
+        private void LoadTipoDocumentos()
         {
-            // Creo una instancia de la clase lógica para acceder a la base de datos.
-            UnitMeasureLog unitMeasureLog = new UnitMeasureLog();
-            // Llamo al método ShowUnits para obtener los datos de las unidades de medida.
-            var unitData = unitMeasureLog.ShowUnits(); // Retorna un DataSet
-
-            List<object> unitList = new List<object>(); // Creo una lista para almacenar las unidades de medida.
-
-
-            if (unitData.Tables.Count > 0) // Verifico si el DataSet tiene alguna tabla.
-            {
-                // Itero sobre las filas de la primera tabla (las unidades de medida).
-                foreach (System.Data.DataRow row in unitData.Tables[0].Rows)
-                {  
-                    // Agrego cada unidad a la lista de objetos.
-                    unitList.Add(new
-                    {
-                        und_id = row["und_id"],
-                        und_descripcion = row["und_descripcion"]
-                    });
-                }
-            }
-
-            return new // Retorno un objeto con los datos necesarios para mostrar en la tabla.
-            {
-                draw = 1,
-                recordsTotal = unitList.Count, // Total de registros.
-                recordsFiltered = unitList.Count, //Registros filtrados(en este caso, es el mismo número).
-
-                data = unitList // Datos 
-            };
+            DataTable paises = objTypeDocument.showTypesDocumentDDL().Tables[0];
+            ddlTipoDocumento.DataSource = paises;
+            ddlTipoDocumento.DataTextField = "TipoDocumento";
+            ddlTipoDocumento.DataValueField = "Id";
+            ddlTipoDocumento.DataBind();
+            ddlTipoDocumento.Items.Insert(0, new ListItem("-- Seleccione el tipo de documento --", ""));
         }
 
-        protected void BtnSave_Click(object sender, EventArgs e)
+        private void LoadPaises()
         {
-            // Obtengo el nombre de la unidad desde el TextBox.
-            string unitName = TBUnitName.Text;
+            DataTable paises = objCountry.ShowPaisDDL().Tables[0];
+            ddlPais.DataSource = paises;
+            ddlPais.DataTextField = "pais";
+            ddlPais.DataValueField = "id";
+            ddlPais.DataBind();
+            ddlPais.Items.Insert(0, new ListItem("-- Seleccione el pais --", ""));
+        }
 
-            bool executed = unitMeasureLog.SaveUnit(unitName);// Llamo al método SaveUnit para guardar la unidad de medida.
-
-            if (executed)// Verifico si la operación fue exitosa y muestro un mensaje.
+        protected void ddlPais_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int paisId = int.Parse(ddlPais.SelectedValue);
+            if (paisId > 0)
             {
-                LblMsg.Text = "Unidad de medida guardada exitosamente.";
-                ClearFields();
+                LoadDepartamentos(paisId);
             }
             else
             {
-                LblMsg.Text = "Error al guardar la unidad de medida.";
+                ddlDepartamento.Items.Clear();
+                ddlCiudad.Items.Clear();
             }
         }
 
-        protected void BtnUpdate_Click(object sender, EventArgs e)
+        private void LoadDepartamentos(int paisId)
         {
-            if (string.IsNullOrEmpty(HFUnitID.Value))// Verifico que se haya seleccionado una unidad para actualizar.
+            DataTable departments = objDepartamento.ShowDepartamentosDDL(paisId).Tables[0];
+            ddlDepartamento.DataSource = departments;
+            ddlDepartamento.DataTextField = "departamento";
+            ddlDepartamento.DataValueField = "id";
+            ddlDepartamento.DataBind();
+            ddlDepartamento.Items.Insert(0, new ListItem("-- Seleccione el departamento --", ""));
+        }
+
+        protected void ddlDepartamento_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int departmentId = int.Parse(ddlDepartamento.SelectedValue);
+            if (departmentId > 0)
             {
-                LblMsg.Text = "No se ha seleccionado la unidad para actualizar.";
-                return;
-            }
-
-            int unitId = Convert.ToInt32(HFUnitID.Value);// Obtengo el ID de la unidad a actualizar desde el HiddenField.
-
-            string unitName = TBUnitName.Text;// Obtengo el nuevo nombre de la unidad desde el TextBox.
-
-            if (string.IsNullOrWhiteSpace(unitName)) // Verifico que el nombre no esté vacío.
-            {
-                LblMsg.Text = "El nombre de la unidad no puede estar vacío.";
-                return;
-            }
-
-            bool executed = unitMeasureLog.UpdateUnit(unitId, unitName);// Llamo al método Almacenado.
-
-            if (executed)// Verifico si la operación fue exitosa 
-            {
-                LblMsg.Text = "La unidad de medida se actualizó exitosamente!";
-                ClearFields();
+                LoadCiudades(departmentId);
             }
             else
             {
-                LblMsg.Text = "Error al actualizar la unidad de medida.";
+                ddlCiudad.Items.Clear();
             }
         }
 
-        protected void BtnClear_Click(object sender, EventArgs e)
+        private void LoadCiudades(int departmentId)
         {
-            ClearFields();// Limpio los campos.
+            DataTable cities = objCiudad.ShowCiudadesDDL(departmentId).Tables[0];
+            ddlCiudad.DataSource = cities;
+            ddlCiudad.DataTextField = "ciudad";
+            ddlCiudad.DataValueField = "id";
+            ddlCiudad.DataBind();
+            ddlCiudad.Items.Insert(0, new ListItem("-- Seleccione una ciudad --", ""));
         }
+
+
+        // WebMethod para listar los empleados
         [WebMethod]
-        public static AjaxResponse DeleteUnit(int unitId)
+        public static object ListSuppliers()
+        {
+            SupplierLog objSupplier = new SupplierLog();
+
+            // Obtener el DataSet con los datos de los empleados desde la base de datos
+            var dataSet = objSupplier.ShowSupplier();
+
+            // Crear una lista de objetos para almacenar los empleados que se devolverán
+            var clientsList = new List<object>();
+
+            // Iterar sobre cada fila del DataSet
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                clientsList.Add(new
+                {
+                    ProveedorID = row["ProveedorID"],
+                    PersonaID = row["PersonaID"],
+                    TipoDocumentoID = row["TipoDocumentoID"],
+                    TipoDocumento = row["TipoDocumento"],
+                    Identification = row["Identificacion"],
+                    PaisId = row["PaisId"],
+                    Pais = row["Pais"],
+                    DepartamentoId = row["DepartamentoId"],
+                    Departamento = row["Departamento"],
+                    CiudadId = row["CiudadId"],
+                    Ciudad = row["Ciudad"],
+                    Direccion = row["Direccion"],
+                    FirstName = row["Nombre"],
+                    LastName = row["Apellido"],
+                    Phone = row["Telefono"],
+                    Email = row["Correo"]
+                });
+            }
+
+            // Devolver los datos en formato JSON
+            return new { data = clientsList };
+        }
+
+        // WebMethod para eliminar un cliente
+        [WebMethod]
+        public static AjaxResponse DeleteSupplier(int idProveedor, int idPersona)
         {
             AjaxResponse response = new AjaxResponse();
             try
             {
                 // Creo un objeto de respuesta para devolver al cliente.
-                UnitMeasureLog unitMeasureLog = new UnitMeasureLog();// Llamo a la capa lógica para eliminar la unidad.
-                bool executed = unitMeasureLog.DeleteUnit(unitId); // Llama a tu método de eliminación
+                bool executed = objSupplier.DeleteSupplier(idProveedor, idPersona);
 
                 if (executed) // Verifico si la eliminación fue exitosa
                 {
                     response.Success = true;
-                    response.Message = "Unidad eliminada correctamente.";
+                    response.Message = "Proveedor eliminado correctamente.";
                 }
                 else
                 {
                     response.Success = false;
-                    response.Message = "Error al eliminar la unidad.";
+                    response.Message = "Error al eliminar el proveedor.";
                 }
             }
             catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
@@ -139,21 +171,98 @@ namespace Presentation
             }
 
             return response; 
+
         }
 
-        // Clase AjaxResponse para estructurar la respuesta de la llamada AJAX
-        public class AjaxResponse// Clase para estructurar la respuesta que se enviará al cliente.
+
+        // Método para limpiar los campos
+        private void clear()
         {
-            public bool Success { get; set; }// Indica si la operación fue exitosa.
-            public string Message { get; set; }// Mensaje con el resultado de la operación.
-
+            HFSupplierID.Value = "";
+            HFPersonID.Value = "";
+            TBSupplierId.Text = "";
+            TBSupplierName.Text = "";
+            TBSupplierLastName.Text = "";
+            TBSupplierPhone.Text = "";
+            TBSupplierEmail.Text = "";
+            TBDireccion.Text = "";
+            ddlTipoDocumento.SelectedValue = "";
+            ddlPais.SelectedValue = "";
+            ddlDepartamento.SelectedValue = "";
+            ddlCiudad.SelectedValue = "";
         }
 
-        private void ClearFields()
+        // Método para guardar un nuevo cliente
+        protected void BtnSave_Click(object sender, EventArgs e)
         {
-            HFUnitID.Value = string.Empty;  // Limpio el HiddenField con el ID de la unidad.
-            TBUnitName.Text = string.Empty; // Limpio el TextBox con el nombre de la unidad.
-            LblMsg.Text = string.Empty;  // Limpio el mensaje de la etiqueta.
+
+            bool isSaved = objPerson.InsertPersona(
+                TBSupplierId.Text,
+                TBSupplierName.Text,
+                TBSupplierLastName.Text,
+                TBSupplierPhone.Text,
+                TBDireccion.Text,
+                TBSupplierEmail.Text,
+                !ddlTipoDocumento.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlTipoDocumento.SelectedValue) : 0,
+                !ddlCiudad.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlCiudad.SelectedValue) : 0,
+                "",
+                "",
+                "",
+                0,
+               (int)TipoUsuario.Proveedor
+            );
+
+            if (isSaved)
+            {
+                LblMsg.Text = "Proveedor guardado exitosamente.";
+                LblMsg.CssClass = "text-success fw-bold";
+                clear(); // Limpiar los campos
+            }
+            else
+            {
+                LblMsg.Text = "Ocurrio un error almacenando el cliente. Verifique que el numero de documento o correo no se encuentren duplicados.";
+                LblMsg.CssClass = "text-danger fw-bold";
+            }
         }
+
+        // Método para actualizar un cliente
+        protected void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            bool isUpdated = objPerson.UpdatePersona(TBSupplierId.Text,
+                TBSupplierName.Text,
+                TBSupplierLastName.Text,
+                TBSupplierPhone.Text,
+                TBDireccion.Text,
+                TBSupplierEmail.Text,
+                !ddlTipoDocumento.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlTipoDocumento.SelectedValue) : 0,
+                !ddlCiudad.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlCiudad.SelectedValue) : 0,
+               "",
+               "",
+                "",
+                0,
+               (int)TipoUsuario.Proveedor,
+                0,
+               Convert.ToInt32(HFPersonID.Value)
+               );
+
+            if (isUpdated)
+            {
+                LblMsg.Text = "Proveedor actualizado exitosamente!";
+                LblMsg.CssClass = "text-success fw-bold";
+                clear(); // Limpiar los campos
+            }
+            else
+            {
+                LblMsg.CssClass = "text-danger fw-bold";
+                LblMsg.Text = "Error al actualizar el cliente. Verifique que el numero de documento o correo no se encuentren duplicados.";
+            }
+        }
+
+        // Método para limpiar los campos
+        protected void BtbClear_Click(object sender, EventArgs e)
+        {
+            clear();
+        }
+
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Logic;
+using Microsoft.Win32;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -12,181 +13,256 @@ namespace Presentation
 {
     public partial class WFClient : System.Web.UI.Page
     {
-        ClientLog objClient = new ClientLog();
-        PersonLog objPerson = new PersonLog();
+        private static ClientLog objClient = new ClientLog();
+        private static PersonLog objPerson = new PersonLog();
+        private static TypeDocumentLog objTypeDocument = new TypeDocumentLog();
+        private static PaisLog objCountry = new PaisLog();
+        private static DepartamentoLog objDepartamento = new DepartamentoLog();
+        private static CiudadLog objCiudad = new CiudadLog();
 
-        private int _id;
-        private bool executed = false;
-        private int _fkPerson;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack) { 
-                showPersonDDL();
+            if (!Page.IsPostBack)
+            {
+                LoadTipoDocumentos();
+                LoadPaises();
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Clientes).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 
-        /*
-         * Atributo [WebMethod] en ASP.NET, permite que el método sea expuesto como 
-         * parte de un servicio web, lo que significa que puede ser invocado de manera
-         * remota a través de HTTP.
-         */
+        private void LoadTipoDocumentos()
+        {
+            DataTable paises = objTypeDocument.showTypesDocumentDDL().Tables[0];
+            ddlTipoDocumento.DataSource = paises;
+            ddlTipoDocumento.DataTextField = "TipoDocumento";
+            ddlTipoDocumento.DataValueField = "Id";
+            ddlTipoDocumento.DataBind();
+            ddlTipoDocumento.Items.Insert(0, new ListItem("-- Seleccione el tipo de documento --", ""));
+        }
+
+        private void LoadPaises()
+        {
+            DataTable paises = objCountry.ShowPaisDDL().Tables[0];
+            ddlPais.DataSource = paises;
+            ddlPais.DataTextField = "pais";
+            ddlPais.DataValueField = "id";
+            ddlPais.DataBind();
+            ddlPais.Items.Insert(0, new ListItem("-- Seleccione el pais --", ""));
+        }
+
+        protected void ddlPais_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int paisId = int.Parse(ddlPais.SelectedValue);
+            if (paisId > 0)
+            {
+                LoadDepartamentos(paisId);
+            }
+            else
+            {
+                ddlDepartamento.Items.Clear();
+                ddlCiudad.Items.Clear();
+            }
+        }
+
+        private void LoadDepartamentos(int paisId)
+        {
+            DataTable departments = objDepartamento.ShowDepartamentosDDL(paisId).Tables[0];
+            ddlDepartamento.DataSource = departments;
+            ddlDepartamento.DataTextField = "departamento";
+            ddlDepartamento.DataValueField = "id";
+            ddlDepartamento.DataBind();
+            ddlDepartamento.Items.Insert(0, new ListItem("-- Seleccione el departamento --", ""));
+        }
+
+        protected void ddlDepartamento_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int departmentId = int.Parse(ddlDepartamento.SelectedValue);
+            if (departmentId > 0)
+            {
+                LoadCiudades(departmentId);
+            }
+            else
+            {
+                ddlCiudad.Items.Clear();
+            }
+        }
+
+        private void LoadCiudades(int departmentId)
+        {
+            DataTable cities = objCiudad.ShowCiudadesDDL(departmentId).Tables[0];
+            ddlCiudad.DataSource = cities;
+            ddlCiudad.DataTextField = "ciudad";
+            ddlCiudad.DataValueField = "id";
+            ddlCiudad.DataBind();
+            ddlCiudad.Items.Insert(0, new ListItem("-- Seleccione una ciudad --", ""));
+        }
+
+
+        // WebMethod para listar los empleados
         [WebMethod]
         public static object ListClients()
         {
             ClientLog objClient = new ClientLog();
 
-            // Se obtiene un DataSet que contiene la lista de clientes desde la base de datos.
+            // Obtener el DataSet con los datos de los empleados desde la base de datos
             var dataSet = objClient.showClient();
 
-            // Se crea una lista para almacenar los productos que se van a devolver.
+            // Crear una lista de objetos para almacenar los empleados que se devolverán
             var clientsList = new List<object>();
 
-            // Se itera sobre cada fila del DataSet (que representa un cliente).
+            // Iterar sobre cada fila del DataSet
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 clientsList.Add(new
                 {
                     ClienteID = row["ClienteID"],
-                    Identificacion = row["Identificacion"],
-                    Nombre = row["Nombre"],
-                    Apellido = row["Apellido"],
-                    Telefono = row["Telefono"],
-                    Email = row["Email"]
+                    PersonaID = row["PersonaID"],
+                    TipoDocumentoID = row["TipoDocumentoID"],
+                    TipoDocumento = row["TipoDocumento"],
+                    Identification = row["Identificacion"],
+                    PaisId = row["PaisId"],
+                    Pais = row["Pais"],
+                    DepartamentoId = row["DepartamentoId"],
+                    Departamento = row["Departamento"],
+                    CiudadId = row["CiudadId"],
+                    Ciudad = row["Ciudad"],
+                    Direccion = row["Direccion"],
+                    FirstName = row["Nombre"],
+                    LastName = row["Apellido"],
+                    Phone = row["Telefono"],
+                    Email = row["Correo"]
                 });
             }
 
-            // Devuelve un objeto en formato JSON que contiene la lista de productos.
+            // Devolver los datos en formato JSON
             return new { data = clientsList };
         }
 
+        // WebMethod para eliminar un cliente
         [WebMethod]
-        public static bool DeleteClient(int id)
+        public static AjaxResponse DeleteClient(int idCliente, int idPersona)
         {
-            // Crear una instancia de la clase de lógica de productos
-            ClientLog objClient = new ClientLog();
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = objClient.deleteClient(idCliente, idPersona);
 
-            // Invocar al método para eliminar el producto y devolver el resultado
-            return objClient.deleteClient(id);
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Cliente eliminado correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar el cliente.";
+                }
+            }
+            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
+            {
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response; 
+
         }
 
 
-        //private void showClient()
-        //{
-        //    DataSet objData = new DataSet();
-        //    objData = objClient.showClient();
-        //    GVClient.DataSource = objData;
-        //    GVClient.DataBind();
-        //}
-
-        //Metodo para mostrar las personas en el DDL que está en cliente
-        private void showPersonDDL()
-        {
-            DDLPerson.DataSource = objPerson.ShowPersonasDDL();
-            DDLPerson.DataValueField = "Id";//Nombre de la llave primaria
-            DDLPerson.DataTextField = "NombreCompleto";
-            DDLPerson.DataBind();
-            DDLPerson.Items.Insert(0, "---- Seleccione una persona ----");
-        }
-
-        //Metodo para limpiar los TextBox y los DDL
+        // Método para limpiar los campos
         private void clear()
         {
             HFClientID.Value = "";
-            DDLPerson.SelectedIndex = 0;
-            TBIdPersona.Text = "";
-            TBNamePerson.Text = "";
-            TBLastNamePerson.Text = "";
-            TBPhonePerson.Text = "";
-            TBEmailPerson.Text = "";
-            LblMsg.Text = "";
+            HFPersonID.Value = "";
+            TBClientId.Text = "";
+            TBClientName.Text = "";
+            TBClientLastName.Text = "";
+            TBClientPhone.Text = "";
+            TBClientEmail.Text = "";
+            TBDireccion.Text = "";
+            ddlTipoDocumento.SelectedValue = "";
+            ddlPais.SelectedValue = "";
+            ddlDepartamento.SelectedValue = "";
+            ddlCiudad.SelectedValue = "";
         }
 
-        protected void GVClient_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void GVClient_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-
-        }
-
+        // Método para guardar un nuevo cliente
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            //_fkPerson = Convert.ToInt32(DDLPerson.SelectedValue);
 
-            //executed = objClient.saveClient(_fkPerson);
-
-            //if (executed)
-            //{
-            //    LblMsg.Text = "El producto se guardo exitosamente!";
-            //    clear();//Se invoca el metodo para limpiar los campos 
-            //}
-            //else
-            //{
-            //    LblMsg.Text = "Error al guardar";
-            //}
-
-            int personId = Convert.ToInt32(DDLPerson.SelectedValue); // Asume que tienes un DropDownList de personas
-
-            bool isSaved = objClient.saveClient(personId);
+            bool isSaved = objPerson.InsertPersona(
+                TBClientId.Text,
+                TBClientName.Text,
+                TBClientLastName.Text,
+                TBClientPhone.Text,
+                TBDireccion.Text,
+                TBClientEmail.Text,
+                !ddlTipoDocumento.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlTipoDocumento.SelectedValue) : 0,
+                !ddlCiudad.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlCiudad.SelectedValue) : 0,
+                "",
+                "",
+                "",
+                0,
+               (int)TipoUsuario.Cliente
+            );
 
             if (isSaved)
             {
                 LblMsg.Text = "Cliente guardado exitosamente.";
-                clear();
+                LblMsg.CssClass = "text-success fw-bold";
+                clear(); // Limpiar los campos
             }
             else
             {
-                LblMsg.Text = "Esta persona ya está registrada como cliente.";
+                LblMsg.Text = "Ocurrio un error almacenando el cliente. Verifique que el numero de documento o correo no se encuentren duplicados.";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
+        // Método para actualizar un cliente
         protected void BtnUpdate_Click(object sender, EventArgs e)
         {
-            // Verifica si se ha seleccionado un producto para actualizar
-            if (string.IsNullOrEmpty(HFClientID.Value))
-            {
-                LblMsg.Text = "No se ha seleccionado un cliente para actualizar.";
-                return;
-            }
-            _id = Convert.ToInt32(HFClientID.Value);
-            _fkPerson = Convert.ToInt32(DDLPerson.SelectedValue);
+            bool isUpdated = objPerson.UpdatePersona(TBClientId.Text,
+                TBClientName.Text,
+                TBClientLastName.Text,
+                TBClientPhone.Text,
+                TBDireccion.Text,
+                TBClientEmail.Text,
+                !ddlTipoDocumento.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlTipoDocumento.SelectedValue) : 0,
+                !ddlCiudad.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlCiudad.SelectedValue) : 0,
+               "",
+               "",
+                "",
+                0,
+               (int)TipoUsuario.Cliente,
+                0,
+               Convert.ToInt32(HFPersonID.Value)
+               );
 
-            executed = objClient.updateClient(_id, _fkPerson);
-
-            if (executed)
+            if (isUpdated)
             {
-                LblMsg.Text = "El cliente se actualizo exitosamente!";
-                clear(); //Se invoca el metodo para limpiar los campos 
+                LblMsg.Text = "Cliente actualizado exitosamente!";
+                LblMsg.CssClass = "text-success fw-bold";
+                clear(); // Limpiar los campos
             }
             else
             {
-                LblMsg.Text = "Error al actualizar";
+                LblMsg.CssClass = "text-danger fw-bold";
+                LblMsg.Text = "Error al actualizar el cliente. Verifique que el numero de documento o correo no se encuentren duplicados.";
             }
         }
 
+        // Método para limpiar los campos
         protected void BtbClear_Click(object sender, EventArgs e)
         {
             clear();
         }
 
-        [WebMethod]
-        public static object GetPersonData(int personId)
-        {
-            PersonLog objPerson = new PersonLog();
-            DataRow personData = objPerson.GetPersonById(personId).Tables[0].Rows[0];
-
-            var person = new
-            {
-                Identificacion = personData["Identificacion"].ToString(),
-                Nombre = personData["Nombre"].ToString(),
-                Apellido = personData["Apellido"].ToString(),
-                Telefono = personData["Telefono"].ToString(),
-                Email = personData["Email"].ToString()
-            };
-
-            return person;
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFRole.aspx.cs" Inherits="Presentation.WFRole" %>
+﻿<%@ Page Title="Gestión de roles" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFRole.aspx.cs" Inherits="Presentation.WFRole" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%--Estilos--%>

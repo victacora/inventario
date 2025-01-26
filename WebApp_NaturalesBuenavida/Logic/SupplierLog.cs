@@ -26,9 +26,9 @@ namespace Logic
         }
 
         // Lógica para eliminar un proveedor
-        public void DeleteSupplier(int provId)
+        public bool DeleteSupplier(int provId, int idPersona)
         {
-            objSup.DeleteSupplier(provId);
+            return objSup.DeleteSupplier(provId,idPersona);
         }
 
         // Lógica para obtener proveedores en formato DDL

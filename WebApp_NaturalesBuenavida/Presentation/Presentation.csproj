@@ -121,14 +121,14 @@
     <Content Include="Web.config" />
     <Content Include="WFBuy.aspx" />
     <Content Include="WFCities.aspx" />
+    <Content Include="WFSuppliers.aspx" />
     <Content Include="WFDocumentTypes.aspx" />
     <Content Include="WFCategories.aspx" />
+    <Content Include="WFClient.aspx" />
     <Content Include="WFInventoryDetails.aspx" />
     <Content Include="WFPrivileges.aspx" />
     <Content Include="WFStates.aspx" />
     <Content Include="WFEmployees.aspx" />
-    <Content Include="WFSuppliers.aspx" />
-    <Content Include="WFClient.aspx" />
     <Content Include="WFInventory.aspx" />
     <Content Include="WFPresentation.aspx" />
     <Content Include="WFProduct.aspx" />
@@ -194,6 +194,13 @@
     <Compile Include="WFCities.aspx.designer.cs">
       <DependentUpon>WFCities.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WFSuppliers.aspx.cs">
+      <DependentUpon>WFSuppliers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFSuppliers.aspx.designer.cs">
+      <DependentUpon>WFSuppliers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WFDocumentTypes.aspx.cs">
       <DependentUpon>WFDocumentTypes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -207,6 +214,13 @@
     </Compile>
     <Compile Include="WFCategories.aspx.designer.cs">
       <DependentUpon>WFCategories.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFClient.aspx.cs">
+      <DependentUpon>WFClient.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFClient.aspx.designer.cs">
+      <DependentUpon>WFClient.aspx</DependentUpon>
     </Compile>
     <Compile Include="WFInventoryDetails.aspx.cs">
       <DependentUpon>WFInventoryDetails.aspx</DependentUpon>
@@ -235,20 +249,6 @@
     </Compile>
     <Compile Include="WFEmployees.aspx.designer.cs">
       <DependentUpon>WFEmployees.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WFSuppliers.aspx.cs">
-      <DependentUpon>WFSuppliers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WFSuppliers.aspx.designer.cs">
-      <DependentUpon>WFSuppliers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WFClient.aspx.cs">
-      <DependentUpon>WFClient.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WFClient.aspx.designer.cs">
-      <DependentUpon>WFClient.aspx</DependentUpon>
     </Compile>
     <Compile Include="WFInventory.aspx.cs">
       <DependentUpon>WFInventory.aspx</DependentUpon>

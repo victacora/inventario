@@ -75,7 +75,8 @@ body {
 
 .dt-container {
     background: white;
-    padding: 1rem;
+    padding: 1rem 0;
+    overflow-x: auto;
 }
 
 .btn:not(.btn-link) {
@@ -140,10 +141,6 @@ div.dt-processing {
 
 div.dt-processing > div:last-child > div {
     background: #CE6600;
-}
-
-.dataTable_wrapper {
-    overflow-x: auto;
 }
 
 div.dt-processing {

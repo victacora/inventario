@@ -39,9 +39,9 @@ namespace Logic
         {
             return objClient.updateClient(_cliente_id, _fkpersona_id);
         }
-        public bool deleteClient(int _idCliente)
+        public bool deleteClient(int idCliente, int idPersona)
         {
-            return objClient.deleteClient(_idCliente);
+            return objClient.deleteClient(idCliente, idPersona);
         }
     }
 }

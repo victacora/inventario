@@ -114,7 +114,7 @@ namespace Data
 
         }
 
-        public bool deleteClient(int _idCliente)
+        public bool deleteClient(int idCliente, int idPersona)
         {
             bool executed = false;
             int row;
@@ -123,8 +123,8 @@ namespace Data
             objSelectCmd.Connection = objPer.openConnection();
             objSelectCmd.CommandText = "spDeleteCliente"; //nombre del procedimiento almacenado
             objSelectCmd.CommandType = CommandType.StoredProcedure;
-            objSelectCmd.Parameters.Add("p_cliente_id", MySqlDbType.Int32).Value = _idCliente;
-
+            objSelectCmd.Parameters.Add("p_cliente_id", MySqlDbType.Int32).Value = idCliente;
+            objSelectCmd.Parameters.Add("p_per_id", MySqlDbType.Int32).Value = idPersona;
             try
             {
                 row = objSelectCmd.ExecuteNonQuery();

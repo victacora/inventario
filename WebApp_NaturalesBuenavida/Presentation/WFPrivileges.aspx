@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFPrivileges.aspx.cs" Inherits="Presentation.WFPrivileges" %>
+﻿<%@ Page Title="Gestión de permisos" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFPrivileges.aspx.cs" Inherits="Presentation.WFPrivileges" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%--Estilos--%>
@@ -75,8 +75,7 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" type="button" data-id="${row.permisoID}">Editar</button>
-                             <button class="delete-btn" type="button" data-id="${row.permisoID}">Eliminar</button>`;
+                            return `<button class="edit-btn" type="button" data-id="${row.permisoID}">Editar</button>`;
                         }
                     }
 
@@ -109,13 +108,6 @@
                 loadPermisoDat(rowData);
             });
 
-            // Eliminar un permiso
-            $('#permisosTable').on('click', '.delete-btn', function () {
-                const id = $(this).data('id');// Obtener el ID del permiso
-                if (confirm("¿Estás seguro de que deseas eliminar el permiso?")) {
-                    deletePermiso(id);// Invoca a la función para eliminar el rol
-                }
-            });
         });
 
         // Cargar los datos en los TextBox para actualizar
@@ -124,27 +116,6 @@
             $('#<%= TBPermisoName.ClientID %>').val(rowData.permisoName);
             $('#<%= TBPermisoDescription.ClientID %>').val(rowData.permisoDescription);
 
-        }
-
-        // Función para eliminar un rol
-        function deletePermiso(id) {
-            $.ajax({
-                url: 'WFPrivileges.aspx/deletePermiso',
-                type: 'POST',
-                data: JSON.stringify({ id: id }),
-                contentType: 'application/json',
-                success: function (response) {
-                    if (response.d.Success) {
-                        alert('Permiso eliminado correctamente.');
-                        $('#permisosTable').DataTable().ajax.reload();
-                    } else {
-                        alert('Error al eliminar el permiso: ' + response.d.Message);
-                    }
-                },
-                error: function () {
-                    alert("Hubo un error al eliminar el permiso.");
-                }
-            });
         }
     </script>
 </asp:Content>

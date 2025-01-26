@@ -15,18 +15,22 @@ namespace Logic
 
         // Lógica para insertar una nueva persona
         public bool InsertPersona(string identificacion, string nombreRazonSocial, string apellido, string telefono,
-                               string direccion, string correoElectronico, int fkDocId, int fkPaisId)
+                                  string direccion, string correoElectronico, int fkDocId, int fkPaisId, string usuario, string contrasena,
+                                  string estado, int fkRolId, int tipo)
         {
-            return objPer.InsertPersona(identificacion, nombreRazonSocial, apellido, telefono, direccion, 
-                                             correoElectronico, fkDocId, fkPaisId);
+            return objPer.InsertPersona(identificacion,  nombreRazonSocial,  apellido,  telefono,
+                                   direccion,  correoElectronico,  fkDocId,  fkPaisId,  usuario,  contrasena,
+                                   estado,  fkRolId,  tipo);
         }
 
         // Lógica para actualizar una persona existente
-        public bool UpdatePersona(int id, string identificacion, string nombreRazonSocial, string apellido,
-                                string telefono, string direccion, string correoElectronico, int docId, int paisId)
+        public bool UpdatePersona(string identificacion, string nombreRazonSocial, string apellido, string telefono,
+                                  string direccion, string correoElectronico, int fkDocId, int fkPaisId, string usuario, string contrasena,
+                                  string estado, int fkRolId, int tipo, int usuID, int perId)
         {
-            return objPer.UpdatePersona(id, identificacion, nombreRazonSocial, apellido, telefono, 
-                                             direccion, correoElectronico, docId, paisId);
+            return objPer.UpdatePersona( identificacion,  nombreRazonSocial,  apellido,  telefono,
+                                   direccion,  correoElectronico,  fkDocId,  fkPaisId,  usuario,  contrasena,
+                                   estado,  fkRolId,  tipo,  usuID,  perId);
         }
 
         // Lógica para eliminar una persona

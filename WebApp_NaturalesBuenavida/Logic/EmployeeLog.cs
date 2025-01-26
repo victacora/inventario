@@ -26,9 +26,9 @@ namespace Logic
         }
 
         // Lógica para eliminar un empleado
-        public bool DeleteEmployee(int empId)
+        public bool DeleteEmployee(int idEmpleado, int idPersona, int idUsuario)
         {
-            return objEmp.DeleteEmployee(empId);
+            return objEmp.DeleteEmployee(idEmpleado, idPersona, idUsuario);
         }
 
         // Lógica para mostrar empleados con DDL

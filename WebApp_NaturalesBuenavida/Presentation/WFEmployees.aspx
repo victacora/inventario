@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Empleados" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFEmployees.aspx.cs" Inherits="Presentation.WFEmployees" %>
+﻿<%@ Page Title="Gestión de empleados" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="WFEmployees.aspx.cs" Inherits="Presentation.WFEmployees" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%-- Estilos --%>
@@ -14,7 +14,8 @@
         <asp:HiddenField ID="HFEmployeeID" runat="server" />
         <asp:HiddenField ID="HFPersonID" runat="server" />
         <asp:HiddenField ID="HFUsuID" runat="server" />
-        <div class="mt-3 text-center">
+        <asp:HiddenField ID="HFUsuCont" runat="server" />
+        <div class="my-3 text-center">
             <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
         </div>
         <div class="d-flex flex-column">
@@ -88,7 +89,7 @@
                         </asp:DropDownList>
                     </div>
                     <div class="mb-3">
-                        <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">usuario</asp:Label>
+                        <asp:Label runat="server" ID="lblUsuario" for="TBUsuario" class="form-label fw-bold">Usuario</asp:Label>
                         <asp:TextBox ID="TBUsuario" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
 
@@ -217,9 +218,9 @@
 
             // Eliminar un empleado
             $('#employeesTable').on('click', '.delete-btn', function () {
-                const id = $(this).data('id');
+                const rowData = $('#employeesTable').DataTable().row($(this).parents('tr')).data(); 
                 if (confirm("¿Estás seguro de que deseas eliminar este empleado?")) {
-                    deleteEmployee(id);
+                    deleteEmployee(rowData);
                 }
             });
         });
@@ -245,18 +246,19 @@
             $('#<%= HFUsuID.ClientID %>').val(rowData.UsuId);
             $('#<%= TBUsuario.ClientID %>').val(rowData.Usuario);
             $('#<%= TBContrasena.ClientID %>').val(rowData.Contrasena);
+            $('#<%= HFUsuCont.ClientID %>').val(rowData.Contrasena); 
             $('#<%= TBDireccion.ClientID %>').val(rowData.Direccion);
             $('#<%= ddlRol.ClientID %>').val(rowData.RolId);
             $('#<%= ddlStatus.ClientID %>').val(rowData.Estado);
         }
 
         // Función para eliminar un empleado
-        function deleteEmployee(id) {
+        function deleteEmployee(rowData) {
             $.ajax({
                 type: "POST",
                 url: "WFEmployees.aspx/DeleteEmployee", // WebMethod para eliminar un empleado
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ id: id }),
+                data: JSON.stringify({ idEmpleado: rowData.EmployeeID, idPersona: rowData.PersonaID, idUsuario: rowData.UsuId }),
                 success: function (response) {
                     if (response.d.Success) {
                         alert("Empleado eliminado exitosamente.");

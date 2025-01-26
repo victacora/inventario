@@ -23,10 +23,6 @@ namespace Presentation
         private static RoleLog objRol = new RoleLog();
 
 
-        private int _id;
-        private bool executed = false;
-        private int _fkPerson;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -34,6 +30,11 @@ namespace Presentation
                 LoadTipoDocumentos();
                 LoadPaises();
                 LoadRoles();
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Empleados).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 
@@ -44,7 +45,7 @@ namespace Presentation
             ddlTipoDocumento.DataTextField = "TipoDocumento";
             ddlTipoDocumento.DataValueField = "Id";
             ddlTipoDocumento.DataBind();
-            ddlTipoDocumento.Items.Insert(0, new ListItem("-- Seleccione el tipo de documento --", "0"));
+            ddlTipoDocumento.Items.Insert(0, new ListItem("-- Seleccione el tipo de documento --", ""));
         }
 
 
@@ -55,7 +56,7 @@ namespace Presentation
             ddlRol.DataTextField = "Rol";
             ddlRol.DataValueField = "Id";
             ddlRol.DataBind();
-            ddlRol.Items.Insert(0, new ListItem("-- Seleccione el rol --", "0"));
+            ddlRol.Items.Insert(0, new ListItem("-- Seleccione el rol --", ""));
         }
 
         private void LoadPaises()
@@ -65,7 +66,7 @@ namespace Presentation
             ddlPais.DataTextField = "pais";
             ddlPais.DataValueField = "id";
             ddlPais.DataBind();
-            ddlPais.Items.Insert(0, new ListItem("-- Seleccione el pais --", "0"));
+            ddlPais.Items.Insert(0, new ListItem("-- Seleccione el pais --", ""));
         }
 
         protected void ddlPais_SelectedIndexChanged(object sender, EventArgs e)
@@ -89,7 +90,7 @@ namespace Presentation
             ddlDepartamento.DataTextField = "departamento";
             ddlDepartamento.DataValueField = "id";
             ddlDepartamento.DataBind();
-            ddlDepartamento.Items.Insert(0, new ListItem("-- Seleccione el departamento --", "0"));
+            ddlDepartamento.Items.Insert(0, new ListItem("-- Seleccione el departamento --", ""));
         }
 
         protected void ddlDepartamento_SelectedIndexChanged(object sender, EventArgs e)
@@ -112,7 +113,7 @@ namespace Presentation
             ddlCiudad.DataTextField = "ciudad";
             ddlCiudad.DataValueField = "id";
             ddlCiudad.DataBind();
-            ddlCiudad.Items.Insert(0, new ListItem("-- Seleccione una ciudad --", "0"));
+            ddlCiudad.Items.Insert(0, new ListItem("-- Seleccione una ciudad --", ""));
         }
 
 
@@ -165,12 +166,33 @@ namespace Presentation
 
         // WebMethod para eliminar un empleado
         [WebMethod]
-        public static bool DeleteEmployee(int id)
+        public static AjaxResponse DeleteEmployee(int idEmpleado, int idPersona, int idUsuario)
         {
-            EmployeeLog objEmployee = new EmployeeLog();
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = objEmployee.DeleteEmployee(idEmpleado, idPersona, idUsuario);
 
-            // Llamar al método para eliminar el empleado
-            return objEmployee.DeleteEmployee(id);
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Empleado eliminado correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar el empleado.";
+                }
+            }
+            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
+            {
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response; 
+
         }
 
 
@@ -198,9 +220,22 @@ namespace Presentation
         // Método para guardar un nuevo empleado
         protected void BtnSave_Click(object sender, EventArgs e)
         {
-            _fkPerson = Convert.ToInt32(HFEmployeeID.Value); // Obtener el id de la persona seleccionada
 
-            bool isSaved = objEmployee.AddEmployee(_fkPerson);
+            bool isSaved = objPerson.InsertPersona(
+                TBEmployeeId.Text,
+                TBEmployeeName.Text,
+                TBEmployeeLastName.Text,
+                TBEmployeePhone.Text,
+                TBDireccion.Text,
+                TBEmployeeEmail.Text,
+                !ddlTipoDocumento.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlTipoDocumento.SelectedValue) : 0,
+                !ddlCiudad.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlCiudad.SelectedValue) : 0,
+                TBUsuario.Text,
+                objUsuario.HashPassword(TBContrasena.Text),
+                ddlStatus.SelectedValue,
+                !ddlRol.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlRol.SelectedValue) : 0,
+               (int)TipoUsuario.Empleado
+            );
 
             if (isSaved)
             {
@@ -210,7 +245,7 @@ namespace Presentation
             }
             else
             {
-                LblMsg.Text = "Este empleado ya está registrado.";
+                LblMsg.Text = "Ocurrio un error almacenando el empleado. Verifique que el numero de documento, correo o usuario no se encuentren duplicados.";
                 LblMsg.CssClass = "text-danger fw-bold";
             }
         }
@@ -218,16 +253,22 @@ namespace Presentation
         // Método para actualizar un empleado
         protected void BtnUpdate_Click(object sender, EventArgs e)
         {
-            // Verificar si se ha seleccionado un empleado para actualizar
-            if (string.IsNullOrEmpty(HFEmployeeID.Value))
-            {
-                LblMsg.Text = "No se ha seleccionado un empleado para actualizar.";
-                return;
-            }
-
-            _id = Convert.ToInt32(HFEmployeeID.Value);
-
-            bool isUpdated = objEmployee.EditEmployee(_id, -1);
+            bool isUpdated = objPerson.UpdatePersona(TBEmployeeId.Text,
+                TBEmployeeName.Text,
+                TBEmployeeLastName.Text,
+                TBEmployeePhone.Text,
+                TBDireccion.Text,
+                TBEmployeeEmail.Text,
+                !ddlTipoDocumento.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlTipoDocumento.SelectedValue) : 0,
+                !ddlCiudad.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlCiudad.SelectedValue) : 0,
+                TBUsuario.Text,
+                !TBContrasena.Text.Equals(HFPersonID.Value) ? objUsuario.HashPassword(TBContrasena.Text) : TBContrasena.Text,
+                ddlStatus.SelectedValue,
+                !ddlRol.SelectedValue.Equals(string.Empty) ? Convert.ToInt32(ddlRol.SelectedValue) : 0,
+               (int)TipoUsuario.Empleado,
+               Convert.ToInt32(HFUsuID.Value),
+               Convert.ToInt32(HFPersonID.Value)
+               );
 
             if (isUpdated)
             {
@@ -238,7 +279,7 @@ namespace Presentation
             else
             {
                 LblMsg.CssClass = "text-danger fw-bold";
-                LblMsg.Text = "Error al actualizar el empleado.";
+                LblMsg.Text = "Error al actualizar el empleado. Verifique que el numero de documento, correo o usuario no se encuntren duplicados.";
             }
         }
 

@@ -1,6 +1,8 @@
+using Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using static Mysqlx.Crud.Order.Types;
 
 namespace Data
 {
@@ -25,8 +27,9 @@ namespace Data
         }
 
         // Método para insertar una nueva persona
-        public bool InsertPersona(string identificacion, string nombreRazonSocial, string apellido, string telefono, 
-                                  string direccion, string correoElectronico, int fkDocId, int fkPaisId)
+        public bool InsertPersona(string identificacion, string nombreRazonSocial, string apellido, string telefono,
+                                  string direccion, string correoElectronico, int fkDocId, int fkPaisId, string usuario, string contrasena,
+                                  string estado, int fkRolId, int tipo)
         {
             bool executed = false;
             int row;
@@ -35,14 +38,19 @@ namespace Data
             objInsertCmd.Connection = objPer.openConnection();
             objInsertCmd.CommandText = "spInsertPersona"; // Procedimiento almacenado para insertar persona
             objInsertCmd.CommandType = CommandType.StoredProcedure;
-            objInsertCmd.Parameters.Add("p_identificacion", MySqlDbType.VarChar).Value = identificacion;
-            objInsertCmd.Parameters.Add("p_nombre_razonsocial", MySqlDbType.VarChar).Value = nombreRazonSocial;
-            objInsertCmd.Parameters.Add("p_apellido", MySqlDbType.VarChar).Value = apellido;
-            objInsertCmd.Parameters.Add("p_telefono", MySqlDbType.VarChar).Value = telefono;
+            objInsertCmd.Parameters.Add("p_documento", MySqlDbType.VarChar).Value = identificacion;
+            objInsertCmd.Parameters.Add("p_nombres", MySqlDbType.VarChar).Value = nombreRazonSocial;
+            objInsertCmd.Parameters.Add("p_apellidos", MySqlDbType.VarChar).Value = apellido;
             objInsertCmd.Parameters.Add("p_direccion", MySqlDbType.VarChar).Value = direccion;
-            objInsertCmd.Parameters.Add("p_correo_electronico", MySqlDbType.VarChar).Value = correoElectronico;
-            objInsertCmd.Parameters.Add("p_fkdoc_id", MySqlDbType.Int32).Value = fkDocId;
-            objInsertCmd.Parameters.Add("p_fkpais_id", MySqlDbType.Int32).Value = fkPaisId;
+            objInsertCmd.Parameters.Add("p_telefono", MySqlDbType.VarChar).Value = telefono;
+            objInsertCmd.Parameters.Add("p_email", MySqlDbType.VarChar).Value = correoElectronico;
+            objInsertCmd.Parameters.Add("p_tipo_documento_id", MySqlDbType.Int32).Value = fkDocId;
+            objInsertCmd.Parameters.Add("p_ciudad_id", MySqlDbType.Int32).Value = fkPaisId;
+            objInsertCmd.Parameters.Add("p_usuario", MySqlDbType.VarChar).Value = usuario;
+            objInsertCmd.Parameters.Add("p_contrasena", MySqlDbType.Text).Value = contrasena;
+            objInsertCmd.Parameters.Add("p_estado", MySqlDbType.VarChar).Value = estado;
+            objInsertCmd.Parameters.Add("p_rol_id", MySqlDbType.Int32).Value = fkRolId;
+            objInsertCmd.Parameters.Add("p_tipo", MySqlDbType.Int32).Value = tipo;
 
             try
             {
@@ -58,31 +66,37 @@ namespace Data
         }
 
         // Método para actualizar una persona existente
-        public bool UpdatePersona(int id, string identificacion, string nombreRazonSocial, string apellido, 
-                                  string telefono, string direccion, string correoElectronico, int docId, int paisId)
+        public bool UpdatePersona(string identificacion, string nombreRazonSocial, string apellido, string telefono,
+                                  string direccion, string correoElectronico, int fkDocId, int fkPaisId, string usuario, string contrasena,
+                                  string estado, int fkRolId, int tipo, int usuID, int perId)
         {
             bool executed = false;
             int row;
 
             MySqlCommand objUpdateCmd = new MySqlCommand();
             objUpdateCmd.Connection = objPer.openConnection();
-            objUpdateCmd.CommandText = "sp_actualizar_persona"; // Procedimiento almacenado para actualizar persona
+            objUpdateCmd.CommandText = "spUpdatePersona"; // Procedimiento almacenado para actualizar persona
             objUpdateCmd.CommandType = CommandType.StoredProcedure;
-            objUpdateCmd.Parameters.Add("p_id", MySqlDbType.Int32).Value = id;
-            objUpdateCmd.Parameters.Add("p_identificacion", MySqlDbType.VarChar).Value = identificacion;
-            objUpdateCmd.Parameters.Add("p_nombre_razonsocial", MySqlDbType.VarChar).Value = nombreRazonSocial;
-            objUpdateCmd.Parameters.Add("p_apellido", MySqlDbType.VarChar).Value = apellido;
-            objUpdateCmd.Parameters.Add("p_telefono", MySqlDbType.VarChar).Value = telefono;
+            objUpdateCmd.Parameters.Add("p_documento", MySqlDbType.VarChar).Value = identificacion;
+            objUpdateCmd.Parameters.Add("p_nombres", MySqlDbType.VarChar).Value = nombreRazonSocial;
+            objUpdateCmd.Parameters.Add("p_apellidos", MySqlDbType.VarChar).Value = apellido;
             objUpdateCmd.Parameters.Add("p_direccion", MySqlDbType.VarChar).Value = direccion;
-            objUpdateCmd.Parameters.Add("p_correo_electronico", MySqlDbType.VarChar).Value = correoElectronico;
-            objUpdateCmd.Parameters.Add("p_doc_id", MySqlDbType.Int32).Value = docId;
-            objUpdateCmd.Parameters.Add("p_pais_id", MySqlDbType.Int32).Value = paisId;
-
+            objUpdateCmd.Parameters.Add("p_telefono", MySqlDbType.VarChar).Value = telefono;
+            objUpdateCmd.Parameters.Add("p_email", MySqlDbType.VarChar).Value = correoElectronico;
+            objUpdateCmd.Parameters.Add("p_tipo_documento_id", MySqlDbType.Int32).Value = fkDocId;
+            objUpdateCmd.Parameters.Add("p_ciudad_id", MySqlDbType.Int32).Value = fkPaisId;
+            objUpdateCmd.Parameters.Add("p_usuario", MySqlDbType.VarChar).Value = usuario;
+            objUpdateCmd.Parameters.Add("p_contrasena", MySqlDbType.Text).Value = contrasena;
+            objUpdateCmd.Parameters.Add("p_estado", MySqlDbType.VarChar).Value = estado;
+            objUpdateCmd.Parameters.Add("p_rol_id", MySqlDbType.Int32).Value = fkRolId;
+            objUpdateCmd.Parameters.Add("p_tipo", MySqlDbType.Int32).Value = tipo;
+            objUpdateCmd.Parameters.Add("p_usu_id", MySqlDbType.Int32).Value = usuID;
+            objUpdateCmd.Parameters.Add("p_pers_id", MySqlDbType.Int32).Value = perId;
             try
             {
                 row = objUpdateCmd.ExecuteNonQuery();
                 executed = row == 1;
-            }
+            }            
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.ToString());
@@ -115,8 +129,8 @@ namespace Data
             objPer.closeConnection();
             return executed;
         }
-		
-		// Método para obtener todas las personas (DDL)
+
+        // Método para obtener todas las personas (DDL)
         public DataSet GetPersonasDDL()
         {
             MySqlDataAdapter objAdapter = new MySqlDataAdapter();

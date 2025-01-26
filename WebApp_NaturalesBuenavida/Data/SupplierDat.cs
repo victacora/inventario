@@ -55,18 +55,33 @@ namespace Data
         }
 
         // Método para eliminar un proveedor
-        public void DeleteSupplier(int provId)
+        public bool DeleteSupplier(int provId, int idPersona)
         {
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = objPer.openConnection();
-            cmd.CommandText = "spDeleteSupplier";
-            cmd.CommandType = CommandType.StoredProcedure;
+            bool executed = false;
+            int row;
 
-            cmd.Parameters.AddWithValue("p_pro_id", provId);
-
-            cmd.ExecuteNonQuery();
+            MySqlCommand objSelectCmd = new MySqlCommand();
+            objSelectCmd.Connection = objPer.openConnection();
+            objSelectCmd.CommandText = "spDeleteSupplier"; //nombre del procedimiento almacenado
+            objSelectCmd.CommandType = CommandType.StoredProcedure;
+            objSelectCmd.Parameters.Add("p_pro_id", MySqlDbType.Int32).Value = provId;
+            objSelectCmd.Parameters.Add("p_per_id", MySqlDbType.Int32).Value = idPersona;
+            try
+            {
+                row = objSelectCmd.ExecuteNonQuery();
+                if (row == 1)
+                {
+                    executed = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.ToString());
+            }
             objPer.closeConnection();
+            return executed;
         }
+
 
         // Método para obtener proveedores en formato DDL
         public DataSet GetSupplierDDL()

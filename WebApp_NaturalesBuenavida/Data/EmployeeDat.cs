@@ -76,7 +76,7 @@ namespace Data
         }
 
         // Método para eliminar un empleado
-        public bool DeleteEmployee(int empId)
+        public bool DeleteEmployee(int idEmpleado, int idPersona, int idUsuario)
         {
             bool executed = false;
             int row;
@@ -85,8 +85,9 @@ namespace Data
             objDeleteCmd.Connection = objPer.openConnection();
             objDeleteCmd.CommandText = "spDeleteEmployee"; // Nombre del procedimiento almacenado
             objDeleteCmd.CommandType = CommandType.StoredProcedure;
-            objDeleteCmd.Parameters.Add("p_emp_id", MySqlDbType.Int32).Value = empId; // Parámetro
-
+            objDeleteCmd.Parameters.Add("p_emp_id", MySqlDbType.Int32).Value = idEmpleado; // Parámetro
+            objDeleteCmd.Parameters.Add("p_per_id", MySqlDbType.Int32).Value = idPersona; // Parámetro
+            objDeleteCmd.Parameters.Add("p_user_id", MySqlDbType.Int32).Value = idUsuario; // Parámetro
             try
             {
                 row = objDeleteCmd.ExecuteNonQuery();

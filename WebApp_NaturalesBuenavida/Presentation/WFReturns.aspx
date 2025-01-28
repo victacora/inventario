@@ -16,7 +16,7 @@
         </div>
         <div class="mb-3">
             <!-- Fecha de devolución -->
-            <asp:Label ID="LabelFecha" runat="server" CssClass="form-label fw-bold" Text="Fecha de Devolución"></asp:Label>
+            <asp:Label ID="LabelFecha" runat="server" CssClass="form-label fw-bold" Text="Fecha de devolución"></asp:Label>
             <asp:TextBox ID="TBReturnDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
         </div>
         <div class="mb-3">
@@ -26,7 +26,7 @@
         </div>
         <div class="mb-3">
             <!-- Ventas disponibles (DropDownList) -->
-            <asp:Label ID="LabelVenta" runat="server" CssClass="form-label fw-bold" Text="Venta Asociada"></asp:Label>
+            <asp:Label ID="LabelVenta" runat="server" CssClass="form-label fw-bold" Text="Venta asociada"></asp:Label>
             <asp:DropDownList ID="DDLVentas" runat="server" CssClass="form-select"></asp:DropDownList>
         </div>
 

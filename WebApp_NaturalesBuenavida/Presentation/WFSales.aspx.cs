@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,6 +20,11 @@ namespace Presentation
                 LoadDropdowns();
                 TBDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Ventas).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
+            }
         }
 
         [WebMethod]
@@ -36,12 +42,11 @@ namespace Presentation
                     FechaVenta = Convert.ToDateTime(row["fecha"]).ToString("yyyy-MM-dd"),
                     TotalVenta = row["total"],
                     Descripción = row["descripcion"],
-                    NombreEmpleado = row["nombre_empleado"],
-                    ApellidoEmpleado = row["apellido_empleado"],
+                    Empleado = row["nombre_empleado"]+" "+ row["apellido_empleado"],
                     IdentificacionCliente = row["identificacion_cliente"],
-                    NombreCliente = row["nombre_cliente"],
-                    ApellidoCliente = row["apellido_cliente"]
-
+                    Cliente = row["nombre_cliente"]+" "+ row["apellido_cliente"],
+                    EmpleadoId = row["emp_id"],
+                    ClienteId = row["cli_id"],
                 });
             }
 
@@ -71,10 +76,12 @@ namespace Presentation
             if(executed)
             {
                 LblMsg.Text = "La Venta se guardó exiitosamente";
+                LblMsg.CssClass = "text-success fw-bold";
             }
             else
             {
                 LblMsg.Text = "venta no guardada.";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
@@ -90,10 +97,12 @@ namespace Presentation
                 bool success = objSales.UpdateSale(saleId, saleDate, total, description, clientId, employeeId);
 
                 LblMsg.Text = success ? "Venta actualizada exitosamente" : "Error al actualizar la venta";
+                LblMsg.CssClass = success ? "text-success fw-bold" : "text-danger fw-bold";
             }
             else
             {
                 LblMsg.Text = "Por favor, seleccione una venta válida.";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
@@ -144,7 +153,6 @@ namespace Presentation
             TBDescription.Text = string.Empty;
             DDLClient.SelectedIndex = 0;
             DDLEmployee.SelectedIndex = 0;
-            LblMsg.Text = string.Empty;
         }
     }
 }

@@ -8,55 +8,6 @@
     <%--Id Cliente--%>
     <asp:HiddenField ID="HFProductID" runat="server" />
     <br />
-    <%--<%--Codigo producto--
-        <asp:Label ID="Label2" runat="server" Text="Codigo del producto"></asp:Label><br />
-        <asp:TextBox ID="TBCode" runat="server"></asp:TextBox><br />
-        <%--Nombre del producto--
-        <asp:Label ID="Label3" runat="server" Text="Nombre del Producto"></asp:Label><br />
-        <asp:TextBox ID="TBNameProduct" runat="server"></asp:TextBox><br />
-        <%--Descripcion del producto--
-        <asp:Label ID="Label4" runat="server" Text="Descripción del Producto"></asp:Label><br />
-        <asp:TextBox ID="TBDescription" runat="server"></asp:TextBox><br />
-        <%--Cantidad del producto inicial para el inventario--
-        <asp:Label ID="Label5" runat="server" Text="Cantidad del producto para inventario"></asp:Label><br />
-        <asp:TextBox ID="TBQuantityP" runat="server"></asp:TextBox><br />
-        <%-- Número de Lote --
-        <asp:Label ID="Label6" runat="server" Text="Número de Lote"></asp:Label><br />
-        <asp:TextBox ID="TBNumberLote" runat="server"></asp:TextBox><br />
-        <%-- Fecha de vencimiento del producto --
-        <asp:Label ID="Label7" runat="server" Text="Fecha de Vencimiento"></asp:Label><br />
-        <asp:TextBox ID="TBDate" runat="server" TextMode="Date"></asp:TextBox><br />
-        <%-- Precio de venta del producto --
-        <asp:Label ID="Label8" runat="server" Text="Precio de Venta"></asp:Label><br />
-        <asp:TextBox ID="TBSalePrice" runat="server"></asp:TextBox><br />
-        <%-- Precio de compra del producto --
-        <asp:Label ID="Label9" runat="server" Text="Precio de Compra"></asp:Label><br />
-        <asp:TextBox ID="TBPurchasePrice" runat="server"></asp:TextBox><br />
-        <%-- Medida numérica --
-        <asp:Label ID="Label10" runat="server" Text="Dato de Medida"></asp:Label><br />
-        <asp:TextBox ID="TBMedida" runat="server"></asp:TextBox><br />
-        <%-- DDL Unidad de la medida --
-        <asp:Label ID="Label1" runat="server" Text="Unidad de Medida"></asp:Label><br />
-        <asp:DropDownList ID="DDLUnitMeasure" runat="server">
-            <%--<asp:ListItem Text="Seleccione una unidad de medida" Value="0"></asp:ListItem>--
-        </asp:DropDownList><br />
-        <%-- DDL Presentación del producto (tetrapack, caja, bolsa, etc...) --
-        <asp:Label ID="Label13" runat="server" Text="Presentación del producto"></asp:Label><br />
-        <asp:DropDownList ID="DDLPresentation" runat="server">
-            <%--<asp:ListItem Text="Seleccione un tipo de presentación" Value="0"></asp:ListItem>--
-        </asp:DropDownList><br />
-        <%-- DDL Categoria del producto --
-        <asp:Label ID="Label11" runat="server" Text="Categoria del producto"></asp:Label><br />
-        <asp:DropDownList ID="DDLCategory" runat="server">
-            <%--<asp:ListItem Text="Seleccione una categoria" Value="0"></asp:ListItem>--
-        </asp:DropDownList><br />
-        <%-- DDL Proveedor --
-        <asp:Label ID="Label12" runat="server" Text="Proveedor"></asp:Label><br />
-        <asp:DropDownList ID="DDLSupplier" runat="server">
-            <%--<asp:ListItem Text="Seleccione un proveedor" Value="0"></asp:ListItem>--
-        </asp:DropDownList><br />
-        <br />
-        <br />--%>
 
     <asp:Panel ID="PnlMultiProducts" runat="server">
         <table id="productTable" class="table">
@@ -116,38 +67,14 @@
                     </td>
                     <td>
                         <asp:Button ID="btnAddRow" runat="server" Text="Añadir a la fila" OnClick="btnAddRow_Click" />
-                        <%--<button type="button" id="btnAddRow" class="btn btn-primary">Añadir Fila</button>--%>
-                        <%--<button type="button" class="btn btn-danger btnRemoveRow">Eliminar</button>--%>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <%--<asp:Button ID="btnAddRow" runat="server" Text="Añadir a la fila"/>--%>
-        <br />
+
 
         <h3>Lista productos a añadir</h3>
-        <%--<table id="previewTable" class="table">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Número de Lote</th>
-                    <th>Fecha de Vencimiento</th>
-                    <th>Precio Venta</th>
-                    <th>Precio Compra</th>
-                    <th>Medida</th>
-                    <th>Unidad de Medida</th>
-                    <th>Presentación</th>
-                    <th>Categoría</th>
-                    <th>Proveedor</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>--%>
+      
         <div>
             <asp:GridView ID="GVProduct" runat="server" AutoGenerateColumns="False" OnRowDeleting="GVProduct_RowDeleting" CssClass="table table-striped">
                 <Columns>
@@ -272,8 +199,8 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.ProductID}">Editar</button>
-                            <button class="delete-btn" data-id="${row.ProductID}">Eliminar</button>`;
+                            return `<button class="edit-btn" type="button" data-id="${row.ProductID}">Editar</button>
+                            <button class="delete-btn" type="button" data-id="${row.ProductID}">Eliminar</button>`;
                         }
                     }
                 ],
@@ -350,77 +277,4 @@
 
     </script>
 
-    <%--<script type="text/javascript">
-        // Al presionar el botón Añadir Fila
-        document.getElementById("btnAddRow").onclick = function () {
-            var code = document.getElementById("TBCode").value;
-            alert("Code:" + code);
-            // Obtener los valores de los campos
-            var code = document.getElementById("TBCode").value;
-            var name = document.getElementById("TBNameProduct").value;
-            var description = document.getElementById("TBDescription").value;
-            var quantity = document.getElementById("TBQuantityP").value;
-            var lote = document.getElementById("TBNumberLote").value;
-            var expiryDate = document.getElementById("TBDate").value;
-            var salePrice = document.getElementById("TBSalePrice").value;
-            var purchasePrice = document.getElementById("TBPurchasePrice").value;
-            var measure = document.getElementById("TBMedida").value;
-            var unitMeasure = document.getElementById("DDLUnitMeasure").value;
-            var presentation = document.getElementById("DDLPresentation").value;
-            var category = document.getElementById("DDLCategory").value;
-            var supplier = document.getElementById("DDLSupplier").value;
-
-            // Crear una nueva fila en la tabla previewTable
-            var table = document.getElementById("previewTable").getElementsByTagName('tbody')[0];
-            var newRow = table.insertRow(table.rows.length);
-
-            // Añadir celdas con los valores
-            newRow.insertCell(0).textContent = code;
-            newRow.insertCell(1).textContent = name;
-            newRow.insertCell(2).textContent = description;
-            newRow.insertCell(3).textContent = quantity;
-            newRow.insertCell(4).textContent = lote;
-            newRow.insertCell(5).textContent = expiryDate;
-            newRow.insertCell(6).textContent = salePrice;
-            newRow.insertCell(7).textContent = purchasePrice;
-            newRow.insertCell(8).textContent = measure;
-            newRow.insertCell(9).textContent = unitMeasure;
-            newRow.insertCell(10).textContent = presentation;
-            newRow.insertCell(11).textContent = category;
-            newRow.insertCell(12).textContent = supplier;
-
-            // Botón Eliminar para la fila
-            var removeCell = newRow.insertCell(13);
-            var removeButton = document.createElement("button");
-            removeButton.textContent = "Eliminar";
-            removeButton.className = "btn btn-danger";
-            removeButton.onclick = function () {
-                var row = this.parentNode.parentNode;
-                row.parentNode.removeChild(row);
-            };
-            removeCell.appendChild(removeButton);
-
-
-            // Limpiar los campos de entrada después de agregar
-            document.getElementById("TBCode").value = "";
-            document.getElementById("TBNameProduct").value = "";
-            document.getElementById("TBDescription").value = "";
-            document.getElementById("TBQuantityP").value = "";
-            document.getElementById("TBNumberLote").value = "";
-            document.getElementById("TBDate").value = "";
-            document.getElementById("TBSalePrice").value = "";
-            document.getElementById("TBPurchasePrice").value = "";
-            document.getElementById("TBMedida").value = "";
-            document.getElementById("DDLUnitMeasure").value = "";
-            document.getElementById("DDLPresentation").value = "";
-            document.getElementById("DDLCategory").value = "";
-            document.getElementById("DDLSupplier").value = "";
-        };
-
-        // Guardar productos (al hacer clic en Guardar)
-        document.getElementById("btnSaveProducts").onclick = function () {
-            // Aquí puedes agregar lógica para guardar los productos en la base de datos
-            alert("Productos guardados exitosamente.");
-        };
-    </script>--%>
 </asp:Content>

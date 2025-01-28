@@ -24,6 +24,15 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.HiddenField HFSaleID;
 
         /// <summary>
+        /// Control LblMsg.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblMsg;
+
+        /// <summary>
         /// Control LabelDate.
         /// </summary>
         /// <remarks>
@@ -42,40 +51,22 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.TextBox TBDate;
 
         /// <summary>
-        /// Control LabelTotal.
+        /// Control LabelEmployee.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelTotal;
+        protected global::System.Web.UI.WebControls.Label LabelEmployee;
 
         /// <summary>
-        /// Control TBTotal.
+        /// Control DDLEmployee.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBTotal;
-
-        /// <summary>
-        /// Control LabelDescription.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelDescription;
-
-        /// <summary>
-        /// Control TBDescription.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TBDescription;
+        protected global::System.Web.UI.WebControls.DropDownList DDLEmployee;
 
         /// <summary>
         /// Control LabelClient.
@@ -96,22 +87,40 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.DropDownList DDLClient;
 
         /// <summary>
-        /// Control LabelEmployee.
+        /// Control LabelDescription.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelEmployee;
+        protected global::System.Web.UI.WebControls.Label LabelDescription;
 
         /// <summary>
-        /// Control DDLEmployee.
+        /// Control TBDescription.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLEmployee;
+        protected global::System.Web.UI.WebControls.TextBox TBDescription;
+
+        /// <summary>
+        /// Control LabelTotal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelTotal;
+
+        /// <summary>
+        /// Control TBTotal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TBTotal;
 
         /// <summary>
         /// Control BtnSave.
@@ -139,14 +148,5 @@ namespace Presentation
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnClear;
-
-        /// <summary>
-        /// Control LblMsg.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LblMsg;
     }
 }

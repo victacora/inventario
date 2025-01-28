@@ -4,31 +4,7 @@
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <%--<asp:Label ID="LBId" runat="server" Text="" Visible="true"></asp:Label><br />
-    <br />
-    <asp:Label ID="Label2" runat="server" Text="Fecha de la compra"></asp:Label><br />
-    <asp:TextBox ID="TBDate" runat="server"></asp:TextBox><br />
-    <asp:Calendar ID="Calendar1" runat="server" OnSelectionChanged="Calendar1_SelectionChanged"></asp:Calendar>
-    <br />
-    <br />
-    <asp:Label ID="Label1" runat="server" Text="Seleccione el producto"></asp:Label><br />
-    <asp:DropDownList ID="DDLProduct" runat="server"></asp:DropDownList><br />
-    <asp:Label ID="Label3" runat="server" Text="Cantidad comprada"></asp:Label><br />
-    <asp:TextBox ID="TBQuantity" runat="server"></asp:TextBox><br />
-    <asp:Label ID="Label4" runat="server" Text="Precio unitario"></asp:Label><br />
-    <asp:TextBox ID="TBUnitPrice" runat="server"></asp:TextBox><br />
-    <asp:Label ID="Label5" runat="server" Text="Número de Factura:"></asp:Label><br />
-    <asp:TextBox ID="TBInvoiceNumber" runat="server"></asp:TextBox>
-    <br />
-    <br />
-    <asp:GridView ID="GVCompras" runat="server" OnSelectedIndexChanged="GVCompras_SelectedIndexChanged"
-        OnRowDeleting="GVCompras_RowDeleting">
-        <Columns>
-            <asp:CommandField ShowSelectButton="true" />
-            <asp:CommandField ShowDeleteButton="true" />
-        </Columns>
-    </asp:GridView>--%>
-    <form>
+
         <asp:HiddenField ID="HFBuyID" runat="server" />
         <br />
         <%--Fecha de la compra--%>
@@ -58,7 +34,6 @@
             <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
         </div>
         <br />
-    </form>
 
     <%--Lista de Compras--%>
     <h2>Lista de Compras</h2>

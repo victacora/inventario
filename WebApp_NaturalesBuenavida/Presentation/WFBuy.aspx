@@ -4,56 +4,64 @@
     <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <h2 class="text-center main-title">Lista de Compras</h2>
+    <div class="container mt-4 bg-white border rounded p-3">
 
         <asp:HiddenField ID="HFBuyID" runat="server" />
-        <br />
-        <%--Fecha de la compra--%>
-        <asp:Label ID="Label6" runat="server" Text="Fecha de la compra"></asp:Label><br />
-        <asp:TextBox ID="TBDate" runat="server" TextMode="Date"></asp:TextBox><br />
-        <%--<asp:Calendar ID="Calendar1" runat="server" OnSelectionChanged="Calendar1_SelectionChanged"></asp:Calendar>--%>
-        <br />
-        <%--DDL para seleccionar un producto a la compra--%>
-        <asp:Label ID="Label7" runat="server" Text="Seleccione el producto"></asp:Label><br />
-        <asp:DropDownList ID="DDLProduct" runat="server"></asp:DropDownList><br />
-        <%--Cantidad de productos comprados--%>
-        <asp:Label ID="Label8" runat="server" Text="Cantidad comprada"></asp:Label><br />
-        <asp:TextBox ID="TBQuantity" runat="server"></asp:TextBox><br />
-        <%--Precio unitario del producto comprado--%>
-        <asp:Label ID="Label9" runat="server" Text="Precio unitario"></asp:Label><br />
-        <asp:TextBox ID="TBUnitPrice" runat="server"></asp:TextBox><br />
-        <%--Número de la factura de compra--%>
-        <asp:Label ID="Label10" runat="server" Text="Número de Factura:"></asp:Label><br />
-        <asp:TextBox ID="TBInvoiceNumber" runat="server"></asp:TextBox>
-        <br />
-        <br />
-        <%--Botones Guardar y Actualizar--%>
-        <div>
-            <asp:Button ID="BtnSave" runat="server" Text="Guardar" OnClick="BtnSave_Click" />
-            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" OnClick="BtnUpdate_Click" /><br />
-            <asp:Button ID="BtbClear" runat="server" Text="Limpiar" OnClick="BtbClear_Click" /><br />
-            <asp:Label ID="LblMsg" runat="server" Text=""></asp:Label>
-        </div>
-        <br />
 
-    <%--Lista de Compras--%>
-    <h2>Lista de Compras</h2>
-    <table id="buysTable" class="display" style="width: 100%">
-        <thead>
-            <tr>
-                <th>CompraID</th>
-                <th>FechaCompra</th>
-                <th>TotalCompra</th>
-                <th>NumeroFactura</th>
-                <th>CantidadComprada</th>
-                <th>PrecioUnitario</th>
-                <th>fkproduct</th>
-                <th>CodigoProducto</th>
-                <th>NombreProducto</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+        <div class="mt-3 text-center">
+            <asp:Label ID="LblMsg" runat="server" Text="" CssClass=""></asp:Label>
+        </div>
+        <div class="mb-3">
+            <asp:Label ID="LabelDate" runat="server" CssClass="form-label fw-bold" Text="Fecha de la compra"></asp:Label>
+            <asp:TextBox ID="TBDate" runat="server" TextMode="Date" CssClass="form-control"></asp:TextBox>
+        </div>
+        <div class="mb-3">
+            <asp:Label ID="Label7" runat="server"  CssClass="form-label fw-bold" Text="Seleccione el producto"></asp:Label>
+            <asp:DropDownList ID="DDLProduct" CssClass="form-select" runat="server"></asp:DropDownList>
+        </div>
+        <div class="mb-3">
+            <asp:Label ID="Label8" runat="server" Text="Cantidad comprada"  CssClass="form-label fw-bold" ></asp:Label>
+            <asp:TextBox ID="TBQuantity" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+        <div class="mb-3">
+            <asp:Label ID="Label9" runat="server" Text="Precio unitario"  CssClass="form-label fw-bold" ></asp:Label>
+            <asp:TextBox ID="TBUnitPrice" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+        <div class="mb-3">
+            <asp:Label ID="Label10" runat="server" Text="Número de Factura"   CssClass="form-label fw-bold" ></asp:Label>
+            <asp:TextBox ID="TBInvoiceNumber" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+
+        <!-- Botones Guardar, Actualizar, Limpiar -->
+
+        <div class="d-flex flex-column flex-md-row gap-2 mt-3">
+            <asp:Button ID="BtnSave" runat="server" Text="Guardar" CssClass="btn" OnClick="BtnSave_Click" />
+            <asp:Button ID="BtnUpdate" runat="server" Text="Actualizar" CssClass="btn" OnClick="BtnUpdate_Click" />
+            <asp:Button ID="BtnClear" runat="server" Text="Limpiar" CssClass="btn" OnClick="BtnClear_Click" />
+        </div>
+    </div>
+
+
+    <div class="container table-responsive mt-4 bg-white border rounded">
+        <table id="buysTable" class="table display" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>CompraID</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Numero factura</th>
+                    <th>Cantidad</th>
+                    <th>Precio unitario</th>
+                    <th>fkproduct</th>
+                    <th>Codigo producto</th>
+                    <th>Nombre producto</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
     <%--Datatables--%>
     <script src="resources/js/datatables.min.js" type="text/javascript"></script>
@@ -88,8 +96,8 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return `<button class="edit-btn" data-id="${row.CompraID}">Editar</button>
-                         <button class="delete-btn" data-id="${row.CompraID}">Eliminar</button>`;
+                            return `<button class="edit-btn"   type="button"  data-id="${row.CompraID}">Editar</button>
+                         <button class="delete-btn"   type="button" data-id="${row.CompraID}">Eliminar</button>`;
                         }
                     }
                 ],
@@ -145,11 +153,15 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({ id: id }),
                 success: function (response) {
-                    $('#buysTable').DataTable().ajax.reload();// Recargar la tabla después de eliminar
-                    alert("Compra eliminada exitosamente.");
+                    if (response.d.Success) {
+                        alert('Compra eliminada correctamente.');
+                        $('#buysTable').DataTable().ajax.reload(); // Recarga la tabla para reflejar la eliminación
+                    } else {
+                        alert('Error al eliminar la compra: ' + response.d.Message);
+                    }
                 },
                 error: function () {
-                    alert("Error al eliminar la compra.");
+                    alert("Hubo un error al eliminar la compra.");
                 }
             });
         }

@@ -18,8 +18,8 @@
             <asp:TextBox ID="TBDate" runat="server" TextMode="Date" CssClass="form-control"></asp:TextBox>
         </div>
         <div class="mb-3">
-            <asp:Label ID="LabelEmployee" runat="server" CssClass="form-label fw-bold" Text="Empleado"></asp:Label><br />
-            <asp:DropDownList ID="DDLEmployee" CssClass="form-select" runat="server"></asp:DropDownList><br />
+            <asp:Label ID="LabelEmployee" runat="server" CssClass="form-label fw-bold" Text="Empleado"></asp:Label>
+            <asp:DropDownList ID="DDLEmployee" CssClass="form-select" runat="server"></asp:DropDownList>
         </div>
         <div class="mb-3">
             <asp:Label ID="LabelClient" runat="server" CssClass="form-label fw-bold" Text="Cliente"></asp:Label>
@@ -129,6 +129,9 @@
                             } else {
                                 alert('Error al eliminar la venta.');
                             }
+                        },
+                        error: function () {
+                            alert("Hubo un error al eliminar la venta.");
                         }
                     });
                 }

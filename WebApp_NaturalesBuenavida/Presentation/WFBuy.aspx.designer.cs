@@ -24,13 +24,22 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.HiddenField HFBuyID;
 
         /// <summary>
-        /// Control Label6.
+        /// Control LblMsg.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
+        protected global::System.Web.UI.WebControls.Label LblMsg;
+
+        /// <summary>
+        /// Control LabelDate.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDate;
 
         /// <summary>
         /// Control TBDate.
@@ -132,21 +141,12 @@ namespace Presentation
         protected global::System.Web.UI.WebControls.Button BtnUpdate;
 
         /// <summary>
-        /// Control BtbClear.
+        /// Control BtnClear.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtbClear;
-
-        /// <summary>
-        /// Control LblMsg.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LblMsg;
+        protected global::System.Web.UI.WebControls.Button BtnClear;
     }
 }

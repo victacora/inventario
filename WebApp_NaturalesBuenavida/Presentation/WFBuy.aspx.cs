@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,6 +32,11 @@ namespace Presentation
                 //Calendar1.SelectedDate = DateTime.Now;
                 // También puedes mostrar la fecha actual en el TextBox
                 TBDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Compras).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 
@@ -141,7 +147,7 @@ namespace Presentation
             }
         }
 
-        protected void BtbClear_Click(object sender, EventArgs e)
+        protected void BtnClear_Click(object sender, EventArgs e)
         {
             clear();
         }

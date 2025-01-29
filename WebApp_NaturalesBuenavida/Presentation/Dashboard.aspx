@@ -121,7 +121,7 @@
                             var compras = [];
                             for (var anio = start.year(); anio <= end.year(); anio++) {
                                 for (var mes = 0; mes < 12; mes++) {
-                                    categorias.push(anio + '-' + mes);
+                                    categorias.push(anio + '-' + meses[mes]);
                                     var valorVenta = response.d.Result.ventasPorAnioYMesList.find(item => item.year === anio && item.month === mes + 1);
                                     var valorCompra = response.d.Result.comprasPorAnioYMesList.find(item => item.year === anio && item.month === mes + 1);
                                     if (valorVenta) {

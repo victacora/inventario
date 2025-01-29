@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,6 +36,11 @@ namespace Presentation
                     // Manejo de error
                     Response.Write("No se proporcionó el parámetro InventoryId.");
                 }
+            }
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null || usuario.Privilegios != null && !usuario.Privilegios.Contains(((int)Privilegios.Inventario).ToString()))
+            {
+                Response.Redirect("AccessDenied.aspx");
             }
         }
 

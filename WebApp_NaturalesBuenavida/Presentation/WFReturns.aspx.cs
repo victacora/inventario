@@ -14,9 +14,8 @@ namespace Presentation
     public partial class WFReturns : System.Web.UI.Page
     {
         // Instancia de los objetos que contienen la lógica de negocio
-        private ReturnLog objReturn = new ReturnLog();
-        private SalesLog objSale = new SalesLog();
-
+        private static ReturnLog objReturn = new ReturnLog();
+        private static SalesLog objSale = new SalesLog();
         // Variables privadas para almacenar datos
         private int _id, _fkSale;
         private string _reason;
@@ -54,7 +53,6 @@ namespace Presentation
         [WebMethod]
         public static object ListReturns()
         {
-            ReturnLog objReturn = new ReturnLog();
             // Obtiene las devoluciones desde la base de datos
             var dataSet = objReturn.ShowReturns();
             var returnsList = new List<object>();
@@ -83,10 +81,32 @@ namespace Presentation
 
         // Método Web para eliminar una devolución
         [WebMethod]
-        public static bool DeleteReturn(int returnId)
+        public static AjaxResponse DeleteReturn(int returnId)
         {
-            ReturnLog objReturn = new ReturnLog();
-            return objReturn.DeleteReturn(returnId);
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = objReturn.DeleteReturn(returnId);
+
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Devolución eliminada correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar la eliminacion";
+                }
+            }
+            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
+            {
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response;
         }
 
         // Método que se ejecuta cuando se hace clic en el botón de guardar
@@ -95,6 +115,7 @@ namespace Presentation
             if (!DateTime.TryParse(TBReturnDate.Text, out DateTime parsedDate))
             {
                 LblMsg.Text = "Formato de fecha inválido";
+                LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
 
@@ -116,6 +137,7 @@ namespace Presentation
             if (string.IsNullOrEmpty(HFReturnID.Value))
             {
                 LblMsg.Text = "No se ha seleccionado una devolución para actualizar.";
+                LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
 

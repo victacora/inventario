@@ -10,7 +10,7 @@ namespace Presentation
 {
     public partial class WFSales : System.Web.UI.Page
     {
-        SalesLog objSales = new SalesLog();
+        private static SalesLog objSales = new SalesLog();
         private bool executed = false;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,8 +30,7 @@ namespace Presentation
         [WebMethod]
         public static object ListSales()
         {
-            SalesLog salesLog = new SalesLog();
-            DataSet salesData = salesLog.ShowSales();
+            DataSet salesData = objSales.ShowSales();
 
             List<object> salesList = new List<object>();
             foreach (DataRow row in salesData.Tables[0].Rows)
@@ -42,9 +41,9 @@ namespace Presentation
                     FechaVenta = Convert.ToDateTime(row["fecha"]).ToString("yyyy-MM-dd"),
                     TotalVenta = row["total"],
                     Descripción = row["descripcion"],
-                    Empleado = row["nombre_empleado"]+" "+ row["apellido_empleado"],
+                    Empleado = row["nombre_empleado"] + " " + row["apellido_empleado"],
                     IdentificacionCliente = row["identificacion_cliente"],
-                    Cliente = row["nombre_cliente"]+" "+ row["apellido_cliente"],
+                    Cliente = row["nombre_cliente"] + " " + row["apellido_cliente"],
                     EmpleadoId = row["emp_id"],
                     ClienteId = row["cli_id"],
                 });
@@ -62,7 +61,7 @@ namespace Presentation
         protected void BtnSave_Click(object sender, EventArgs e)
         {
             if (!DateTime.TryParse(TBDate.Text, out DateTime parsedDate))
-            { 
+            {
                 LblMsg.Text = "Formato de fecha invalido";
                 return;
             }
@@ -72,8 +71,8 @@ namespace Presentation
             int clientId = Convert.ToInt32(DDLClient.SelectedValue);
             int employeeId = Convert.ToInt32(DDLEmployee.SelectedValue);
 
-           executed = objSales.SaveSale(_date, total, description, clientId, employeeId);
-            if(executed)
+            executed = objSales.SaveSale(_date, total, description, clientId, employeeId);
+            if (executed)
             {
                 LblMsg.Text = "La Venta se guardó exiitosamente";
                 LblMsg.CssClass = "text-success fw-bold";
@@ -132,17 +131,34 @@ namespace Presentation
             DDLEmployee.DataBind();
             DDLEmployee.Items.Insert(0, "---- Seleccione un empleado ----");
         }
+
         [WebMethod]
-        public static object DeleteSale(int saleId)
+        public static AjaxResponse DeleteSale(int saleId)
         {
-            SalesLog salesLog = new SalesLog();
-            bool success = salesLog.DeleteSale(saleId);  // Llama al método de la capa de lógica
-            return new
+            AjaxResponse response = new AjaxResponse();
+            try
             {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = objSales.DeleteSale(saleId);
 
-                success = success
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Venta eliminada correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar la venta.";
+                }
+            }
+            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
+            {
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
 
-            };
+            return response;
         }
 
         private void ClearFields()

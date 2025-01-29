@@ -13,8 +13,8 @@ namespace Presentation
 {
     public partial class WFBuy : System.Web.UI.Page
     {
-        BuyLog objBuy = new BuyLog();
-        ProductLog objProduct = new ProductLog();
+        private static BuyLog objBuy = new BuyLog();
+        private static ProductLog objProduct = new ProductLog();
 
         private int _id, _quantity, _fkProduct;
         private double _unitprice;
@@ -78,13 +78,33 @@ namespace Presentation
         }
 
         [WebMethod]
-        public static bool DeleteBuy(int id)
+        public static AjaxResponse DeleteBuy(int id, int productoId)
         {
-            // Crear una instancia de la clase de lógica de productos
-            BuyLog objBuy = new BuyLog();
 
-            // Invocar al método para eliminar el producto y devolver el resultado
-            return objBuy.deleteBuy(id);
+            AjaxResponse response = new AjaxResponse();
+            try
+            {
+                // Creo un objeto de respuesta para devolver al cliente.
+                bool executed = objBuy.deleteBuy(id, productoId);
+
+                if (executed) // Verifico si la eliminación fue exitosa
+                {
+                    response.Success = true;
+                    response.Message = "Compra eliminada correctamente.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error al eliminar la compra.";
+                }
+            }
+            catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
+            {
+                response.Success = false;
+                response.Message = "Ocurrió un error: " + ex.Message;
+            }
+
+            return response;
         }
 
         protected void Calendar1_SelectionChanged(object sender, EventArgs e)
@@ -97,6 +117,7 @@ namespace Presentation
             if (!DateTime.TryParse(TBDate.Text, out DateTime parsedDate))
             {
                 LblMsg.Text = "Formato de fecha inválido";
+                LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
             _date = DateTime.Parse(TBDate.Text);
@@ -110,11 +131,13 @@ namespace Presentation
             if (executed)
             {
                 LblMsg.Text = "Compra guardada exitosamente";
+                LblMsg.CssClass = "text-success fw-bold";
                 clear();//Se invoca el metodo para limpiar los campos 
             }
             else
             {
                 LblMsg.Text = "Error al guardar";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 
@@ -124,6 +147,7 @@ namespace Presentation
             if (string.IsNullOrEmpty(HFBuyID.Value))
             {
                 LblMsg.Text = "No se ha seleccionado la compra para actualizar.";
+                LblMsg.CssClass = "text-danger fw-bold";
                 return;
             }
 
@@ -139,11 +163,13 @@ namespace Presentation
             if (executed)
             {
                 LblMsg.Text = "La compra se actualizo exitosamente!";
+                LblMsg.CssClass = "text-success fw-bold";
                 clear();//Se invoca el metodo para limpiar los campos 
             }
             else
             {
                 LblMsg.Text = "Error al actualizar";
+                LblMsg.CssClass = "text-danger fw-bold";
             }
         }
 

@@ -129,8 +129,9 @@
             //Eliminar un producto
             $('#buysTable').on('click', '.delete-btn', function () {
                 const id = $(this).data('id');// Obtener el ID del cliente
+                const rowData = $('#buysTable').DataTable().row($(this).parents('tr')).data();
                 if (confirm("¿Estás seguro de que deseas eliminar esta compra?")) {
-                    deleteBuy(id);// Invoca a la función para eliminar el producto
+                    deleteBuy(id, rowData.fkproduct);// Invoca a la función para eliminar el producto
                 }
             });
         });
@@ -146,12 +147,12 @@
         }
 
         // Función para eliminar una compra
-        function deleteBuy(id) {
+        function deleteBuy(id, productoId) {
             $.ajax({
                 type: "POST",
                 url: "WFBuy.aspx/DeleteBuy",// Se invoca el WebMethod Eliminar un Producto
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ id: id }),
+                data: JSON.stringify({ id: id, productoId: productoId }),
                 success: function (response) {
                     if (response.d.Success) {
                         alert('Compra eliminada correctamente.');

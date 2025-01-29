@@ -123,7 +123,7 @@
                         data: JSON.stringify({ saleId: saleId }), // Pasa el ID de la venta
                         contentType: 'application/json',
                         success: function (response) {
-                            if (response.d.success) {
+                            if (response.d.Success) {
                                 alert('Venta eliminada correctamente.');
                                 $('#salesTable').DataTable().ajax.reload(); // Recarga los datos de la tabla
                             } else {

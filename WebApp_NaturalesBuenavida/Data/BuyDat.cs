@@ -53,10 +53,7 @@ namespace Data
             try
             {
                 row = objSelectCmd.ExecuteNonQuery();
-                if (row == 1)
-                {
-                    executed = true;
-                }
+                executed = true;
             }
             catch (Exception e)
             {
@@ -97,10 +94,7 @@ namespace Data
             try
             {
                 row = objSelectCmd.ExecuteNonQuery();
-                if (row == 1)
-                {
-                    executed = true;
-                }
+                executed = true;
             }
             catch (Exception e)
             {
@@ -111,7 +105,7 @@ namespace Data
 
         }
 
-        public bool deleteBuy(int _idBuy)
+        public bool deleteBuy(int _idBuy, int p_fkproducto_id)
         {
             bool executed = false;
             int row;
@@ -121,15 +115,12 @@ namespace Data
             objSelectCmd.CommandText = "spDeleteCompraYDetalle"; //nombre del procedimiento almacenado
             objSelectCmd.CommandType = CommandType.StoredProcedure;
             objSelectCmd.Parameters.Add("p_compra_id", MySqlDbType.Int32).Value = _idBuy;
-
+            objSelectCmd.Parameters.Add("p_fkproducto_id", MySqlDbType.Int32).Value = p_fkproducto_id;
 
             try
             {
                 row = objSelectCmd.ExecuteNonQuery();
-                if (row == 1)
-                {
-                    executed = true;
-                }
+                executed = true;
             }
             catch (Exception e)
             {

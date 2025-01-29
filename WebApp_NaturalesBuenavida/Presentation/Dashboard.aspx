@@ -130,7 +130,7 @@
                                         ventas.push(0);
                                     }
                                     if (valorCompra) {
-                                        compras.push(valorVenta.total);
+                                        compras.push(valorCompra.total);
                                     } else {
                                         compras.push(0);
                                     }

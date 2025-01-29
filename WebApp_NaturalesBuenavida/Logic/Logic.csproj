@@ -87,6 +87,7 @@
     <Compile Include="SupplierLog.cs" />
     <Compile Include="TypeDocumentLog.cs" />
     <Compile Include="UnitMeasureLog.cs" />
+    <Compile Include="DashboardLog.cs" />
     <Compile Include="UserLog.cs" />
   </ItemGroup>
   <ItemGroup>

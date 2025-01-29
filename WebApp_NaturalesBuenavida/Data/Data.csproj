@@ -139,6 +139,7 @@
     <Compile Include="SupplierDat.cs" />
     <Compile Include="TypeDocumentDat.cs" />
     <Compile Include="UnitMeasureDat.cs" />
+    <Compile Include="DashboardDat.cs" />
     <Compile Include="UserDat.cs" />
   </ItemGroup>
   <ItemGroup>

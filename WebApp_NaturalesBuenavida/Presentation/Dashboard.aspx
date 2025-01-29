@@ -48,17 +48,11 @@
             <div class="col-md-6">
                 <figure class="border rounded p-2 highcharts-figure">
                     <div id="container-categorias"></div>
-                    <p class="highcharts-description text-center">
-                        <strong>Total inventario: </strong>1.050.000
-                    </p>
                 </figure>
             </div>
             <div class="col-md-6">
                 <figure class="border rounded p-2 highcharts-figure">
                     <div id="container-ventas-compras"></div>
-                    <p class="highcharts-description text-center">
-                        <strong>Total ventas: </strong>1.050.000/ <strong>Total compras: </strong>1.050.000
-                    </p>
                 </figure>
             </div>
         </div>
@@ -232,8 +226,6 @@
                             },
                             {
                                 name: 'Suplementos',
-                                sliced: true,
-                                selected: true,
                                 y: 26.71
                             },
                             {
@@ -395,7 +387,7 @@
                 enabled: false
             },
             series: [{
-                name: 'Year 1990',
+                name: 'Total compras',
                 data: [632, 345, 534]
             }]
         });
@@ -507,7 +499,7 @@
                 enabled: false
             },
             title: {
-                text: 'Rotación'
+                text: 'Ventas'
             },
 
             pane: {
@@ -600,7 +592,7 @@
                 enabled: false
             },
             title: {
-                text: 'Ventas'
+                text: 'Compras'
             },
 
             pane: {
@@ -725,25 +717,25 @@
                 plotBands: [{
                     from: 0,
                     to: 33,
-                    color: '#DF5353', // red
+                    color: '#55BF3B', 
                     thickness: 20,
                     borderRadius: '50%'
                 }, {
                     from: 33,
                     to: 66,
-                    color: '#DDDF0D', // green
+                    color: '#DDDF0D', 
                     thickness: 20,
                     borderRadius: '50%'
                 }, {
                     from: 67,
                     to: 100,
-                    color: '#55BF3B', // yellow
+                    color: '#DF5353', 
                     thickness: 20
                 }]
             },
 
             series: [{
-                name: 'Speed',
+                name: 'Devoluciones',
                 data: [80],
                 dataLabels: {
                     format: '{y}',

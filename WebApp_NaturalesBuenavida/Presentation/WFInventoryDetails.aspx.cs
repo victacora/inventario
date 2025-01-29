@@ -13,7 +13,7 @@ namespace Presentation
     public partial class WFInventoryDetails : System.Web.UI.Page
     {
 
-        InventoryLog objInv = new InventoryLog();
+        private static InventoryLog objInv = new InventoryLog();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

@@ -12,12 +12,12 @@ namespace Logic
 {
     public class DashBoardLog
     {
-        DashboarDat objUser = new DashboarDat();
+        DashboarDat dashboarDat = new DashboarDat();
 
         //Metodo para mostrar todos los usuarios
-        public Object getDasboardData(string fechaIni, string fechaFin)
+        public Object getDashboardData(string fechaIni, string fechaFin)
         {
-            return objUser.getDasboardData(fechaIni, fechaFin);
+            return dashboarDat.getDashboardData(fechaIni, fechaFin);
         }
 
     }

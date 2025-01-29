@@ -156,3 +156,16 @@ div.dt-processing {
 .w-100px {
     width: 100px;
 }
+
+.spinner-border {
+    color: #CE6600 !important;
+    width: 3rem;
+    height: 3rem;
+}
+
+#loading {
+    position: fixed;
+    z-index: 1080;
+    top: 41%;
+    left: 57%;
+}

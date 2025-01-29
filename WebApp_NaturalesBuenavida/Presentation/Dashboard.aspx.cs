@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Logic;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Presentation
 {
     public partial class Dashboard : Page
     {
-       
+        private static DashBoardLog dashBoardLog = new DashBoardLog();
         protected void Page_Load(object sender, EventArgs e)
         {
             Usuario usuario = Session["Usuario"] as Usuario;
@@ -24,24 +25,13 @@ namespace Presentation
 
 
         [WebMethod]
-        public static AjaxResponse DeleteInventory(string fechaInicial, string fechaFinal)
+        public static AjaxResponse loadDashboardData(string fechaInicial, string fechaFinal)
         {
             AjaxResponse response = new AjaxResponse();
             try
             {
-                // Creo un objeto de respuesta para devolver al cliente.
-                bool executed = true;
-
-                if (executed) // Verifico si la eliminación fue exitosa
-                {
-                    response.Success = true;
-                    response.Message = "Inventario eliminado correctamente.";
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "Error al eliminar el inventario.";
-                }
+                response.Result = dashBoardLog.getDashboardData(fechaInicial, fechaFinal);
+                response.Success = true;
             }
             catch (Exception ex)// En caso de error, configuro la respuesta con el mensaje de error.
             {

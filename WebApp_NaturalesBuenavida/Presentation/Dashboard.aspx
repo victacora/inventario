@@ -340,7 +340,7 @@
 
                             format = new Intl.NumberFormat('es-CO', { style: 'percent', minimumFractionDigits: 0 });
 
-                            $("#container-kpi-4").html("<b>Porcentaje devoluciones: </b><br>" + format.format((response.d.Result.cantidadDevolucionesPorPeriodo / response.d.Result.cantidadVentasPorPeriodo)));
+                            $("#container-kpi-4").html("<b>Devoluciones: </b><br>" + format.format((response.d.Result.cantidadDevolucionesPorPeriodo / response.d.Result.cantidadVentasPorPeriodo)));
 
                             $('#graficas').show();
                         } else {

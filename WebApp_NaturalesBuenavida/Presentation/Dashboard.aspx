@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Bienvenidos" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Presentation.Dashboard" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script type="text/javascript" src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/datatables.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="resources/js/moment.min.js"></script>
     <script type="text/javascript" src="resources/js/daterangepicker.js"></script>
     <script type="text/javascript" src="resources/js/highcharts.js"></script>
@@ -9,7 +9,9 @@
     <script type="text/javascript" src="resources/js/modules/exporting.js"></script>
     <script type="text/javascript" src="resources/js/modules/export-data.js"></script>
     <script type="text/javascript" src="resources/js/modules/accessibility.js"></script>
+
     <link rel="stylesheet" type="text/css" href="resources/css/daterangepicker.css" />
+   <link href="resources/css/dataTables.min.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -64,7 +66,7 @@
             </div>
             <div class="col-md-6 border rounded p-2 table-responsive">
                 <h5 class="fw-bold text-center mb-4">Existencias por producto</h5>
-                <table id="stock-productos" class="table table-striped table-bordered">
+                <table id="stock-productos" class="table display" style="width: 100%">
                     <thead class="table-dark">
                         <tr>
                             <th>Producto</th>
@@ -136,18 +138,6 @@
                                     }
                                 }
                             }
-
-                            response.d.Result.stockProductosVentasTotales.forEach(item => {
-                                $("#stock-productos tbody").append(`
-                                    <tr>
-                                        <td>${item.producto}</td>
-                                        <td>${item.cantidad}</td>
-                                        <td>${item.promedio}</td>
-                                        <td>$${item.precio}</td>
-                                        <td>$${item.valor}</td>
-                                    </tr>
-                                `);
-                            });
 
 
                             Highcharts.chart('container-ventas-compras', {
@@ -340,9 +330,41 @@
 
                             format = new Intl.NumberFormat('es-CO', { style: 'percent', minimumFractionDigits: 0 });
 
-                            $("#container-kpi-4").html("<b>Devoluciones: </b><br>" + format.format((response.d.Result.cantidadDevolucionesPorPeriodo / response.d.Result.cantidadVentasPorPeriodo)));
+                            $("#container-kpi-4").html("<b>Devoluciones: </b><br>" + format.format((response.d.Result.cantidadDevolucionesPorPeriodo != 0 && response.d.Result.cantidadVentasPorPeriodo != 0 ?response.d.Result.cantidadDevolucionesPorPeriodo / response.d.Result.cantidadVentasPorPeriodo:0)));
 
                             $('#graficas').show();
+
+                            $('#stock-productos').DataTable({
+                                "processing": true,
+                                "serverSide": false,
+                                "bDestroy": true,
+                                "data": response.d.Result.stockProductosVentasTotales,
+                                "columns": [
+                                    { "data": "producto" },
+                                    { "data": "cantidad" },
+                                    { "data": "promedio" },
+                                    { "data": "precio" },
+                                    { "data": "valor" }
+                                ],
+                                "language": {
+                                    "emptyTable": "No hay datos disponibles en la tabla",
+                                    "loadingRecords": "Cargando...",
+                                    "processing": "Procesando...",
+                                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                                    "zeroRecords": "No se encontraron resultados",
+                                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                                    "infoEmpty": "No hay registros disponibles",
+                                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                                    "search": "Buscar:",
+                                    "paginate": {
+                                        "first": "Primero",
+                                        "last": "Último",
+                                        "next": "Siguiente",
+                                        "previous": "Anterior"
+                                    }
+                                }
+                            });
+
                         } else {
                             alert('Error al consultar los datos del tablero: ' + response.d.Message);
                             $('#loading').removeClass('d-flex').addClass('d-none');
@@ -353,6 +375,7 @@
                         $('#loading').removeClass('d-flex').addClass('d-none');
                     }
                 });
+
             }
 
             $('#reportrange').daterangepicker({
